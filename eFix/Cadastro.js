@@ -19,12 +19,14 @@ export default class Cadastro extends Component{
       <SafeAreaView style={styles.container}> 
       <View style={styles.container}>
         <Text style={styles.text}>Cadastrar Usuário</Text>
-        <Text>  Nome:</Text>
-        <TextInput style={styles.input}  placeholder="Nome" underlineColorAndroid="transparent"/>
-        <Text>  Email:</Text>
-        <TextInput style={styles.input}  placeholder="Email" underlineColorAndroid="transparent"/>
-        <Text>  Senha:</Text>
-        <TextInput style={styles.input}  placeholder="Senha" underlineColorAndroid="transparent" secureTextEntry={true}/>
+        <Text>  Nome do Serviço:</Text>
+        <TextInput style={styles.input}  placeholder="Nome do Serviço" underlineColorAndroid="transparent"/>
+        <Text>  Descrição:</Text>
+        <TextInput style={styles.input}  placeholder="Descrição" underlineColorAndroid="transparent"/>
+        <Text>  Preço:</Text>
+        <TextInput style={styles.input}  placeholder="Preço" underlineColorAndroid="transparent" secureTextEntry={true}/>
+        <Text>  Cetegoria:</Text>
+        <TextInput style={styles.input}  placeholder="Categoria" underlineColorAndroid="transparent" secureTextEntry={true}/>
         <Button title="Cadastrar" onPress={() => Alert.alert('Simple Button pressed')}/>
       </View>
       </SafeAreaView>
@@ -36,6 +38,7 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     marginHorizontal: 16,
+    justifyContent: 'center'
   },
   input:{
     height:45,
