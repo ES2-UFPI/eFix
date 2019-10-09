@@ -36,4 +36,22 @@ const create = router.post('/servico', (req, res, next) => {
 
 app.use('/', create);
 
+// recupera servicos
+const read_all = router.get('/servico', (req, res, next) => {
+    console.log("Reqisicao GET all recebida.");
+    const ref = firebase.database().ref("/servico/");
+
+    ref.on(
+        "value", function(snapshot){
+            res.json(snapshot.val())
+            ref.off("value")
+        },
+        function(errorObject){
+            console.log("Leitura falhou: " + errorObject.code);
+            res.send(errorObject.code);
+        }
+    );    
+});
+
+app.use('/', read_all);
 module.exports = app;
