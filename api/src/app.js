@@ -1,32 +1,30 @@
-'use strict';
+'use strict'
 
 const util = require('../../util.js');
 const express = require('express');
+const firebase = require('firebase');
+const bodyParser = require('body-parser');
 
 firebase.initializeApp(util);
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extend: false}));
+
 const router = express.Router();
 
-const route = router.get('/', (req, res, next) => {
-    res.status(200).send({
-        title: "eFix API rodando",
-        version: "0.0.1"
-    });
-});
-
 // Cria servico
-const create = router.post('/', (req, res, next) => {
+const create = router.post('/servico', (req, res, next) => {
     console.log("Requisicao de POST de Servico recebida.");
-    const tipo = req.body.tipo;
+    const categoria = req.body.categoria;
     const nome = req.body.nome;
     const preco = req.body.preco;
     const descricao = req.body.descricao;
 
-    const refPath = tipo + "/" + nome;
+    const refPath = "servico/" + categoria + '/' + nome;
     const ref = firebase.database().ref(refPath)
 
-    ref.update({ valor }, function(error) {
+    ref.update({ tipo, nome, preco, descricao }, function(error) {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
@@ -36,6 +34,6 @@ const create = router.post('/', (req, res, next) => {
 });
 
 
-app.use('/', route);
+app.use('/', create);
 
 module.exports = app;
