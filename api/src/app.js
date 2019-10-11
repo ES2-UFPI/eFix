@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extend: false}));
 const router = express.Router();
 
 // Cria servico
-const create = router.post('/servico', (req, res, next) => {
+const create = router.post('/', (req, res, next) => {
     console.log("Requisicao de POST de Servico recebida.");
     const categoria = req.body.categoria;
     const nome = req.body.nome;
@@ -34,10 +34,8 @@ const create = router.post('/servico', (req, res, next) => {
 });
 
 
-app.use('/', create);
-
 // recupera servicos
-const read_all = router.get('/servico', (req, res, next) => {
+const read_all = router.get('/', (req, res, next) => {
     console.log("Reqisicao GET all recebida.");
     const ref = firebase.database().ref("/servico/");
 
@@ -53,5 +51,27 @@ const read_all = router.get('/servico', (req, res, next) => {
     );    
 });
 
-app.use('/', read_all);
+// recupera todos os servicos de uma categoria
+const read_categ = router.get('/:categ', (req, res, next) => {
+    const categ = req.params.categ;
+    console.log("Pedido pela categoria " + categ);
+
+    const ref = firebase.database().ref("/servico/" + categ);
+
+    ref.on(
+        "value", function(snapshot){
+            res.json(snapshot.val())
+            ref.off("value")
+        },
+        function(errorObject){
+            console.log("Leitura falhou: " + errorObject.code);
+            res.send(errorObject.code);
+        }
+    );    
+})
+
+app.use('/servico', read_all);
+app.use('/servico', create);
+app.use('/servico', read_categ)
+
 module.exports = app;
