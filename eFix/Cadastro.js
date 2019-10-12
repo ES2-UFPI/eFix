@@ -19,13 +19,28 @@ export default class Cadastro extends Component{
     this.state = {
       nome:'' ,
       categoria:'eai',
-      preco:'' ,
-      descricao:''
+      preco: 0 ,
+      descricao:'',
+      erro:''
     };
-
+    
+    this.pegaPreco = this.pegaPreco.bind(this);
   }
 
+  pegaPreco(p){
+    let state = this.state;
+    var test = parseFloat(p);
 
+    if(isNaN(test) || p[0] == '.' || test < 0){
+      state.erro='Valor digitado em preço é inválido.';
+    }
+    else{
+    state.erro='';
+    state.preco = test;
+    }
+    this.setState(state);
+  }
+  
   render(){
     return(
     
@@ -53,7 +68,7 @@ export default class Cadastro extends Component{
           <TextInput style={{justifyContent:'flex-end', borderRadius:12, borderWidth:1, borderColor:'gainsboro',marginLeft:18, padding:7, width:100}}  
             placeholder="Preço" 
             underlineColorAndroid="transparent"  
-            onChangeText={(preco) => this.setState({preco})}
+            onChangeText={this.pegaPreco}
             keyboardType={'numeric'}/>
         </View>  
 
@@ -63,7 +78,9 @@ export default class Cadastro extends Component{
           onChangeText={(descricao) => this.setState({descricao})}/>
 
         <Button title="Cadastrar" onPress={() => Alert.alert('Simple Button pressed')}/>
+        <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text>
       </View>
+  
      
     );
   }
@@ -99,6 +116,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     height:22,
-    color: 'black'
+    color: 'black',
+    marginBottom: 40
   }
 });
