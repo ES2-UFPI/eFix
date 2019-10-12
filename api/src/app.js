@@ -16,6 +16,8 @@ const router = express.Router();
 // Cria servico
 const create = router.post('/servico', (req, res, next) => {
     console.log("Requisicao de POST de Servico recebida.");
+    const id_prestador = req.body.id_prestador;
+    const id_servico = req.body.id_servico;
     const categoria = req.body.categoria;
     const nome = req.body.nome;
     const preco = req.body.preco;
@@ -24,7 +26,7 @@ const create = router.post('/servico', (req, res, next) => {
     const refPath = "servico/" + categoria + '/' + nome;
     const ref = firebase.database().ref(refPath)
 
-    ref.update({ categoria, nome, preco, descricao }, function(error) {
+    ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
