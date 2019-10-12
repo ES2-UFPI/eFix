@@ -10,55 +10,26 @@ import {
     SafeAreaView
 } from 'react-native';
 
+
+
 export default class Cadastro extends Component{
-
-  constructor(props){
-    super(props);
-  
-    this.state = {
-      nome:'' ,
-      tipo:'' ,
-      preco:'' ,
-      descricao:''
-    };
-
-  }
-
 
   render(){
     return(
-    
+      <SafeAreaView style={styles.container}> 
       <View style={styles.container}>
-        <Text style={styles.text}>Cadastrar um Serviço</Text>
-        
-        <Text>  Nome:</Text>
-        <TextInput style={styles.input}  
-          placeholder="Nome" 
-          underlineColorAndroid="transparent" 
-          onChangeText={(nome) => this.setState({nome})}/>
-
-        <Text>  Tipo de Serviço:</Text>
-        <TextInput style={styles.input}  
-          placeholder="Tipo de Serviço" 
-          underlineColorAndroid="transparent" 
-          onChangeText={(tipo) => this.setState({tipo})}/>
-        
-        <Text>  Preço:</Text>
-        <TextInput style={styles.input}  
-          placeholder="Preço" 
-          underlineColorAndroid="transparent"  
-          onChangeText={(preco) => this.setState({preco})}/>
-        
+        <Text style={styles.text}>Cadastrar Usuário</Text>
+        <Text>  Nome do Serviço:</Text>
+        <TextInput style={styles.input}  placeholder="Nome do Serviço" underlineColorAndroid="transparent"/>
         <Text>  Descrição:</Text>
-        <TextInput style={styles.D}  
-          placeholder="Insira uma descrição para o serviço aqui..." 
-          underlineColorAndroid="transparent" 
-          onChangeText={(descricao) => this.setState({descricao})}/>
-        
+        <TextInput style={styles.input}  placeholder="Descrição" underlineColorAndroid="transparent"/>
+        <Text>  Preço:</Text>
+        <TextInput style={styles.input}  placeholder="Preço" underlineColorAndroid="transparent" secureTextEntry={true}/>
+        <Text>  Cetegoria:</Text>
+        <TextInput style={styles.input}  placeholder="Categoria" underlineColorAndroid="transparent" secureTextEntry={true}/>
         <Button title="Cadastrar" onPress={() => Alert.alert('Simple Button pressed')}/>
-    
       </View>
-     
+      </SafeAreaView>
     );
   }
 }
@@ -67,6 +38,7 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     marginHorizontal: 16,
+    justifyContent: 'center'
   },
   input:{
     height:45,
@@ -75,19 +47,9 @@ const styles = StyleSheet.create({
     margin: 20,
     padding: 10
   },
-
-  D: {
-    height:60,
-    borderWidth:1,
-    borderColor: 'grey',
-    margin: 20,
-    padding: 10
-  },
-
   text:{
     textAlign:'center',
     fontSize: 20,
-    fontWeight: 'bold',
     height:22,
     color: 'black'
   }
