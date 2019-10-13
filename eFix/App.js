@@ -1,21 +1,40 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import API from './src/services/API';
+import { Text, View, Button, FlatList } from 'react-native';
+import api from './src/services/API';
 
 export default class HelloWorldApp extends Component {
   state = {
     servicos: [],
+    errorMessage: null,
   };
 
-  async componentDidMount(){
-    const response = await API.getSevicos();
+  getServicesList = async () => {
+    try{
+      const response = await api.get('/servico');
+      console.log("Tela: " + response.data)
+      
+      this.setState({ servicos: response.data });
+    } catch(response){
+      //console.log("erro: " + response.data);
+      this.setState({ errorMessage: 'Erro'})
+    }
+  }
 
-    this.setState({ servicos: response.data });
+  renderItem(item){
+    return(
+      <View>
+        <Text>{item.nome}</Text>
+        <Text>{item.descricao}</Text>
+      </View>
+    );
   }
 
   render() {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        
+        <Button onPress={this.getServicesList} title="Listar"/>
+        
         { this.state.servicos.map(servico => (
           <View key={servico.id_servico} style={{ marginTop: 15}}>
             <Text style={{ fontWeight: 'bold'}}>
