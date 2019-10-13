@@ -35,6 +35,7 @@ export default class HelloWorldApp extends Component {
         
         <Button onPress={this.getServicesList} title="Listar"/>
         
+        {console.log(this.state.servicos)}
         { this.state.servicos.map(servico => (
           <View key={servico.id_servico} style={{ marginTop: 15}}>
             <Text style={{ fontWeight: 'bold'}}>
