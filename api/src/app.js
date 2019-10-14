@@ -14,8 +14,9 @@ app.use(bodyParser.urlencoded({extend: false}));
 const router = express.Router();
 
 // Cria servico
-const create = router.post('/servico', (req, res, next) => {
+const create = router.post('/', (req, res, next) => {
     console.log("Requisicao de POST de Servico recebida.");
+
     const id_prestador = req.body.id_prestador;
     const id_servico = req.body.id_servico;
     const categoria = req.body.categoria;
@@ -23,7 +24,7 @@ const create = router.post('/servico', (req, res, next) => {
     const preco = req.body.preco;
     const descricao = req.body.descricao;
 
-    const refPath = "servico/" + categoria + '/' + nome;
+    const refPath = "servico/" + id_servico;
     const ref = firebase.database().ref(refPath)
 
     ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
@@ -36,10 +37,10 @@ const create = router.post('/servico', (req, res, next) => {
 });
 
 
-app.use('/', create);
+
 
 // recupera servicos
-const read_all = router.get('/servico', (req, res, next) => {
+const read_all = router.get('/', (req, res, next) => {
     console.log("Reqisicao GET all recebida.");
     const ref = firebase.database().ref("/servico/");
 
@@ -55,5 +56,7 @@ const read_all = router.get('/servico', (req, res, next) => {
     );    
 });
 
-app.use('/', read_all);
+app.use('/servico', create);
+app.use('/servico', read_all);
+
 module.exports = app;
