@@ -43,7 +43,14 @@ const read_all = router.get('/', (req, res, next) => {
 
     ref.on(
         "value", function(snapshot){
-            res.json(snapshot.val())
+            const data = [];
+            snapshot.forEach(function(childSnapshot){
+                data.push(childSnapshot.val())
+            });
+                 
+            const json = {"servicos" : data};
+
+            res.json(json);
             ref.off("value")
         },
         function(errorObject){
@@ -62,7 +69,14 @@ const show = router.get('/id/:id', (req, res, next) => {
 
     ref.on(
         "value", function(snapshot){
-            res.json(snapshot.val())
+            const data = [];
+            snapshot.forEach(function(childSnapshot){
+                data.push(childSnapshot.val())
+            });
+                 
+            const json = {"servicos" : data};
+
+            res.json(json);
             ref.off("value")
         },
         function(errorObject){
@@ -81,7 +95,14 @@ const read_categ = router.get('/categ/:categ', (req, res, next) => {
 
     ref.on(
         "value", function(snapshot){
-            res.json(snapshot.val())
+            const data = [];
+            snapshot.forEach(function(childSnapshot){
+                data.push(childSnapshot.val())
+            });
+                 
+            const json = {"servicos" : data};
+
+            res.json(json);
             ref.off("value")
         },
         function(errorObject){
