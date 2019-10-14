@@ -53,12 +53,31 @@ const read_all = router.get('/', (req, res, next) => {
     );    
 });
 
-// recupera todos os servicos de uma categoria
-const read_categ = router.get('/:categ', (req, res, next) => {
-    const categ = req.params.categ;
-    console.log("Pedido pela categoria " + categ);
+// recupera um servico em especifico
+const show = router.get('/id/:id', (req, res, next) => {
+    const id = req.params.id;
+    console.log("Reqisicao GET pelo serviço " + id);
 
-    const ref = firebase.database().ref("/servico/" + categ);
+    const ref = firebase.database().ref("/servico").orderByChild("id_servico").equalTo(id);
+
+    ref.on(
+        "value", function(snapshot){
+            res.json(snapshot.val())
+            ref.off("value")
+        },
+        function(errorObject){
+            console.log("Leitura falhou: " + errorObject.code);
+            res.send(errorObject.code);
+        }
+    );    
+})
+
+// recupera todos os servicos de uma categoria
+const read_categ = router.get('/categ/:categ', (req, res, next) => {
+    const categ = req.params.categ;
+    console.log("Reqisicao Pedido pela categoria " + categ);
+
+    const ref = firebase.database().ref("/servico").orderByChild("categoria").equalTo(categ);
 
     ref.on(
         "value", function(snapshot){
@@ -74,6 +93,7 @@ const read_categ = router.get('/:categ', (req, res, next) => {
 
 app.use('/servico', read_all);
 app.use('/servico', create);
+app.use('/servico', show);
 app.use('/servico', read_categ)
 
 module.exports = app;
