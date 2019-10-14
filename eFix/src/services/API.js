@@ -16,4 +16,7 @@ api.getServiceById = async (id) => {
     return await api.get('/servico/id/' + id);
 }
 
+api.createService = async (service) => {
+    return await api.post('/servico', service);
+}
 export default api;

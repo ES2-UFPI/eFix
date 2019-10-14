@@ -10,7 +10,7 @@ export default class Example extends Component {
 
   getServicesList = async () => {
     try{
-      const response = await api.getServices();
+      const response = await api.getServics();
 
       console.log("Tela: " + response.data);
 
@@ -46,6 +46,7 @@ export default class Example extends Component {
       this.setState({ errorMessage: 'Erro'})
     }
   }
+  
   render() {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
