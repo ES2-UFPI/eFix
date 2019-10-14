@@ -53,7 +53,27 @@ const read_all = router.get('/', (req, res, next) => {
     );    
 });
 
-app.use('/servico', create);
+// recupera todos os servicos de uma categoria
+const read_categ = router.get('/:categ', (req, res, next) => {
+    const categ = req.params.categ;
+    console.log("Pedido pela categoria " + categ);
+
+    const ref = firebase.database().ref("/servico/" + categ);
+
+    ref.on(
+        "value", function(snapshot){
+            res.json(snapshot.val())
+            ref.off("value")
+        },
+        function(errorObject){
+            console.log("Leitura falhou: " + errorObject.code);
+            res.send(errorObject.code);
+        }
+    );    
+})
+
 app.use('/servico', read_all);
+app.use('/servico', create);
+app.use('/servico', read_categ)
 
 module.exports = app;
