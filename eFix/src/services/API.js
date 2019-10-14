@@ -4,15 +4,15 @@ const api = create({
     baseURL: 'https://efix-255422.appspot.com',
 });
 
-api.getServicos = async () => {
+api.getServices = async () => {
     return await api.get('/servico');
 }
 
-api.getServicosByCategory = async (category) => {
+api.getServicesByCategory = async (category) => {
     return await api.get('/servico/categ/' + category);
 }
 
-api.getServicosById = async (id) => {
+api.getServiceById = async (id) => {
     return await api.get('/servico/id/' + id);
 }
 
