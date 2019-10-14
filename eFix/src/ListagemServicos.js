@@ -2,14 +2,22 @@ import React, { Component } from 'react';
 import { 
     Text, 
     View,
-    StyleSheet
- } from 'react-native';
+    StyleSheet,
+    FlatList
+} from 'react-native';
+import ItemServico from './ItemServico.js'
 
 export default class ListagemServicos extends Component {
     render() {
         return(
             <View style={styles.container}>
-                <Text>Listagem de serviços</Text>
+                <FlatList data={[
+                    {key: '1', nome: 'Trocar tomada', preco: '100,00', categoria: 'Eletricista', descricao: 'Troco tomada mano'},
+                    {key: '2', nome: 'Poda', preco: '50,00', categoria: 'Jardinagem', descricao: 'Podo suas pranta'},
+                    {key: '3', nome: 'Regular pressão', preco: '75,00', categoria: 'Encanador', descricao: 'Regulo as pressao'}
+                ]}
+                renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
+                />
             </View>
         );
     }
@@ -18,7 +26,7 @@ export default class ListagemServicos extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginHorizontal: 16,
-        justifyContent: 'center'
+        flexDirection: 'column',
+        overflow: 'scroll',
     }
 });
