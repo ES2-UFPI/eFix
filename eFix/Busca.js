@@ -5,7 +5,8 @@ import {
     Button, 
     View
   } from 'react-native';
-export default class busca extends React.Component {
+  import React, { Component } from 'react';
+export default class Busca extends React.Component {
 
    
 render() {
@@ -30,8 +31,8 @@ render() {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+     // justifyContent: 'center',
+     // alignItems: 'center',
       backgroundColor: '#F5FCFF',
     },
     welcome: {
