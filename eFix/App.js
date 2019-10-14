@@ -15,7 +15,7 @@ export default class HelloWorldApp extends Component {
 
       this.setState({ servicos: response.data["servicos"] });
     } catch(response){
-      //console.log("erro: " + response.data);
+      console.log("erro: " + response.data);
       this.setState({ errorMessage: 'Erro'})
     }
   }
