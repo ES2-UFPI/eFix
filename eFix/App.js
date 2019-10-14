@@ -11,9 +11,9 @@ export default class HelloWorldApp extends Component {
   getServicesList = async () => {
     try{
       const response = await api.get('/servico');
-      console.log("Tela: " + response.data)
-      
-      this.setState({ servicos: response.data });
+      console.log("Tela: " + response.data);
+      const result = [response.data["Encanador"]["Regular pressão"]];
+      this.setState({ servicos: [response.data] });
     } catch(response){
       //console.log("erro: " + response.data);
       this.setState({ errorMessage: 'Erro'})
@@ -36,8 +36,9 @@ export default class HelloWorldApp extends Component {
         <Button onPress={this.getServicesList} title="Listar"/>
         
         {console.log(this.state.servicos)}
+
         { this.state.servicos.map(servico => (
-          <View key={servico.id_servico} style={{ marginTop: 15}}>
+          <View key={servico.nome.id_servico} style={{ marginTop: 15}}>
             <Text style={{ fontWeight: 'bold'}}>
               {servico.nome}
             </Text>
