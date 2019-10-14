@@ -10,7 +10,7 @@ export default class HelloWorldApp extends Component {
 
   getServicesList = async () => {
     try{
-      const response = await api.getServicos();
+      const response = await api.getServicosByCategory("Jardinagem");
 
       console.log("Tela: " + response.data);
 

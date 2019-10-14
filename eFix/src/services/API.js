@@ -8,12 +8,12 @@ api.getServicos = async () => {
     return await api.get('/servico');
 }
 
-api.getServicosByCategoria = async (category) => {
-    return await api.get('/servico/' + category);
+api.getServicosByCategory = async (category) => {
+    return await api.get('/servico/categ/' + category);
 }
 
 api.getServicosById = async (id) => {
-    return await api.get('/servico/' + id);
+    return await api.get('/servico/id/' + id);
 }
 
 export default api;
