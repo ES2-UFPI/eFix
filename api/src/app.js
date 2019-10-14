@@ -36,9 +36,6 @@ const create = router.post('/', (req, res, next) => {
     });
 });
 
-
-
-
 // recupera servicos
 const read_all = router.get('/', (req, res, next) => {
     console.log("Reqisicao GET all recebida.");
