@@ -23,7 +23,7 @@ const create = router.post('/servico', (req, res, next) => {
     const preco = req.body.preco;
     const descricao = req.body.descricao;
 
-    const refPath = "servico/" + categoria + '/' + nome;
+    const refPath = "servico/" + id_servico;
     const ref = firebase.database().ref(refPath)
 
     ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
