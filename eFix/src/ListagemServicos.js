@@ -12,7 +12,7 @@ export default class ListagemServicos extends Component {
     state = {
         servicos: [],
         errorMessage: null
-    }
+    };
 
     getServiceList = async () => {
         try {
@@ -23,7 +23,7 @@ export default class ListagemServicos extends Component {
             this.setState({servicos: response.data["servicos"]});
         } catch (response) {
             console.log("Erro: " + response.data);
-            this.setState({errorMessage: "Erro"})
+            this.setState({errorMessage: "Erro"});
         }
     }
 
@@ -40,15 +40,15 @@ export default class ListagemServicos extends Component {
 
         switch(this.props.filter) {
             case 'categoria':
-                this.getServiceByCategoria;
+                this.getServiceByCategoria();
                 console.log("Filtro por categoria " + this.props.value);
                 break;
             case 'preco':
-                this.getServiceByMargemDePreco;
+                this.getServiceByMargemDePreco();
                 console.log("Filtro por preco " + this.props.value);
                 break;
             default:
-                this.getServiceList;
+                this.getServiceList();
                 console.log("Sem filtro");
                 break;
         }
@@ -61,16 +61,8 @@ export default class ListagemServicos extends Component {
                     data={this.state.servicos}
                     ListEmptyComponent={emptyList}
                     renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
+                    keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
-                {/*
-                <FlatList data={[
-                    {key: '1', nome: 'Trocar tomada', preco: '100,00', categoria: 'Eletricista', descricao: 'Troco tomada mano'},
-                    {key: '2', nome: 'Poda', preco: '50,00', categoria: 'Jardinagem', descricao: 'Podo suas pranta'},
-                    {key: '3', nome: 'Regular pressão', preco: '75,00', categoria: 'Encanador', descricao: 'Regulo as pressao'}
-                ]}
-                renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
-                />
-                */}
             </View>
         );
     }
