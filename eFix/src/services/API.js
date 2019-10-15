@@ -16,6 +16,10 @@ api.getServiceById = async (id) => {
     return await api.get('/servico/id/' + id);
 }
 
+api.getServiceUnderPrice = async (preco) => {
+    return await api.get('/servico/preco/' + preco);
+}
+
 api.createService = async (service) => {
     return await api.post('/servico', service);
 }
