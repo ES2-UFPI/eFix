@@ -10,7 +10,7 @@ import {
     SafeAreaView,
     Picker
 } from 'react-native';
-import API from './src/services/API';
+import api from './src/services/API';
 
 export default class Cadastro extends Component{
 
@@ -18,15 +18,15 @@ export default class Cadastro extends Component{
     super(props);
   
     this.state = {
-      idprestador:'jonas12',
-      idservico:'aswf123cdacue',
+      idprestador:'mathe2us1',
+      idservico:'s2wf123c5dacu',
       nome:'' ,
       categoria:'',
       preco: 0 ,
       precos:'',
       descricao:'',
       erro:'',
-      env2:''
+      erroEnv:''
     };
     this.enviar = this.enviar.bind(this);
     this.pegaPreco = this.pegaPreco.bind(this);
@@ -51,9 +51,13 @@ export default class Cadastro extends Component{
   
   enviar(){
     let state = this.state;
-    var env = "{\"categoria\": \"" +  state.categoria +"\", \"descricao\": \"" + state.descricao +"\", \"id_prestador\": \""+ state.idprestador + "\", \"id_servico\": \""+ state.idservico + "\", \"nome\": \""+ state.nome + "\",preco\":\" "+ state.precos + "\"}";
-    state.env2 = env;
-    API.createService(env);
+    if(state.categoria == '' || state.categoria == "Seleciona categoria..." || state.erro != '' || state.nome == '' || state.preco == '' || state.descricao == '' || state.preco == 0 || isNaN(state.preco)){
+      state.erroEnv= "Não foi possível cadastrar este serviço, talvez algum campo não tenha sido escrito ou existe um campo inserido de maneira errônea."
+    }else{  
+      var env = "{\"categoria\": \"" +  state.categoria +"\", \"descricao\": \"" + state.descricao +"\", \"id_prestador\": \""+ state.idprestador + "\", \"id_servico\": \""+ state.idservico + "\", \"nome\": \""+ state.nome + "\", \"preco\" : \" "+ state.precos + "\"}";
+      state.erroEnv = '';
+      api.createService(env);
+    }
     this.setState(state);
   }
 
@@ -96,7 +100,7 @@ export default class Cadastro extends Component{
 
         <Button title="Cadastrar" onPress={this.enviar}/>
         <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text>
-        <Text>{this.state.env2} </Text>
+        <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erroEnv}</Text>
       </View>
   
      
@@ -131,9 +135,9 @@ const styles = StyleSheet.create({
   text:{
     textAlign:'center',
     fontFamily: 'normal',
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
-    height:22,
+    height: 40,
     color: 'black',
     marginBottom: 40
   }
