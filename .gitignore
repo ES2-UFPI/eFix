@@ -60,4 +60,5 @@ buck-out/
 /ios/Pods/
 
 # Files
-Util.js
+util.js
+/api/util.js
