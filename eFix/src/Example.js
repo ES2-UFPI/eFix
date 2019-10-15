@@ -10,7 +10,7 @@ export default class Example extends Component {
 
   getServicesList = async () => {
     try{
-      const response = await api.getServics();
+      const response = await api.getServices();
 
       console.log("Tela: " + response.data);
 
