@@ -1,6 +1,6 @@
 'use strict'
 
-const util = require('../../util.js');
+const util = require('../util.js');
 const express = require('express');
 const firebase = require('firebase');
 const bodyParser = require('body-parser');
@@ -112,9 +112,46 @@ const read_categ = router.get('/categ/:categ', (req, res, next) => {
     );    
 })
 
+// recupera um servico em especifico
+const search_under_price = router.get('/preco/:preco', (req, res, next) => {
+    const preco = req.params.preco;
+    console.log("Reqisicao GET por serviços com preço abaixo de " + preco);
+
+    const ref = firebase.database().ref("/servico");
+
+    ref.on(
+        "value", function(snapshot){
+            const data = [];
+            snapshot.forEach(function(childSnapshot){
+                data.push(childSnapshot.val())
+            });
+            
+            // filtrando somente os servicos abaixo do preço recebido
+            const under_prices = [];
+
+            data.forEach(servico => {
+                if(servico["preco"] <= preco){
+                    under_prices.push(servico);
+                }
+            });
+
+            const json = {"servicos" : data};
+
+            res.json(json);
+            ref.off("value")
+        },
+        function(errorObject){
+            console.log("Leitura falhou: " + errorObject.code);
+            res.send(errorObject.code);
+        }
+    );    
+})
+
+
 app.use('/servico', read_all);
 app.use('/servico', create);
 app.use('/servico', show);
 app.use('/servico', read_categ)
+app.use('/servico', search_under_price);
 
 module.exports = app;
