@@ -135,7 +135,7 @@ const search_under_price = router.get('/preco/:preco', (req, res, next) => {
                 }
             });
 
-            const json = {"servicos" : data};
+            const json = {"servicos" : under_prices};
 
             res.json(json);
             ref.off("value")
