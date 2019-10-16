@@ -10,7 +10,7 @@ import {
     SafeAreaView,
     Picker
 } from 'react-native';
-import api from './src/services/API';
+import api from './services/API';
 
 export default class Cadastro extends Component{
 
