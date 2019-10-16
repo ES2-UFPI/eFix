@@ -130,10 +130,12 @@ const search_under_price = router.get('/preco/:preco', (req, res, next) => {
             const under_prices = [];
 
             data.forEach(servico => {
-                if(servico["preco"] <= preco){
+                if(parseFloat(servico["preco"]) <= parseFloat(preco)){
+                    console.log(servico["preco"]);
                     under_prices.push(servico);
                 }
             });
+
 
             const json = {"servicos" : under_prices};
 
