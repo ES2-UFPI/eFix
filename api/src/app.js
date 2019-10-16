@@ -131,7 +131,6 @@ const search_under_price = router.get('/preco/:preco', (req, res, next) => {
 
             data.forEach(servico => {
                 if(parseFloat(servico["preco"]) <= parseFloat(preco)){
-                    console.log(servico["preco"]);
                     under_prices.push(servico);
                 }
             });
@@ -164,8 +163,6 @@ const busca = router.get('/busca/:busca', (req, res, next) => {
             words.push(word);
         }
     });
-
-    console.log(words);
     
     const ref = firebase.database().ref("/servico");
 
@@ -191,7 +188,6 @@ const busca = router.get('/busca/:busca', (req, res, next) => {
                     }
                 });
 
-                console.log("Servico: " + nomes);
                 // verificando se as palavras restantes sao pelo menos uma das recebidas
                 nomes.forEach(word =>{
                     if(words.indexOf(word) >= 0){
