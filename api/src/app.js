@@ -147,11 +147,77 @@ const search_under_price = router.get('/preco/:preco', (req, res, next) => {
     );    
 })
 
+// recupera serviços que contenham as palavras recebidas no nome
+const busca = router.get('/busca/:busca', (req, res, next) => {
+    const frase = req.params.busca;
+    console.log("Reqisicao GET por serviços com \"" + frase + "\" no nome.");
+
+    // separando a busca recebida em palavras
+    const frase_array = frase.split(" ");
+
+    const words = [];
+    // descartando palavras com menos de 3 letras (o, a, e, de, se, ...etc)
+    frase_array.forEach(word =>{
+        if (word.length > 2){
+            words.push(word);
+        }
+    });
+
+    console.log(words);
+    
+    const ref = firebase.database().ref("/servico");
+
+    ref.on(
+        "value", function(snapshot){
+            // coleta todos os serviços
+            const data = [];
+            snapshot.forEach(function(childSnapshot){
+                data.push(childSnapshot.val())
+            });
+            
+            // filtrando somente os servicos com as palavras recebidas
+            const resultados = [];
+            // avaliando servico por serviço
+            data.forEach(servico => {
+                const nomes = [];
+                // separando o nome dos servicos em palavras
+                const name_words = servico["nome"].split(" ");
+                // descartando menos de 3 letras
+                name_words.forEach(word =>{
+                    if (word.length > 2){
+                        nomes.push(word);
+                    }
+                });
+
+                console.log("Servico: " + nomes);
+                // verificando se as palavras restantes sao pelo menos uma das recebidas
+                nomes.forEach(word =>{
+                    if(words.indexOf(word) >= 0){
+                        // verificando se o serviço ja nao foi adicionado com uma palavra anterior
+                        if (!resultados.includes(servico)){
+                            resultados.push(servico);
+                        }
+                    }
+                });
+            });
+
+        const json = {"servicos" : resultados};
+    
+        res.json(json);
+        ref.off("value")
+        });
+        },
+        function(errorObject){
+            console.log("Leitura falhou: " + errorObject.code);
+            res.send(errorObject.code);
+    }
+);
 
 app.use('/servico', read_all);
 app.use('/servico', create);
 app.use('/servico', show);
 app.use('/servico', read_categ)
 app.use('/servico', search_under_price);
+app.use('/servico', busca);
 
 module.exports = app;
