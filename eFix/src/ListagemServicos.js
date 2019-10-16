@@ -11,8 +11,28 @@ import api from './services/API';
 export default class ListagemServicos extends Component {
     state = {
         servicos: [],
-        errorMessage: null
+        errorMessage: null,
     };
+
+    constructor(props) {
+        super(props);
+
+        const valor = this.props.value;
+        switch(this.props.filter) {
+            case 'categoria':
+                this.getServiceByCategoria(valor);
+                console.log("Filtro por categoria " + valor);
+                break;
+            case 'preco':
+                this.getServiceByMargemDePreco();
+                console.log("Filtro por preco " + valor);
+                break;
+            default:
+                this.getServiceList();
+                console.log("Sem filtro");
+                break;
+        }
+    }
 
     getServiceList = async () => {
         try {
@@ -27,31 +47,26 @@ export default class ListagemServicos extends Component {
         }
     }
 
-    getServiceByCategoria = async () => {
+    getServiceByCategoria = async (categoria) => {
+        try {
+            const response = await api.getServicesByCategory(categoria);
+
+            console.log("Tela: " + response.data);
+
+            this.setState({servicos: response.data["servicos"]});
+        } catch (response) {
+            console.log("Erro: " + response.data);
+            this.setState({errorMessage: "Erro"});
+        }
     }
 
     getServiceByMargemDePreco = async () => {
     }
 
     render() {
-        const emptyList = <View>
+        const emptyList = <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
             <Text>Nenhum serviço recuperado.</Text>
         </View>
-
-        switch(this.props.filter) {
-            case 'categoria':
-                this.getServiceByCategoria();
-                console.log("Filtro por categoria " + this.props.value);
-                break;
-            case 'preco':
-                this.getServiceByMargemDePreco();
-                console.log("Filtro por preco " + this.props.value);
-                break;
-            default:
-                this.getServiceList();
-                console.log("Sem filtro");
-                break;
-        }
 
         return(
             <View style={styles.container}>
