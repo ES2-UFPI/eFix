@@ -24,7 +24,7 @@ export default class ListagemServicos extends Component {
                 console.log("Filtro por categoria " + valor);
                 break;
             case 'preco':
-                this.getServiceByMargemDePreco();
+                this.getServiceBypreco(valor);
                 console.log("Filtro por preco " + valor);
                 break;
             default:
@@ -59,8 +59,17 @@ export default class ListagemServicos extends Component {
             this.setState({errorMessage: "Erro"});
         }
     }
+    getServiceBypreco = async (preco) => {
+        try {
+            const response = await api.getServiceUnderPrice(preco);
 
-    getServiceByMargemDePreco = async () => {
+            console.log("Tela: " + response.data);
+
+            this.setState({servicos: response.data["servicos"]});
+        } catch (response) {
+            console.log("Erro: " + response.data);
+            this.setState({errorMessage: "Erro"});
+        }
     }
 
     render() {
