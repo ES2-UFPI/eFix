@@ -82,7 +82,7 @@ export default class TelaFiltro extends Component{
           <Button title="Buscar por Categoria" onPress={showList}/>
         </View>  
         <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text>
-        <Text>{this.state.categoria}</Text>
+    
          
       </View>
     
