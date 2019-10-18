@@ -10,6 +10,7 @@ import {
     SafeAreaView,
     Picker
 } from 'react-native';
+import ListagemServicos from './src/ListagemServicos.js';
 
 export default class TelaFiltro extends Component{
 
@@ -17,33 +18,74 @@ export default class TelaFiltro extends Component{
     super(props);
   
     this.state = {
-      inserir:'', 
+      preco:'', 
       categoria:'',
-      erro:''
+      erro:'',
+      servicos: [],
+      buttonpress: 0
     };
     
-  
+    this.pegaPreco = this.pegaPreco.bind(this);
   }
 
+  pegaPreco(p){
+    let state = this.state;
+    var t = p;
+    t.replace(',', '.');
+    var test = parseFloat(t);
+
+    if(isNaN(test) || p[0] == '.' || test < 0){
+      state.erro='Valor digitado em preço é inválido.';
+    }
+    else{
+    state.erro='';
+    state.preco = test;
+    state.precos = t;
+    }
+    this.setState(state);
+  }
   
   render(){
+
+    function showList(){
+      let state = this.state;
+      var x = state.categoria;
+        return <ListagemServicos filter='categoria' value= {x} />; 
+    } 
+
     return(
-    
       <View style={styles.container}>
         <Text style={styles.text}>Filtragem</Text>
         
-        <TextInput style={styles.input}  
-          placeholder="insira aqui o dado do serviço procurado..." 
-          underlineColorAndroid="transparent" 
-          onChangeText={(inserir) => this.setState({inserir})}/>
         <View style={styles.fixToText}>
-          <Button title="Buscar por Categoria" onPress={() => Alert.alert('Busca por categoira')}/>
-          <Button title="Buscar por Preço" onPress={() => Alert.alert('Busca por categoira')}/>
+          <TextInput style={styles.input}  
+            placeholder="Preço máximo..." 
+            underlineColorAndroid="transparent" 
+            onChangeText={this.pegaPreco}
+            keyboardType={'numeric'}/>
+
+          <Picker
+              selectedValue={this.state.categoria}
+              style={{height: 50, width: 180, backgroundColor:'gainsboro', marginLeft:10, borderRadius:12}}
+              itemStyle={{alignItems:'center', padding:10}}
+              onValueChange={(itemValue) => this.setState({categoria: itemValue})}>
+            <Picker.Item label="Seleciona categoria..." value="" />
+            <Picker.Item label="Jardineiro" value="Jardineiro" />
+            <Picker.Item label="Eletricista" value="Eletricista" />
+            <Picker.Item label="Diarista" value="Diarista" />
+            <Picker.Item label="Encanador" value="Encanador"/>
+          </Picker> 
+        </View>
+
+        <View style={styles.fixToText}>
+          <Button title="Buscar por Preço" onPress={(buttonpress) => this.setState({buttonpress: 1})}/>
+          <Button title="Buscar por Categoria" onPress={showList}/>
         </View>  
         <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text>
- 
+        <Text>{this.state.categoria}</Text>
+         
       </View>
-  
+    
      
     );
   }
@@ -57,10 +99,11 @@ const styles = StyleSheet.create({
   },
   input:{
     borderRadius:12,
-    height:45,
+    height:40,
     borderWidth:1,
     borderColor: 'gainsboro',
-    margin: 20,
+    width:120,
+    margin: 10,
     padding: 10
   },
 
