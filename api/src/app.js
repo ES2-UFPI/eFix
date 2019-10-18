@@ -175,8 +175,7 @@ const busca = router.get('/busca/:busca', (req, res, next) => {
     
     const ref = firebase.database().ref("/servico");
 
-    ref.on(
-        "value", function(snapshot){
+    ref.on("value", function(snapshot){
             // coleta todos os serviços
             const data = [];
             snapshot.forEach(function(childSnapshot){
@@ -196,7 +195,8 @@ const busca = router.get('/busca/:busca', (req, res, next) => {
                         nomes.push(word.toLowerCase());
                     }
                 });
-
+                
+                var counter = 0;
                 // verificando se as palavras restantes sao pelo menos uma das recebidas
                 nomes.forEach(word =>{
                     // verificando se a palavra esta no plural
@@ -206,23 +206,25 @@ const busca = router.get('/busca/:busca', (req, res, next) => {
                         word = word.slice(0, lastIndex);
                     }
                     if(words.indexOf(word) >= 0){
-                        // verificando se o serviço ja nao foi adicionado com uma palavra anterior
-                        if (!resultados.includes(servico)){
-                            resultados.push(servico);
-                        }
+                        counter = counter + 1;
                     }
                 });
+                // se a quantidade de palavras do nome do serviço for igual o numero de recebidas
+                // o serviço sera retornado. Não incluindo palavras descartadas
+                if (counter == words.length){
+                    resultados.push(servico);
+                }
             });
 
         const json = {"servicos" : resultados};
     
         res.json(json);
         ref.off("value")
-        });
-        },
-        function(errorObject){
-            console.log("Leitura falhou: " + errorObject.code);
-            res.send(errorObject.code);
+    });
+    },
+    function(errorObject){
+        console.log("Leitura falhou: " + errorObject.code);
+        res.send(errorObject.code);
     }
 );
 
