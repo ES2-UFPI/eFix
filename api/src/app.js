@@ -150,8 +150,11 @@ const search_under_price = router.get('/preco/:preco', (req, res, next) => {
 
 // recupera serviços que contenham as palavras recebidas no nome
 const busca = router.get('/busca/:busca', (req, res, next) => {
-    const frase = req.params.busca;
+    var frase = req.params.busca;
     console.log("Reqisicao GET por serviços com \"" + frase + "\" no nome.");
+
+    // to lower case
+    frase = frase.toLowerCase();
 
     // separando a busca recebida em palavras
     const frase_array = frase.split(" ");
@@ -160,6 +163,12 @@ const busca = router.get('/busca/:busca', (req, res, next) => {
     // descartando palavras com menos de 3 letras (o, a, e, de, se, ...etc)
     frase_array.forEach(word =>{
         if (word.length > 2){
+            // verificando se é plural
+            const lastSindex = word.lastIndexOf('s');
+            if(lastSindex == word.length-1){
+                // removendo o s
+                word = word.slice(0, lastSindex);
+            }
             words.push(word);
         }
     });
@@ -184,12 +193,18 @@ const busca = router.get('/busca/:busca', (req, res, next) => {
                 // descartando menos de 3 letras
                 name_words.forEach(word =>{
                     if (word.length > 2){
-                        nomes.push(word);
+                        nomes.push(word.toLowerCase());
                     }
                 });
 
                 // verificando se as palavras restantes sao pelo menos uma das recebidas
                 nomes.forEach(word =>{
+                    // verificando se a palavra esta no plural
+                    const lastIndex = word.lastIndexOf('s');
+                    if(lastIndex == word.length-1){
+                        // se o ultimo indice de S na palavra for o ultimo elemento, removendo o s
+                        word = word.slice(0, lastIndex);
+                    }
                     if(words.indexOf(word) >= 0){
                         // verificando se o serviço ja nao foi adicionado com uma palavra anterior
                         if (!resultados.includes(servico)){
