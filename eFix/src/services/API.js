@@ -9,7 +9,7 @@ api.getServices = async () => {
 }
 
 api.getServicesByCategory = async (category) => {
-    return await api.get('/servico/categ/' + category);
+    return await api.get('/servico/categ/' + encodeURI(category));
 }
 
 api.getServiceById = async (id) => {
@@ -21,7 +21,7 @@ api.getServiceUnderPrice = async (preco) => {
 }
 
 api.getServiceSearch = async (texto) => {
-    return await api.get('/servico/busca/' + texto);
+    return await api.get('/servico/busca/' + encodeURI(texto));
 }
 
 api.createService = async (service) => {
