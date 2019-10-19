@@ -10,7 +10,7 @@ import {
     SafeAreaView,
     Picker
 } from 'react-native';
-import ListagemServicos from './src/ListagemServicos.js';
+import ListagemServicos from './ListagemServicos.js';
 
 export default class TelaFiltro extends Component{
 
@@ -18,14 +18,15 @@ export default class TelaFiltro extends Component{
     super(props);
   
     this.state = {
-      preco:'', 
+      preco:0, 
       categoria:'',
       erro:'',
       servicos: [],
-      buttonpress: 0
     };
     
     this.pegaPreco = this.pegaPreco.bind(this);
+    this.showListP = this.showListP.bind(this);
+    this.showListC = this.showListC.bind(this);
   }
 
   pegaPreco(p){
@@ -40,18 +41,26 @@ export default class TelaFiltro extends Component{
     else{
     state.erro='';
     state.preco = test;
-    state.precos = t;
     }
     this.setState(state);
   }
-  
-  render(){
 
-    function showList(){
-      let state = this.state;
-      var x = state.categoria;
-        return <ListagemServicos filter='categoria' value= {x} />; 
-    } 
+  showListP(){ 
+    let state = this.state;
+    var x = state.preco;
+    this.setState({servicos: <ListagemServicos filter='preco' value={x} />});
+  } 
+
+  showListC(){ 
+    let state = this.state;
+    var x = state.categoria;
+    state.servicos = <ListagemServicos filter='categoria' value={x}/>;
+    console.log(this.state.servicos);
+    state.servicos2 = state.servicos; 
+    this.setState(state);
+  } 
+
+  render(){
 
     return(
       <View style={styles.container}>
@@ -78,12 +87,12 @@ export default class TelaFiltro extends Component{
         </View>
 
         <View style={styles.fixToText}>
-          <Button title="Buscar por Preço" onPress={(buttonpress) => this.setState({buttonpress: 1})}/>
-          <Button title="Buscar por Categoria" onPress={showList}/>
+          <Button title="Buscar por Preço" onPress={this.showListP}/>
+          <Button title="Buscar por Categoria" onPress={this.showListC}/>
         </View>  
-        <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text>
-    
-         
+        <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text> 
+        
+        {this.state.servicos}
       </View>
     
      
