@@ -20,6 +20,10 @@ api.getServiceUnderPrice = async (preco) => {
     return await api.get('/servico/preco/' + preco);
 }
 
+api.getServiceSearch = async (texto) => {
+    return await api.get('/servico/busca/' + texto);
+}
+
 api.createService = async (service) => {
     return await api.post('/servico', service);
 }
