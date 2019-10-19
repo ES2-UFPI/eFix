@@ -59,9 +59,23 @@ export default class ListagemServicos extends Component {
             this.setState({errorMessage: "Erro"});
         }
     }
+
     getServiceBypreco = async (preco) => {
         try {
             const response = await api.getServiceUnderPrice(preco);
+
+            console.log("Tela: " + response.data);
+
+            this.setState({servicos: response.data["servicos"]});
+        } catch (response) {
+            console.log("Erro: " + response.data);
+            this.setState({errorMessage: "Erro"});
+        }
+    }
+
+    getServiceBySearch = async (texto) => {
+        try {
+            const response = await api.getServiceSearch(texto);
 
             console.log("Tela: " + response.data);
 
