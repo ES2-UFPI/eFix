@@ -27,6 +27,10 @@ export default class ListagemServicos extends Component {
                 this.getServiceBypreco(valor);
                 console.log("Filtro por preco " + valor);
                 break;
+            case 'busca':
+                this.getServiceBySearch(valor);
+                console.log("Filtro de busca por " + valor);
+                break;
             default:
                 this.getServiceList();
                 console.log("Sem filtro");
