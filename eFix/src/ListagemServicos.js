@@ -97,6 +97,7 @@ export default class ListagemServicos extends Component {
 
         return(
             <View style={styles.container}>
+               
                 {console.log(this.state.servicos)}
 
                 <FlatList 
