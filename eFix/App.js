@@ -5,6 +5,8 @@ import {createStackNavigator} from 'react-navigation-stack';
 import Busca from './Busca';
 import TelaFiltro from './src/TelaFiltro'
 import ListagemServicos from './src/ListagemServicos';
+import { Text, View, Button, FlatList } from 'react-native';
+import BottomBar from './src/BottomBar';
 
 class HomeScreen extends Component{
   static navigationOptions = {
@@ -62,6 +64,7 @@ export default class HelloWorldApp extends Component {
   render() {
     return (
       <AppContainer/>
+      <BottomBar />
     );
   }
 }
