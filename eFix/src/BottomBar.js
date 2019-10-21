@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Lista from './ListagemServicos';
 import Home from './Home';
 import Cadastro from './Cadastro';
+import Busca from './Busca'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import {createAppContainer } from 'react-navigation';
+import Routes from './routes';
 
 const BottomTab =  createMaterialBottomTabNavigator(
   {
@@ -18,7 +19,7 @@ const BottomTab =  createMaterialBottomTabNavigator(
                 ),  
             }
     },
-    Busca: { screen: Lista,
+    Busca: { screen: Routes,
             navigationOptions:{
                 tabBarIcon: ({ tintColor }) => (  
                     <View>  

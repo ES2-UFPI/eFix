@@ -75,11 +75,11 @@ export default class TelaFiltro extends Component{
 
           <Picker
               selectedValue={this.state.categoria}
-              style={{height: 50, width: 180, backgroundColor:'gainsboro', marginLeft:10, borderRadius:12}}
+              style={{height: 30, width: 180, backgroundColor:'gainsboro', marginLeft:10, borderRadius:12, marginTop: 16}}
               itemStyle={{alignItems:'center', padding:10}}
               onValueChange={(itemValue) => this.setState({categoria: itemValue})}>
             <Picker.Item label="Seleciona categoria..." value="" />
-            <Picker.Item label="Jardineiro" value="Jardineiro" />
+            <Picker.Item label="Jardinagem" value="Jardinagem" />
             <Picker.Item label="Eletricista" value="Eletricista" />
             <Picker.Item label="Diarista" value="Diarista" />
             <Picker.Item label="Encanador" value="Encanador"/>
@@ -87,8 +87,8 @@ export default class TelaFiltro extends Component{
         </View>
 
         <View style={styles.fixToText}>
-          <Button title="Buscar por Preço" onPress={this.showListP}/>
-          <Button title="Buscar por Categoria" onPress={this.showListC}/>
+          <Button title="Por Preço" onPress={this.showListP}/>
+          <Button title="por Categoria" onPress={this.showListC}/>
         </View>  
         <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text> 
         
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 
   fixToText: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-around'
   },
   
   text:{

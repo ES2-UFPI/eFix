@@ -53,10 +53,12 @@ export default class Cadastro extends Component{
     let state = this.state;
     if(state.categoria == '' || state.categoria == "Seleciona categoria..." || state.erro != '' || state.nome == '' || state.preco == '' || state.descricao == '' || state.preco == 0 || isNaN(state.preco)){
       state.erroEnv= "Não foi possível cadastrar este serviço, talvez algum campo não tenha sido escrito ou existe um campo inserido de maneira errônea."
+      Alert.alert("Erro!");
     }else{  
       var env = "{\"categoria\": \"" +  state.categoria +"\", \"descricao\": \"" + state.descricao +"\", \"id_prestador\": \""+ state.idprestador + "\", \"id_servico\": \""+ state.idservico + "\", \"nome\": \""+ state.nome + "\", \"preco\" : \" "+ state.precos + "\"}";
       state.erroEnv = '';
       api.createService(env);
+      Alert.alert("Cadastrado!");
     }
     this.setState(state);
   }
@@ -79,7 +81,7 @@ export default class Cadastro extends Component{
             itemStyle={{alignItems:'center', padding:10}}
             onValueChange={(itemValue) => this.setState({categoria: itemValue})}>
           <Picker.Item label="Seleciona categoria..." value="" />
-          <Picker.Item label="Jardineiro" value="Jardineiro" />
+          <Picker.Item label="Jardinagem" value="Jardinagem" />
           <Picker.Item label="Eletricista" value="Eletricista" />
           <Picker.Item label="Diarista" value="Diarista" />
           <Picker.Item label="Encanador" value="Encanador" />

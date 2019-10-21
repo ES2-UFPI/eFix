@@ -11,9 +11,8 @@ import {
     Picker
   } from 'react-native';
   import React, { Component } from 'react';
-  import TelaFiltro from './src/TelaFiltro'
-  import AppNavigator from './App';
-  import ListagemServicos from './src/ListagemServicos';
+  import ListagemServicos from './ListagemServicos';
+
 export default class Busca extends React.Component {
   constructor(props){
     super(props);
@@ -40,29 +39,23 @@ export default class Busca extends React.Component {
     this.setState({servicos: <ListagemServicos filter='busca' value={x} />});
   } 
 render() {
-
-
+    
     return (
-
-
         <View style={ styles.container }>
-  
-          <ListagemServicos/>             
-<TextInput style={styles.input}  
-           
-           
-           
-           placeholder="digite um nome ou servico..." 
-            underlineColorAndroid="transparent" 
-            onChangeText={this.pegaPesquisa}
-            //keyboardType={'text'}
-            />
-            
+          <ListagemServicos/>
+          <View style={styles.input_view}>
+            <TextInput style={styles.input}  
+              placeholder="digite um nome ou servico..." 
+              underlineColorAndroid="transparent" 
+              onChangeText={this.pegaPesquisa}
+              />
+          </View>            
+          
+          <View style={styles.button_view}>
               <Button title="Buscar" onPress={this.showListS}/>      
-                   
-                    <Button 
-                        title='Filtrar Resultados' 
-                        onPress={ () => {this.props.navigation.navigate('filterscreen')} } />
+             
+              <Button title='Filtrar' onPress={ () => {this.props.navigation.navigate('filterscreen')} } />
+          </View>
           
         {this.state.servicos}     
         </View>
@@ -76,5 +69,22 @@ const styles = StyleSheet.create({
      // justifyContent: 'center',
      // alignItems: 'center',
       backgroundColor: '#F5FCFF',
+    },
+    button_view:{
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      marginBottom: 8
+    },
+    input_view:{
+      justifyContent: 'center',
+      padding: 10
+    },
+    input:{
+      borderRadius:12,
+      height:40,
+      borderWidth:1,
+      borderColor: 'gainsboro',
+      width:350,
+      padding: 10
     },
   });
