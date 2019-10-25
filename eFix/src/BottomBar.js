@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Home from './Home';
-import Cadastro from './Cadastro';
+import CadastroServico from './CadastroServico';
 import Busca from './Busca'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import {createAppContainer } from 'react-navigation';
@@ -28,7 +28,7 @@ const BottomTab =  createMaterialBottomTabNavigator(
                 ),  
             }
     },
-    Novo: { screen: Cadastro,
+    Novo: { screen: CadastroServico,
             navigationOptions:{
                 tabBarIcon: ({ tintColor }) => (  
                     <View>  
