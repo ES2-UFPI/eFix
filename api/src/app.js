@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extend: false}));
 const router = express.Router();
 
 // Cria servico
-const create = router.post('/', (req, res, next) => {
+const create_service = router.post('/', (req, res, next) => {
     console.log("Requisicao de POST de Servico recebida.");
 
     const id_prestador = req.body.id_prestador;
@@ -37,7 +37,7 @@ const create = router.post('/', (req, res, next) => {
 });
 
 // recupera servicos
-const read_all = router.get('/', (req, res, next) => {
+const read_services = router.get('/', (req, res, next) => {
     console.log("Reqisicao GET all recebida.");
     const ref = firebase.database().ref("/servico/");
 
@@ -61,7 +61,7 @@ const read_all = router.get('/', (req, res, next) => {
 });
 
 // recupera um servico em especifico
-const show = router.get('/id/:id', (req, res, next) => {
+const read_service = router.get('/id/:id', (req, res, next) => {
     const id = req.params.id;
     console.log("Reqisicao GET pelo serviço " + id);
 
@@ -87,7 +87,7 @@ const show = router.get('/id/:id', (req, res, next) => {
 })
 
 // recupera todos os servicos de uma categoria
-const read_categ = router.get('/categ/:categ', (req, res, next) => {
+const read_services_by_category = router.get('/categ/:categ', (req, res, next) => {
     const categ = req.params.categ;
     console.log("Reqisicao Pedido pela categoria " + categ);
 
@@ -112,8 +112,8 @@ const read_categ = router.get('/categ/:categ', (req, res, next) => {
     );    
 })
 
-// recupera um servico em especifico
-const search_under_price = router.get('/preco/:preco', (req, res, next) => {
+// recupera serviços com preço abaixo do recebido
+const read_services_under_price = router.get('/preco/:preco', (req, res, next) => {
     const preco = req.params.preco;
     console.log("Reqisicao GET por serviços com preço abaixo de " + preco);
 
@@ -149,7 +149,7 @@ const search_under_price = router.get('/preco/:preco', (req, res, next) => {
 })
 
 // recupera serviços que contenham as palavras recebidas no nome
-const busca = router.get('/busca/:busca', (req, res, next) => {
+const search_services = router.get('/busca/:busca', (req, res, next) => {
     var frase = req.params.busca;
     console.log("Reqisicao GET por serviços com \"" + frase + "\" no nome.");
 
@@ -228,11 +228,11 @@ const busca = router.get('/busca/:busca', (req, res, next) => {
     }
 );
 
-app.use('/servico', read_all);
-app.use('/servico', create);
-app.use('/servico', show);
-app.use('/servico', read_categ)
-app.use('/servico', search_under_price);
-app.use('/servico', busca);
+app.use('/servico', create_service);
+app.use('/servico', read_services);
+app.use('/servico', read_service);
+app.use('/servico', read_services_by_category)
+app.use('/servico', read_services_under_price);
+app.use('/servico', search_services);
 
 module.exports = app;
