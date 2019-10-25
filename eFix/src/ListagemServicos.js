@@ -66,7 +66,7 @@ export default class ListagemServicos extends Component {
 
     getServiceBypreco = async (preco) => {
         try {
-            const response = await api.getServiceUnderPrice(preco);
+            const response = await api.getServicesUnderPrice(preco);
 
             console.log("Tela: " + response.data);
 
@@ -79,7 +79,7 @@ export default class ListagemServicos extends Component {
 
     getServiceBySearch = async (texto) => {
         try {
-            const response = await api.getServiceSearch(texto);
+            const response = await api.getServicesSearch(texto);
 
             console.log("Tela: " + response.data);
 
