@@ -6,7 +6,7 @@ import CadastroServico from './CadastroServico';
 import BuscaServicos from './BuscaServicos'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import {createAppContainer } from 'react-navigation';
-import Routes from './routes';
+import Routes from '../routes';
 
 const BottomTab =  createMaterialBottomTabNavigator(
   {

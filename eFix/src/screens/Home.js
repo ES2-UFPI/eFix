@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {View, Text, FlatList, StyleSheet } from 'react-native';
 import ItemServico from './ItemServico.js';
-import api from './services/API';
-import SimpleButton from './components/SimpleButton';
+import api from '../services/API';
+import SimpleButton from '../components/SimpleButton';
 
 export default class Home extends Component {
     state = {

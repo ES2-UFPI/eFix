@@ -6,7 +6,7 @@ import {
     FlatList
 } from 'react-native';
 import ItemServico from './ItemServico.js';
-import api from './services/API';
+import api from '../services/API';
 
 export default class ListagemServicos extends Component {
     state = {

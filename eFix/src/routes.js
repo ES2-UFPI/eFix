@@ -1,8 +1,8 @@
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import TelaFiltroServicos from './TelaFiltroServicos';
-import ListagemServicos from './ListagemServicos';
-import BuscaServicos from './BuscaServicos';
+import TelaFiltroServicos from './screens/TelaFiltroServicos';
+import ListagemServicos from './screens/ListagemServicos';
+import BuscaServicos from './screens/BuscaServicos';
 
 const AppNavigator = createStackNavigator(
 	{
