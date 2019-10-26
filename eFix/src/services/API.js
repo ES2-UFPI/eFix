@@ -27,4 +27,29 @@ api.getServicesSearch = async (texto) => {
 api.createService = async (service) => {
     return await api.post('/servico', service);
 }
+
+/// CATEGORIA
+
+// deve ser enviado um json no formato abaixo. Tanto para criar, deletar, ou atualizar
+/*
+    {
+        "id": "c00x", (sendo x o numero)
+        "nome": "nome"
+    }
+*/
+api.createCategory = async (categoria) => {
+    return await api.post('/categoria/new', categoria);
+}
+
+api.getCategories = async () => {
+    return await api.get('/categoria/list');
+}
+
+api.updateCategoryName = async (categoria) => {
+    return await api.put('/categoria/att', encodeURI(categoria));
+}
+
+api.deleteCategory = async (categoria) => {
+    return await api.delete('/categoria/del', encodeURI(categoria));
+}
 export default api;
