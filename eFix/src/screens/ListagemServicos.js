@@ -6,7 +6,7 @@ import {
     FlatList
 } from 'react-native';
 import ItemServico from './ItemServico.js';
-import api from './services/API';
+import api from '../services/API';
 
 export default class ListagemServicos extends Component {
     state = {
@@ -20,25 +20,25 @@ export default class ListagemServicos extends Component {
         const valor = this.props.value;
         switch(this.props.filter) {
             case 'categoria':
-                this.getServiceByCategoria(valor);
+                this.getServicesByCategoria(valor);
                 console.log("Filtro por categoria " + valor);
                 break;
             case 'preco':
-                this.getServiceBypreco(valor);
+                this.getServicesByPreco(valor);
                 console.log("Filtro por preco " + valor);
                 break;
             case 'busca':
-                this.getServiceBySearch(valor);
+                this.getServicesBySearch(valor);
                 console.log("Filtro de busca por " + valor);
                 break;
             default:
-                this.getServiceList();
+                this.getServicesList();
                 console.log("Sem filtro");
                 break;
         }
     }
 
-    getServiceList = async () => {
+    getServicesList = async () => {
         try {
             const response = await api.getServices();
 
@@ -51,7 +51,7 @@ export default class ListagemServicos extends Component {
         }
     }
 
-    getServiceByCategoria = async (categoria) => {
+    getServicesByCategoria = async (categoria) => {
         try {
             const response = await api.getServicesByCategory(categoria);
 
@@ -64,9 +64,9 @@ export default class ListagemServicos extends Component {
         }
     }
 
-    getServiceBypreco = async (preco) => {
+    getServicesByPreco = async (preco) => {
         try {
-            const response = await api.getServiceUnderPrice(preco);
+            const response = await api.getServicesUnderPrice(preco);
 
             console.log("Tela: " + response.data);
 
@@ -77,9 +77,9 @@ export default class ListagemServicos extends Component {
         }
     }
 
-    getServiceBySearch = async (texto) => {
+    getServicesBySearch = async (texto) => {
         try {
-            const response = await api.getServiceSearch(texto);
+            const response = await api.getServicesSearch(texto);
 
             console.log("Tela: " + response.data);
 

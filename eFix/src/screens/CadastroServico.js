@@ -10,9 +10,9 @@ import {
     SafeAreaView,
     Picker
 } from 'react-native';
-import api from './services/API';
+import api from '../services/API';
 
-export default class Cadastro extends Component{
+export default class CadastroServico extends Component{
 
   constructor(props){
     super(props);

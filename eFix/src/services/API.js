@@ -16,11 +16,11 @@ api.getServiceById = async (id) => {
     return await api.get('/servico/id/' + id);
 }
 
-api.getServiceUnderPrice = async (preco) => {
+api.getServicesUnderPrice = async (preco) => {
     return await api.get('/servico/preco/' + preco);
 }
 
-api.getServiceSearch = async (texto) => {
+api.getServicesSearch = async (texto) => {
     return await api.get('/servico/busca/' + encodeURI(texto));
 }
 
