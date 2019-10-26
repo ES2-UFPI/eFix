@@ -14,6 +14,10 @@ export default class ListagemServicos extends Component {
         errorMessage: null,
     };
 
+    listagemServicosSubmitHandler = () => {
+        console.log("Submitted");
+    }
+
     constructor(props) {
         super(props);
 
