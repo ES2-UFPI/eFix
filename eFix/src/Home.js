@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {View, Text, FlatList, StyleSheet } from 'react-native';
 import ItemServico from './ItemServico.js';
 import api from './services/API';
+import SimpleButton from './components/SimpleButton';
 
 export default class Home extends Component {
     state = {
@@ -54,6 +55,7 @@ export default class Home extends Component {
                             keyExtractor={(item, id_servico) => item.nome + id_servico}
                         />
                     </View>
+                    <SimpleButton title="Ir para serviço"/>
                 </View>
             </View>
         );   
