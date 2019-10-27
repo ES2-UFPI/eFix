@@ -49,9 +49,13 @@ class TelaFiltro extends Component{
   }
 
   showListP(){ 
+    this.props.listagemServicos(<ListagemServicos filter='preco' value={this.state.preco} />);
+    console.log(this.props.servicos);
+    /*
     let state = this.state;
     var x = state.preco;
     this.setState({servicos: <ListagemServicos filter='preco' value={x} />});
+    */
   } 
 
   showListC(){
