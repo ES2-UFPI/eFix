@@ -11,11 +11,8 @@ import {
     Picker
 } from 'react-native';
 import ListagemServicos from './ListagemServicos.js';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { listagemServicos } from '../redux/actions/listagemServicos';
 
-class TelaFiltro extends Component{
+export default class TelaFiltro extends Component{
 
   constructor(props){
     super(props);
@@ -49,26 +46,18 @@ class TelaFiltro extends Component{
   }
 
   showListP(){ 
-    this.props.listagemServicos(<ListagemServicos filter='preco' value={this.state.preco} />);
-    console.log(this.props.servicos);
-    /*
     let state = this.state;
     var x = state.preco;
     this.setState({servicos: <ListagemServicos filter='preco' value={x} />});
-    */
   } 
 
-  showListC(){
-    this.props.listagemServicos(<ListagemServicos filter='categoria' value={this.state.categoria}/>);
-    console.log(this.props.servicos)
-    /*
+  showListC(){ 
     let state = this.state;
     var x = state.categoria;
     state.servicos = <ListagemServicos filter='categoria' value={x}/>;
     console.log(this.state.servicos);
-    state.servicos2 = state.servicos;
+    state.servicos2 = state.servicos; 
     this.setState(state);
-    */
   } 
 
   render(){
@@ -103,7 +92,7 @@ class TelaFiltro extends Component{
         </View>  
         <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text> 
         
-        {this.props.servicos}
+        {this.state.servicos}
       </View>
     
      
@@ -151,17 +140,3 @@ const styles = StyleSheet.create({
     marginBottom: 40
   }
 });
-
-const mapStateToProps = state => {
-  return {
-    servicos: state.servicos.servicos
-  }
-}
-
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    listagemServicos
-  }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(TelaFiltro)
