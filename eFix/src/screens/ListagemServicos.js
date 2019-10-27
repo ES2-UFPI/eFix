@@ -9,27 +9,51 @@ import ItemServico from './ItemServico.js';
 import api from '../services/API';
 
 export default class ListagemServicos extends Component {
+    
     state = {
         servicos: [],
         errorMessage: null,
+        filter: null,
+        value: null
     };
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
+        this.updateServicesList(this.props.filter, this.props.value);
+    }
 
-        const valor = this.props.value;
-        switch(this.props.filter) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.filter !== prevState.filter || nextProps.value !== prevState.value) {
+            return {
+                filter: nextProps.filter,
+                value: nextProps.value
+            }
+        } else {
+            return null;
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.filter !== this.props.filter || prevProps.value !== this.props.value) {
+            console.log("Atualizar lista");
+            this.updateServicesList(this.props.filter, this.props.value);
+        }
+    }
+
+    updateServicesList(filter, value) {
+        this.setState({ filter: filter, value: value });
+
+        switch(filter) {
             case 'categoria':
-                this.getServicesByCategoria(valor);
-                console.log("Filtro por categoria " + valor);
+                this.getServicesByCategoria(value);
+                console.log("Filtro por categoria " + value);
                 break;
             case 'preco':
-                this.getServicesByPreco(valor);
-                console.log("Filtro por preco " + valor);
+                this.getServicesByPreco(value);
+                console.log("Filtro por preco " + value);
                 break;
             case 'busca':
-                this.getServicesBySearch(valor);
-                console.log("Filtro de busca por " + valor);
+                this.getServicesBySearch(value);
+                console.log("Filtro de busca por " + value);
                 break;
             default:
                 this.getServicesList();
@@ -103,6 +127,7 @@ export default class ListagemServicos extends Component {
                 <FlatList 
                     data={this.state.servicos}
                     ListEmptyComponent={emptyList}
+                    extraData={this.state.servicos}
                     renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
