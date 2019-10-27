@@ -2,7 +2,7 @@ import { createStore, combineReducers } from 'redux';
 import listagemServicosReducer from './reducers/listagemServicosReducer';
 
 const rootReducer = combineReducers({
-    listagemServicos: listagemServicosReducer
+    servicos: listagemServicosReducer
 });
 
 const configureStore = () => {

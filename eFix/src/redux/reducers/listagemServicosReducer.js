@@ -1,8 +1,7 @@
-import LISTAGEM_SERVICOS from '../actions/types';
+import { LISTAGEM_SERVICOS } from '../actions/types';
 
 const initialState = {
-    servicos: [],
-    errorMessage: null
+    servicos: []
 };
 
 const listagemServicosReducer = (state = initialState, action) => {

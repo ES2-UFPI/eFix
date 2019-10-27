@@ -14,10 +14,6 @@ export default class ListagemServicos extends Component {
         errorMessage: null,
     };
 
-    listagemServicosSubmitHandler = () => {
-        console.log("Submitted");
-    }
-
     constructor(props) {
         super(props);
 
@@ -107,6 +103,7 @@ export default class ListagemServicos extends Component {
                 <FlatList 
                     data={this.state.servicos}
                     ListEmptyComponent={emptyList}
+                    extraData={this.state.servicos}
                     renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
