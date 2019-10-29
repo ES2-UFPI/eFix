@@ -18,10 +18,11 @@ export default class CadastroServico extends Component{
     super(props);
   
     this.state = {
-      idprestador:'mathe2us1',
-      idservico:'s2wf123c5dacu',
+      idprestador:'ahe2u675',
+      idservico:'s2wf15dacu',
       nome:'' ,
       categoria:'',
+      categorias: [],
       preco: 0 ,
       precos:'',
       descricao:'',
@@ -30,6 +31,8 @@ export default class CadastroServico extends Component{
     };
     this.enviar = this.enviar.bind(this);
     this.pegaPreco = this.pegaPreco.bind(this);
+    this.getCategorias = this.getCategorias.bind(this);
+    this.getCategorias();
   }
 
   pegaPreco(p){
@@ -63,7 +66,24 @@ export default class CadastroServico extends Component{
     this.setState(state);
   }
 
+  getCategorias = async () => {
+    let state = this.state;
+
+    try{
+    const response = await api.getCategories();
+    state.categorias = response.data["categorias"];
+    //console.log("Ola " + response.data["categorias"]);
+    this.setState({categorias: response.data["categorias"]});
+  }catch(response){
+    this.setState({categorias: response.data["categorias"]});}
+  }
+
   render(){
+
+    let CategoriaItem = this.state.categorias.map((v, k) => {
+      return <Picker.Item key={v} value={v.nome} label={v.nome} />
+    });
+
     return(
     
       <View style={styles.container}>
@@ -79,12 +99,9 @@ export default class CadastroServico extends Component{
             selectedValue={this.state.categoria}
             style={{height: 40, width: 180, backgroundColor:'gainsboro', marginLeft:25, justifyContent:'flex-start', borderRadius:12}}
             itemStyle={{alignItems:'center', padding:10}}
-            onValueChange={(itemValue) => this.setState({categoria: itemValue})}>
-          <Picker.Item label="Seleciona categoria..." value="" />
-          <Picker.Item label="Jardinagem" value="Jardinagem" />
-          <Picker.Item label="Eletricista" value="Eletricista" />
-          <Picker.Item label="Diarista" value="Diarista" />
-          <Picker.Item label="Encanador" value="Encanador" />
+            onValueChange={(itemValue, itemIndex) => this.setState({categoria: itemValue})}>
+            <Picker.Item label="Seleciona categoria..." value="" />
+            {CategoriaItem}
           </Picker>  
         
           <TextInput style={{justifyContent:'flex-end', borderRadius:12, borderWidth:1, borderColor:'gainsboro',marginLeft:18, padding:7, width:100}}  
