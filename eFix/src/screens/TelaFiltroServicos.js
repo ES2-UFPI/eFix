@@ -11,6 +11,7 @@ import {
     Picker
 } from 'react-native';
 import ListagemServicos from './ListagemServicos.js';
+import api from '../services/API';
 
 export default class TelaFiltro extends Component{
 
@@ -18,15 +19,20 @@ export default class TelaFiltro extends Component{
     super(props);
   
     this.state = {
+      categorias: [],
       preco:0, 
       categoria:'',
       erro:'',
       servicos: [],
     };
-    
+
     this.pegaPreco = this.pegaPreco.bind(this);
     this.showListP = this.showListP.bind(this);
     this.showListC = this.showListC.bind(this);
+    this.getCategorias = this.getCategorias.bind(this);
+    this.getCategorias();
+
+
   }
 
   pegaPreco(p){
@@ -51,6 +57,18 @@ export default class TelaFiltro extends Component{
     this.setState({servicos: <ListagemServicos filter='preco' value={x} />});
   } 
 
+  getCategorias = async () => {
+    let state = this.state;
+
+    try{
+    const response = await api.getCategories();
+    state.categorias = response.data["categorias"];
+    //console.log("Ola " + response.data["categorias"]);
+    this.setState({categorias: response.data["categorias"]});
+  }catch(response){
+    this.setState({categorias: response.data["categorias"]});}
+  }
+
   showListC(){ 
     let state = this.state;
     var x = state.categoria;
@@ -61,6 +79,11 @@ export default class TelaFiltro extends Component{
   } 
 
   render(){
+
+    let CategoriaItem = this.state.categorias.map((v, k) => {
+        return <Picker.Item key={v} value={v.nome} label={v.nome} />
+      }
+    );
 
     return(
       <View style={styles.container}>
@@ -77,12 +100,9 @@ export default class TelaFiltro extends Component{
               selectedValue={this.state.categoria}
               style={{height: 30, width: 180, backgroundColor:'gainsboro', marginLeft:10, borderRadius:12, marginTop: 16}}
               itemStyle={{alignItems:'center', padding:10}}
-              onValueChange={(itemValue) => this.setState({categoria: itemValue})}>
+              onValueChange={(itemValue, itemIndex) => this.setState({categoria: itemValue})}>
             <Picker.Item label="Seleciona categoria..." value="" />
-            <Picker.Item label="Jardinagem" value="Jardinagem" />
-            <Picker.Item label="Eletricista" value="Eletricista" />
-            <Picker.Item label="Diarista" value="Diarista" />
-            <Picker.Item label="Encanador" value="Encanador"/>
+            {CategoriaItem}
           </Picker> 
         </View>
 
@@ -91,7 +111,6 @@ export default class TelaFiltro extends Component{
           <Button title="por Categoria" onPress={this.showListC}/>
         </View>  
         <Text style={{color:'red', textAlign:'center', marginTop: 10}}>{this.state.erro}</Text> 
-        
         {this.state.servicos}
       </View>
     
