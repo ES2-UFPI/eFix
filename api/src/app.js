@@ -4,6 +4,7 @@ const util = require('../util.js');
 const express = require('express');
 const firebase = require('firebase');
 const bodyParser = require('body-parser');
+const crypto = require('crypto');
 
 firebase.initializeApp(util);
 
@@ -18,7 +19,7 @@ const create_service = router.post('/', (req, res, next) => {
     console.log("Requisicao de POST de Servico recebida.");
 
     const id_prestador = req.body.id_prestador;
-    const id_servico = req.body.id_servico;
+    const id_servico = crypto.randomBytes(32).toString('hex');
     const categoria = req.body.categoria;
     const nome = req.body.nome;
     const preco = req.body.preco;
