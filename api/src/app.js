@@ -32,7 +32,7 @@ const create_service = router.post('/', (req, res, next) => {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
-            res.send("Dados salvos com sucesso " + 200);
+            res.send("Dados salvos com sucesso " + 201);
         }
     });
 });
@@ -229,12 +229,54 @@ const search_services = router.get('/busca/:busca', (req, res, next) => {
     }
 );
 
+// atualiza os dados de um serviço com o ID fornecido com os novos vindos no json
+const update_service = router.put('/', (req, res, next) => {
+    const id_prestador = req.body.id_prestador;
+    const id_servico = req.body.id_servico;
+    const categoria = req.body.categoria;
+    const nome = req.body.nome;
+    const preco = req.body.preco;
+    const descricao = req.body.descricao;
+    
+    console.log("UPDATE " + id_servico + " recebida");
+
+    const refPath = "servico/" + id_servico;
+    const ref = firebase.database().ref(refPath)
+
+    ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
+        if (error) {
+            res.send("Dados não poderam ser atualizados " + error);
+        } else {
+            res.send("Dados atualizados com sucesso " + 200);
+        }
+    });
+});
+
+const delete_service = router.delete('/', (req, res, next) => {
+    const id_servico = req.body.id_servico;
+
+    console.log("DELETE " + id_servico + " recebida");
+
+    const refPath = "servico/" + id_servico + "/";
+    const ref = firebase.database().ref(refPath);
+
+    ref.remove(function(error) {
+        if(error){
+            res.send("Falha ao deletar " + error);
+        } else {
+            res.send("Deletado com sucesso " + 200);
+        }
+    });
+});
+
 app.use('/servico', create_service);
 app.use('/servico', read_services);
 app.use('/servico', read_service);
 app.use('/servico', read_services_by_category)
 app.use('/servico', read_services_under_price);
 app.use('/servico', search_services);
+app.use('/servico', update_service);
+app.use('/servico', delete_service);
 
 ////////// CATEGORIA ///////////
 // recupera categorias
@@ -274,7 +316,7 @@ const create_category = router.post('/new', (req, res, next) => {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
-            res.send("Dados salvos com sucesso " + 200);
+            res.send("Dados salvos com sucesso " + 201);
         }
     });
 });
@@ -300,7 +342,7 @@ const delete_category = router.delete('/del', (req, res, next) => {
     const id = req.body.id;
     const refPath = "/categoria/" + id + "/";
 
-    console.log("DLETE request " + id + " received.")
+    console.log("DLETE request " + id + " received.");
     
     const ref = firebase.database().ref(refPath);
 
@@ -310,8 +352,8 @@ const delete_category = router.delete('/del', (req, res, next) => {
         } else {
             res.send("Deletado com sucesso " + 200);
         }
-    })
-})
+    });
+});
 
 app.use('/categoria', read_category);
 app.use('/categoria', create_category);
