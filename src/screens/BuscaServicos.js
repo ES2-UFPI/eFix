@@ -8,7 +8,7 @@ import {
     TextInput,
     Alert,
     SafeAreaView,
-    Picker
+    Picker,
   } from 'react-native';
   import React, { Component } from 'react';
   import ListagemServicos from './ListagemServicos';
@@ -104,7 +104,7 @@ export default class Busca extends React.Component {
         <View style={ styles.container }>
           
           <View style={styles.input_view}>
-            <SimpleTextInput placeholder="digite um nome ou servico..." 
+            <SimpleTextInput placeholder="Digite o nome de um serviço..." 
               underlineColorAndroid="transparent" 
               onChangeText={this.pegaPesquisa}
               />
@@ -132,7 +132,6 @@ export default class Busca extends React.Component {
           
         {this.state.servicos}     
         </View>
-
     );
 }
 }
