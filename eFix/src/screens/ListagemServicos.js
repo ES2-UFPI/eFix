@@ -125,7 +125,7 @@ export default class ListagemServicos extends Component {
                 {console.log(this.state.servicos)}
 
                 <FlatList 
-                    data={this.state.servicos}
+                    data={this.state.servicos.sort((a, b) => a.nome.toUpperCase() > b.nome.toUpperCase())}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.servicos}
                     renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
