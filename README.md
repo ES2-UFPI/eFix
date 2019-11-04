@@ -1,4 +1,4 @@
-# eFix
+# eFix [![Build Status](https://travis-ci.com/ES2-UFPI/eFix.svg?branch=dev)](https://travis-ci.com/ES2-UFPI/eFix)
 Plataforma para contratação de serviços domésticos
 
 <h1>Changelog</h1>
