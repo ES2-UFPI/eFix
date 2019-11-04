@@ -28,6 +28,14 @@ api.createService = async (service) => {
     return await api.post('/servico', service);
 }
 
+api.updateService = async (service) => {
+    return await api.put('/servico', service);
+}
+
+api.deleteService = async (service) => {
+    return await api.delete('/servico', service);
+}
+
 /// CATEGORIA
 
 // deve ser enviado um json no formato abaixo. Tanto para criar, deletar, ou atualizar
