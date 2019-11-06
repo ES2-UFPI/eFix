@@ -3,7 +3,8 @@ import {
     Text, 
     View,
     StyleSheet,
-    FlatList
+    FlatList,
+    Button
 } from 'react-native';
 import ItemServico from './ItemServico.js';
 import api from '../services/API';
@@ -16,20 +17,22 @@ export default class ListagemServicos extends Component {
         filter: null,
         value: null,
         value2: null, 
-        value3: null
+        value3: null,
+        ord: null
     };
 
     componentDidMount() {
-        this.updateServicesList(this.props.filter, this.props.value, this.props.value2, this.props.value3);
+        this.updateServicesList(this.props.filter, this.props.value, this.props.value2, this.props.value3, this.props.ord);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.filter !== prevState.filter || nextProps.value !== prevState.value || nextProps.value2 !== prevState.value2 || nextProps.value3 !== prevState.value3) {
+        if (nextProps.filter !== prevState.filter || nextProps.value !== prevState.value || nextProps.value2 !== prevState.value2 || nextProps.value3 !== prevState.value3 || nextProps.ord !== prevState.ord) {
             return {
                 filter: nextProps.filter,
                 value: nextProps.value,
                 value2: nextProps.value2,
-                value3: nextProps.value3
+                value3: nextProps.value3,
+                ord: nextProps.ord
             }
         } else {
             return null;
@@ -37,14 +40,14 @@ export default class ListagemServicos extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.filter !== this.props.filter || prevProps.value !== this.props.value || prevProps.value2 !== this.props.value2 || prevProps.value3 !== this.props.value3) {
+        if (prevProps.filter !== this.props.filter || prevProps.value !== this.props.value || prevProps.value2 !== this.props.value2 || prevProps.value3 !== this.props.value3 || prevProps.ord !== this.props.ord) {
             console.log("Atualizar lista");
-            this.updateServicesList(this.props.filter, this.props.value, this.props.value2, this.props.value3);
+            this.updateServicesList(this.props.filter, this.props.value, this.props.value2, this.props.value3, this.props.ord);
         }
     }
 
-    updateServicesList(filter, value, value2, value3) {
-        this.setState({ filter: filter, value: value , value2: value2, value3: value3});
+    updateServicesList(filter, value, value2, value3, ord) {
+        this.setState({ filter: filter, value: value , value2: value2, value3: value3, ord: ord});
 
         switch(filter) {
             case 'categoria':
@@ -198,9 +201,31 @@ export default class ListagemServicos extends Component {
             this.setState({errorMessage: "Erro"});
         }
     }
+
+    orderByPrecoC = () =>{
+        var order = this.state.servicos.sort((a, b) => parseFloat(a.preco) > parseFloat(b.preco));
+        console.log("Ola tudo bem" + order[0].nome);
+        this.setState({servicos: order, ord: 1});
+    }
+
+    orderByPrecoD = () =>{
+        var order = this.state.servicos.sort((a, b) => parseFloat(a.preco) < parseFloat(b.preco));
+        console.log("Ola tudo bem" + order[0].nome);
+        this.setState({servicos: order, ord: 2});
+        console.log("Ola NADA BEM ... " + this.state.servicos[0].nome);
+    }
+
+    orderByAlfa = () =>{
+        var order = this.state.servicos.sort((a, b) => a.nome.toUpperCase() > b.nome.toUpperCase());
+        console.log("Ola tudo bem" + order[0].nome);
+        this.setState({servicos: order, ord: 2});
+        console.log("Ola NADA BEM ... " + this.state.servicos[0].nome);
+    }
+
     render() {
         const emptyList = <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-            <Text>Nenhum serviço recuperado.</Text>
+            <Text>Nenhum serviço recuperado.</Text> 
+
         </View>
 
         return(
@@ -209,13 +234,18 @@ export default class ListagemServicos extends Component {
                 {console.log(this.state.servicos)}
 
                 <FlatList 
-                    data={this.state.servicos.sort((a, b) => a.nome.toUpperCase() > b.nome.toUpperCase())}
+                    data={this.state.servicos}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.servicos}
                     renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
+
+                <Button style={{padding: 20, width:6, margin: 10}}  title="Preço Crescente" onPress={this.orderByPrecoC}/>
+                <Button style={{padding: 20, width:6, margin: 10}} title="Preço Decrescente" onPress={this.orderByPrecoD}/>
+                <Button style={{padding: 20, width:6, margin: 10}} title="Ordem Alfabética" onPress={this.orderByAlfa}/>
             </View>
+            
         );
     }
 }
@@ -225,5 +255,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         overflow: 'scroll',
+    },
+    buttons: {
+        flex:1,
+        width: 10,
+        alignContent : 'center',
+        padding: 10,
     }
 });

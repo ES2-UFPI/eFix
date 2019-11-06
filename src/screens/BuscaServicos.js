@@ -96,6 +96,7 @@ export default class Busca extends React.Component {
 
     if((isNaN(test) || p[0] == '.' || test < 0) && t !== ''){
       state.erro='Valor digitado em preço é inválido.';
+      state.preco = 0;
     }
     else{
     state.erro='';
