@@ -14,18 +14,22 @@ export default class ListagemServicos extends Component {
         servicos: [],
         errorMessage: null,
         filter: null,
-        value: null
+        value: null,
+        value2: null, 
+        value3: null
     };
 
     componentDidMount() {
-        this.updateServicesList(this.props.filter, this.props.value);
+        this.updateServicesList(this.props.filter, this.props.value, this.props.value2, this.props.value3);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.filter !== prevState.filter || nextProps.value !== prevState.value) {
+        if (nextProps.filter !== prevState.filter || nextProps.value !== prevState.value || nextProps.value2 !== prevState.value2 || nextProps.value3 !== prevState.value3) {
             return {
                 filter: nextProps.filter,
-                value: nextProps.value
+                value: nextProps.value,
+                value2: nextProps.value2,
+                value3: nextProps.value3
             }
         } else {
             return null;
@@ -33,14 +37,14 @@ export default class ListagemServicos extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.filter !== this.props.filter || prevProps.value !== this.props.value) {
+        if (prevProps.filter !== this.props.filter || prevProps.value !== this.props.value || prevProps.value2 !== this.props.value2 || prevProps.value3 !== this.props.value3) {
             console.log("Atualizar lista");
-            this.updateServicesList(this.props.filter, this.props.value);
+            this.updateServicesList(this.props.filter, this.props.value, this.props.value2, this.props.value3);
         }
     }
 
-    updateServicesList(filter, value) {
-        this.setState({ filter: filter, value: value });
+    updateServicesList(filter, value, value2, value3) {
+        this.setState({ filter: filter, value: value , value2: value2, value3: value3});
 
         switch(filter) {
             case 'categoria':
@@ -54,6 +58,27 @@ export default class ListagemServicos extends Component {
             case 'busca':
                 this.getServicesBySearch(value);
                 console.log("Filtro de busca por " + value);
+                break;
+            case 'busca2':
+                this.getServicesBySearch2(value, value2);
+                console.log("Filtro de busca por " + value);
+                break;
+            case 'busca3':
+                this.getServicesBySearch3(value, value2);
+                console.log("Filtro de busca por " + value);
+                break;
+            case 'busca4':
+                this.getServicesBySearch4(value, value2);
+                console.log("Filtro de busca4 por " + value);
+                console.log("pesquiza::" + value);
+                console.log("categoria:" + value2);
+                break;
+            case 'buscatudinho':
+                this.getServicesBySearchtudinho(value, value2, value3);
+                console.log("Filtro de busca4 por " + value);
+                console.log("pesquiza::" + value);
+                console.log("categoria:" + value2);
+                console.log("preço:" + value3);
                 break;
             default:
                 this.getServicesList();
@@ -113,7 +138,66 @@ export default class ListagemServicos extends Component {
             this.setState({errorMessage: "Erro"});
         }
     }
+    getServicesBySearch2 = async (texto, texto2) => {
+        try {
+            const response = await api.getServicesSearch(texto);
+            console.log("Tela: " + response.data);
+		let filtrados = []
+		filtrados = response.data["servicos"].filter(function(a){
+            return a.preco <= texto2;})
+            this.setState({servicos: filtrados});
+        } catch (response) {
+            console.log("Erro: " + response.data);
+            this.setState({errorMessage: "Erro"});
+        }
+    }
+    getServicesBySearch3 = async (categoria, texto2) => {
+        try {
+            const response = await api.getServicesByCategory(categoria);
+            console.log("Tela: " + response.data);
+		let filtrados = []
+		filtrados = response.data["servicos"].filter(function(a){
+            return a.preco <= texto2;})
+            this.setState({servicos: filtrados});
+        } catch (response) {
+            console.log("Erro: " + response.data);
+            this.setState({errorMessage: "Erro"});
+        }
+    }
+    getServicesBySearch4 = async (texto, texto2) => {
+        try {
+            const response = await api.getServicesSearch(texto);
 
+            console.log("Tela: " + response.data);
+
+            let filtrados = []
+            filtrados = response.data["servicos"].filter(function(a){
+                return a.categoria === texto2;})
+                this.setState({servicos: filtrados});
+           
+            // this.setState({servicos: response.data["servicos"]});
+        } catch (response) {
+            console.log("Erro: " + response.data);
+            this.setState({errorMessage: "Erro"});
+        }
+    }
+    getServicesBySearchtudinho = async (texto, texto2, texto3) => {
+        try {
+            const response = await api.getServicesSearch(texto);
+
+            console.log("Tela: " + response.data);
+
+            let filtrados = []
+            filtrados = response.data["servicos"].filter(function(a){
+                return a.categoria === texto2 && a.preco <= texto3;})
+                this.setState({servicos: filtrados});
+           
+            // this.setState({servicos: response.data["servicos"]});
+        } catch (response) {
+            console.log("Erro: " + response.data);
+            this.setState({errorMessage: "Erro"});
+        }
+    }
     render() {
         const emptyList = <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
             <Text>Nenhum serviço recuperado.</Text>

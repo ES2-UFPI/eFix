@@ -45,7 +45,43 @@ export default class Busca extends React.Component {
   }
 
   showListS(){ 
-    if (this.state.pesquisa !== '') {
+    if (this.state.preco !=null && this.state.categoria == '' && this.state.pesquisa == ''){
+      let state = this.state;
+      var x = state.preco;
+      this.setState({servicos: <ListagemServicos filter='preco' value={x} />});
+    }
+    else if (this.state.categoria!= '' && this.state.pesquisa == '' && this.state.preco =='') {
+      let state = this.state;
+      var x = state.categoria;
+      this.setState({servicos: <ListagemServicos filter='categoria' value={x} />});
+    }
+    else if (this.state.categoria!= '' && this.state.pesquisa == '' && this.state.preco != '') {
+      let state = this.state;
+      var x = state.categoria;
+      var z = state.preco;
+      this.setState({servicos: <ListagemServicos filter='busca3' value={x} value2={z}/>});
+    }
+    else if (this.state.categoria == '' && this.state.pesquisa != '' && this.state.preco != '') {
+      
+      let state = this.state;
+      var x = state.pesquisa;
+      var z = state.preco;
+      this.setState({servicos: <ListagemServicos filter='busca2' value={x} value2={z}/>});
+    }
+    else if (this.state.categoria != '' && this.state.pesquisa != '' && this.state.preco == '') {
+      let state = this.state;
+      var x = state.pesquisa;
+      var z = state.categoria;
+      this.setState({servicos: <ListagemServicos filter='busca4' value={x} value2={z}/>});
+    }
+    else if (this.state.categoria != '' && this.state.pesquisa != '' && this.state.preco != '') {
+      let state = this.state;
+      var x = state.pesquisa;
+      var z = state.categoria;
+      var w = state.preco;
+      this.setState({servicos: <ListagemServicos filter='buscatudinho' value={x} value2={z} value3={w}/>});
+    }
+     else if (this.state.pesquisa != '' && this.state.preco == '' && this.state.categoria== '') {
       let state = this.state;
       var x = state.pesquisa;
       this.setState({servicos: <ListagemServicos filter='busca' value={x} />});
