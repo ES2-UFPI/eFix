@@ -124,7 +124,7 @@ const del = router.delete('/:id', (req, res, next) => {
 
 user_app.use('/', create);
 user_app.use('/', read);
-user_app.use('/', show);1
+user_app.use('/', show);
 user_app.use('/', update);
 user_app.use('/', del);
 
