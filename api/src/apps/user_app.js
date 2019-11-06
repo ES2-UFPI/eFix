@@ -15,15 +15,14 @@ const router = express.Router();
 const create = router.post('/', (req, res, next) => {
 
     const id = crypto.randomBytes(32).toString('hex');
-    const nome = req.body.nome;
-    const senha = req.body.senha;
-    const email = req.body.email;
-    const endereco = req.body.endereco;
+    const { nome, senha, email, endereco } = req.body;
+    const contratos = [];
+    const id_prestador = null;
 
     const refPath = "usuario/" + id;
     const ref = firebase.database().ref(refPath)
 
-    ref.update({ id, nome, senha, email, endereco,}, function(error) {
+    ref.update({ id, nome, senha, email, endereco, contratos, id_prestador}, function(error) {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
