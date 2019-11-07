@@ -51,7 +51,7 @@ export default class Home extends Component {
                         <FlatList 
                             data={this.state.servicos}
                             ListEmptyComponent={emptyList}
-                            renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
+                            renderItem={({item}) => <ItemServico servico={item}/>}
                             keyExtractor={(item, id_servico) => item.nome + id_servico}
                         />
                     </View>

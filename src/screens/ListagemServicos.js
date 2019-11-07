@@ -128,7 +128,7 @@ export default class ListagemServicos extends Component {
                     data={this.state.servicos.sort((a, b) => a.nome.toUpperCase() > b.nome.toUpperCase())}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.servicos}
-                    renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
+                    renderItem={({item}) => <ItemServico servico={item}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
             </View>

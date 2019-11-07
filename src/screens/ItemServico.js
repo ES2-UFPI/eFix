@@ -7,16 +7,18 @@ import {
 
 export default class ItemServico extends Component {
     render() {
+        console.log(this.props.servico.id_servico);
+
         return(
             <View style={styles.container}>
                 <View style={styles.container_top}>
-                    <Text style={styles.name}>{this.props.nome}</Text>
-                    <Text>R$ {this.props.preco}</Text>
+                    <Text style={styles.name}>{this.props.servico.nome}</Text>
+                    <Text>R$ {this.props.servico.preco}</Text>
                 </View>
                 <Text style={styles.title}>Categoria</Text>
-                <Text>{this.props.categoria}</Text>
+                <Text>{this.props.servico.categoria}</Text>
                 <Text style={styles.title}>Descrição</Text>
-                <Text>{this.props.descricao}</Text>
+                <Text>{this.props.servico.descricao}</Text>
             </View>
         );
     }
