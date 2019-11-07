@@ -113,10 +113,22 @@ const del = router.delete('/:id', (req, res, next) => {
     });
 });
 
+const add_service_to_provider = router.post('/add', (req, res, next) => {
+    console.log("ADD service request received.");
+
+    const { id_servico, id_prestador } = req.body;
+
+    const ref = firebase.database().ref('prestador/' + id_prestador + "/servicos").push();
+    ref.set({"id_servico": id_servico});
+    ref.off();
+    res.sendStatus(200);
+});
+
 provider_app.use('/', create);
 provider_app.use('/', read);
 provider_app.use('/', show);
 provider_app.use('/', update);
 provider_app.use('/', del);
+provider_app.use('/', add_service_to_provider);
 
 module.exports = provider_app;
