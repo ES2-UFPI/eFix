@@ -268,6 +268,44 @@ const delete_service = router.delete('/', (req, res, next) => {
     });
 });
 
+const read_provider_services = router.get('/prestador/:id', (req, res, next) => {
+    console.log("GET provider services request received.");
+
+    const id = req.params.id;
+
+    var ref = firebase.database().ref("/servico").orderByChild("id_prestador").equalTo(id);
+    ref.on("value", function(snapshot){
+        const data = [];
+        snapshot.forEach(function(childSnapshot){
+            data.push(childSnapshot.val())
+        });
+
+        res.json({ "servicos": data });      
+        ref.off("value");
+    },
+    function(errorObject){
+        console.log("Leitura falhou: " + errorObject.code);
+        res.send(errorObject.code);
+    });
+});
+
+// const read_provider_services2 = router.get('/prestador/', (req, res, next) => {
+//     console.log("GET provider services request received.");
+
+//     const { id_servicos } = req.body;
+//     const result = [];
+
+//     var ref = firebase.database().ref("/servico").orderByChild("id_servico");
+//     id_servicos.forEach(id =>{
+
+//         ref.equalTo(id).on("value", function(snapshot){
+//             result.push(snapshot.val());
+//         });
+//     });
+//     ref.off("value");
+//     res.json({ "servicos": result });
+// });
+
 service_app.use('/', create_service);
 service_app.use('/', read_services);
 service_app.use('/', read_service);
@@ -276,5 +314,6 @@ service_app.use('/', read_services_under_price);
 service_app.use('/', search_services);
 service_app.use('/', update_service);
 service_app.use('/', delete_service);
+service_app.use('/', read_provider_services);
 
 module.exports = service_app;
