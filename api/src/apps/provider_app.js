@@ -128,11 +128,24 @@ const add_service_to_provider = router.post('/add/:id_servico', (req, res, next)
     res.sendStatus(200);
 });
 
+// adiciona uma nova avaliação ao prestador
+const add_avaliation_to_provider = router.post('/avaliacao', (req, res, next) => {
+
+    const { id_prestador, avaliacao } = req.body;
+    
+    const ref = firebase.database().ref('prestador/' + id_prestador);
+    ref.child("avaliacoes").push(avaliacao);
+    ref.off();
+
+    res.sendStatus(200);
+});
+
 provider_app.use('/', create);
 provider_app.use('/', read);
 provider_app.use('/', show);
 provider_app.use('/', update);
 provider_app.use('/', del);
 provider_app.use('/', add_service_to_provider);
+provider_app.use('/', add_avaliation_to_provider);
 
 module.exports = provider_app;
