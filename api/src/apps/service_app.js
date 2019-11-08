@@ -37,20 +37,18 @@ const create_service = router.post('/', (req, res, next) => {
 
 // recupera servicos
 const read_services = router.get('/', (req, res, next) => {
-    console.log("Reqisicao GET all recebida.");
-    const ref = firebase.database().ref("/servico/");
+    const ref = firebase.database().ref("/servico");
 
     ref.on(
         "value", function(snapshot){
             const data = [];
             snapshot.forEach(function(childSnapshot){
-                data.push(childSnapshot.val())
+                data.push(childSnapshot.val());
             });
-                 
+            
             const json = {"servicos" : data};
-
+            ref.off("value");        
             res.json(json);
-            ref.off("value")
         },
         function(errorObject){
             console.log("Leitura falhou: " + errorObject.code);
@@ -64,19 +62,16 @@ const read_service = router.get('/id/:id', (req, res, next) => {
     const id = req.params.id;
     console.log("Reqisicao GET pelo serviço " + id);
 
-    const ref = firebase.database().ref("/servico").orderByChild("id_servico").equalTo(id);
+    const ref = firebase.database().ref("/servico/" + id);
+    ref.on("value", function(snapshot){
+        const id_prestador = snapshot.child("id_prestador").val();
 
-    ref.on(
-        "value", function(snapshot){
-            const data = [];
-            snapshot.forEach(function(childSnapshot){
-                data.push(childSnapshot.val())
-            });
-                 
-            const json = {"servicos" : data};
-
-            res.json(json);
+        if(verifyProviderDispnibility(id_prestador)){
+            data.push(childSnapshot.val());
+            res.json(snapshot.val());
             ref.off("value")
+        } else
+            res.sendStatus(406);
         },
         function(errorObject){
             console.log("Leitura falhou: " + errorObject.code);
@@ -96,7 +91,10 @@ const read_services_by_category = router.get('/categ/:categ', (req, res, next) =
         "value", function(snapshot){
             const data = [];
             snapshot.forEach(function(childSnapshot){
-                data.push(childSnapshot.val())
+                const id_prestador = childSnapshot.child("id_prestador").val();
+
+                if(verifyProviderDispnibility(id_prestador))
+                    data.push(childSnapshot.val());
             });
                  
             const json = {"servicos" : data};
@@ -122,7 +120,10 @@ const read_services_under_price = router.get('/preco/:preco', (req, res, next) =
         "value", function(snapshot){
             const data = [];
             snapshot.forEach(function(childSnapshot){
-                data.push(childSnapshot.val())
+               const id_prestador = childSnapshot.child("id_prestador").val();
+
+                if(verifyProviderDispnibility(id_prestador))
+                    data.push(childSnapshot.val());
             });
             
             // filtrando somente os servicos abaixo do preço recebido
@@ -178,7 +179,10 @@ const search_services = router.get('/busca/:busca', (req, res, next) => {
             // coleta todos os serviços
             const data = [];
             snapshot.forEach(function(childSnapshot){
-                data.push(childSnapshot.val())
+                const id_prestador = childSnapshot.child("id_prestador").val();
+
+                if(verifyProviderDispnibility(id_prestador))
+                    data.push(childSnapshot.val());
             });
             
             // filtrando somente os servicos com as palavras recebidas
