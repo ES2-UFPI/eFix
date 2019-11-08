@@ -4,7 +4,8 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Button
+    Button,
+    TouchableOpacity
 } from 'react-native';
 import ItemServico from './ItemServico.js';
 import api from '../services/API';
@@ -204,22 +205,17 @@ export default class ListagemServicos extends Component {
 
     orderByPrecoC = () =>{
         var order = this.state.servicos.sort((a, b) => parseFloat(a.preco) > parseFloat(b.preco));
-        console.log("Ola tudo bem" + order[0].nome);
         this.setState({servicos: order, ord: 1});
     }
 
     orderByPrecoD = () =>{
         var order = this.state.servicos.sort((a, b) => parseFloat(a.preco) < parseFloat(b.preco));
-        console.log("Ola tudo bem" + order[0].nome);
         this.setState({servicos: order, ord: 2});
-        console.log("Ola NADA BEM ... " + this.state.servicos[0].nome);
     }
 
     orderByAlfa = () =>{
         var order = this.state.servicos.sort((a, b) => a.nome.toUpperCase() > b.nome.toUpperCase());
-        console.log("Ola tudo bem" + order[0].nome);
         this.setState({servicos: order, ord: 2});
-        console.log("Ola NADA BEM ... " + this.state.servicos[0].nome);
     }
 
     render() {
@@ -240,10 +236,17 @@ export default class ListagemServicos extends Component {
                     renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
-
-                <Button style={{padding: 20, width:6, margin: 10}}  title="Preço Crescente" onPress={this.orderByPrecoC}/>
-                <Button style={{padding: 20, width:6, margin: 10}} title="Preço Decrescente" onPress={this.orderByPrecoD}/>
-                <Button style={{padding: 20, width:6, margin: 10}} title="Ordem Alfabética" onPress={this.orderByAlfa}/>
+                <View style={{flexDirection: "row", alignContent:'center', alignItems:"center"}}>
+                    <TouchableOpacity style={styles.buttons, {marginLeft:3 ,borderTopWidth: 1,borderTopColor:'gainsboro', borderRightWidth:1, borderRightColor: "gainsboro"}} onPress={this.orderByPrecoC}>
+                        <Text style={styles.buttonText}>Ord. por Preço Cre.</Text>
+                    </TouchableOpacity> 
+                    <TouchableOpacity style={styles.buttons, {borderTopWidth: 1,borderTopColor:'gainsboro', borderRightWidth:1, borderRightColor: "gainsboro"}} onPress={this.orderByPrecoD}>
+                        <Text style={styles.buttonText}>Ord. por Preço Decre.</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttons, {borderTopWidth: 1,borderTopColor:'gainsboro', borderRightWidth:0, borderRightColor: "gainsboro"}} onPress={this.orderByAlfa}>
+                        <Text style={styles.buttonText}>Ord. Alfabética</Text>
+                    </TouchableOpacity> 
+                </View>
             </View>
             
         );
@@ -256,10 +259,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         overflow: 'scroll',
     },
-    buttons: {
-        flex:1,
-        width: 10,
-        alignContent : 'center',
-        padding: 10,
+    buttons:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        height:15,
+        shadowOpacity: 2,
+        
+    },
+    buttonText:{
+        padding: 4,
+        fontSize:15
     }
 });
