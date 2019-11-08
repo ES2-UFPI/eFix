@@ -258,12 +258,13 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         overflow: 'scroll',
+        backgroundColor:'white'
     },
     buttons:{
         alignItems: 'center',
         justifyContent: 'center',
         height:15,
-        shadowOpacity: 2,
+        elevation: 20,
         
     },
     buttonText:{
