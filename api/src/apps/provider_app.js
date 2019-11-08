@@ -18,7 +18,8 @@ const create = router.post('/', (req, res, next) => {
     const horarios = [];
     const servicos = [];
     const contratos = [];
-    const nota = 0;
+    const nota_media = 0;
+    const nota_somada = 0;
     const avaliacoes = [];
     const qnt_servicos_prestados = 0;
     const disponibilidade = true;
@@ -27,7 +28,7 @@ const create = router.post('/', (req, res, next) => {
     const ref = firebase.database().ref(refPath);
 
     ref.update({ id_prestador, bio, horarios, servicos, contratos,
-                nota, avaliacoes, qnt_servicos_prestados, disponibilidade 
+                nota_media, nota_somada, avaliacoes, qnt_servicos_prestados, disponibilidade 
                 }, function(error) {
                     if (error) {
                         res.send("Dados não poderam ser salvos " + error);
@@ -132,12 +133,32 @@ const add_service_to_provider = router.post('/add/:id_servico', (req, res, next)
 const add_avaliation_to_provider = router.post('/avaliacao', (req, res, next) => {
 
     const { id_prestador, avaliacao } = req.body;
-    
     const ref = firebase.database().ref('prestador/' + id_prestador);
-    ref.child("avaliacoes").push(avaliacao);
-    ref.off();
+    
+    ref.once("value", function(snapshot){
+        var nota_somada = snapshot.child("nota_somada").val();
+        const qnt_servicos_prestados = snapshot.child("qnt_servicos_prestados").val();
+        var nota_media = (nota_somada + avaliacao.nota)/ qnt_servicos_prestados;
+        nota_somada += avaliacao.nota;
+        
+        if(qnt_servicos_prestados == 0)
+            // nota media atualmente é igual a infinito, causando erro. Atualizando valor
+            nota_media = avaliacao.nota;
+        
+        // normalizando para valores entre 0 e 5    
+        nota_media = nota_media/5;
 
-    res.sendStatus(200);
+        ref.update({ nota_media, nota_somada }, function(error){
+            if (error) {
+                res.send("Dados não poderam ser salvos " + error);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+        
+        ref.child("avaliacoes").push(avaliacao);
+        ref.off("value");
+    });
 });
 
 // atualiza o status de disponibilidade do prestador
