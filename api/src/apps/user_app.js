@@ -7,14 +7,14 @@ const crypto = require('crypto');
 
 const user_app = express();
 user_app.use(bodyParser.json());
-user_app.use(bodyParser.urlencoded({extend: false}));
+user_app.use(bodyParser.urlencoded({extended: false}));
 
 const router = express.Router();
 
 // cria um usuario no banco de dados
 const create = router.post('/', (req, res, next) => {
 
-    const id = crypto.randomBytes(32).toString('hex');
+    const id_usuario = crypto.randomBytes(32).toString('hex');
     const { nome, senha, email, endereco } = req.body;
     const contratos = [];
     const id_prestador = null;
@@ -22,7 +22,7 @@ const create = router.post('/', (req, res, next) => {
     const refPath = "usuario/" + id;
     const ref = firebase.database().ref(refPath)
 
-    ref.update({ id, nome, senha, email, endereco, contratos, id_prestador}, function(error) {
+    ref.update({ id_usuario, nome, senha, email, endereco, contratos, id_prestador}, function(error) {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
@@ -121,10 +121,22 @@ const del = router.delete('/:id', (req, res, next) => {
     });
 });
 
+// adiciona o valor do id de prestador ao usuario
+const add_provider_id = router.post('/addID/:id_prestador', (req, res, next) =>{
+    const { id_prestador } = req.params;
+    const id_usuario = req.body.id_usuario;
+
+    const ref = firebase.database().ref('usuario/' + id_usuario).child("id_prestador").set(id_prestador);
+    
+    res.sendStatus(200);
+
+});
+
 user_app.use('/', create);
 user_app.use('/', read);
 user_app.use('/', show);
 user_app.use('/', update);
 user_app.use('/', del);
+user_app.use('/', add_provider_id);
 
 module.exports = user_app;

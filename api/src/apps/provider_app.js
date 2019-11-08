@@ -7,13 +7,14 @@ const crypto = require('crypto');
 
 const provider_app = express();
 provider_app.use(bodyParser.json());
-provider_app.use(bodyParser.urlencoded({extend: false}));
+provider_app.use(bodyParser.urlencoded({extended: false}));
 
 const router = express.Router();
 
 const create = router.post('/', (req, res, next) => {
  
     const id_prestador = crypto.randomBytes(32).toString('hex');
+    const id_usuario = req.body.id_usuario;
     const bio = req.body.bio;
     const horarios = [];
     const servicos = [];
@@ -27,13 +28,13 @@ const create = router.post('/', (req, res, next) => {
     const refPath = "prestador/" + id_prestador;
     const ref = firebase.database().ref(refPath);
 
-    ref.update({ id_prestador, bio, horarios, servicos, contratos,
+    ref.update({ id_prestador, id_usuario, bio, horarios, servicos, contratos,
                 nota_media, nota_somada, avaliacoes, qnt_servicos_prestados, disponibilidade 
                 }, function(error) {
                     if (error) {
                         res.send("Dados não poderam ser salvos " + error);
                     } else {
-                        res.send( id_prestador + " criado com sucesso " + 200);
+                        res.redirect(307, '../usuario/addID/' + id_prestador);
                     }
         ref.off("value");
     });

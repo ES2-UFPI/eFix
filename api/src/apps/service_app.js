@@ -8,7 +8,7 @@ const crypto = require('crypto');
 
 const service_app = express();
 service_app.use(bodyParser.json());
-service_app.use(bodyParser.urlencoded({extend: false}));
+service_app.use(bodyParser.urlencoded({extended: false}));
 
 const router = express.Router();
 
