@@ -150,13 +150,13 @@ const add_avaliation_to_provider = router.post('/avaliacao', (req, res, next) =>
 
         ref.update({ nota_media, nota_somada }, function(error){
             if (error) {
+                ref.child("avaliacoes").push(avaliacao);
                 res.send("Dados não poderam ser salvos " + error);
             } else {
                 res.sendStatus(200);
             }
         });
         
-        ref.child("avaliacoes").push(avaliacao);
         ref.off("value");
     });
 });
