@@ -150,9 +150,9 @@ const add_avaliation_to_provider = router.post('/avaliacao', (req, res, next) =>
 
         ref.update({ nota_media, nota_somada }, function(error){
             if (error) {
-                ref.child("avaliacoes").push(avaliacao);
                 res.send("Dados não poderam ser salvos " + error);
             } else {
+                ref.child("avaliacoes").push(avaliacao);
                 res.sendStatus(200);
             }
         });
