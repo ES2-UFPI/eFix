@@ -140,6 +140,27 @@ const add_avaliation_to_provider = router.post('/avaliacao', (req, res, next) =>
     res.sendStatus(200);
 });
 
+// atualiza o status de disponibilidade do prestador
+const change_disponibility = router.put('/status/:id_prestador', (req, res, next) => {
+    const id_prestador = req.params.id_prestador;
+
+    const refPath = "prestador/" + id_prestador;
+    const ref = firebase.database().ref(refPath);
+
+    ref.once("value", function(snapshot){
+        const disponibilidade = !snapshot.child("disponibilidade").val();
+
+        ref.update({ disponibilidade }, function(error){
+            if (error) {
+                res.send("Dados não poderam ser salvos " + error);
+            } else {
+                res.sendStatus(200);
+            }
+        })
+        ref.off("value");
+    });
+});
+
 provider_app.use('/', create);
 provider_app.use('/', read);
 provider_app.use('/', show);
@@ -147,5 +168,6 @@ provider_app.use('/', update);
 provider_app.use('/', del);
 provider_app.use('/', add_service_to_provider);
 provider_app.use('/', add_avaliation_to_provider);
+provider_app.use('/', change_disponibility);
 
 module.exports = provider_app;
