@@ -76,6 +76,7 @@ const show = router.get('/:id', (req, res, next) => {
     });
  });
 
+ // atualiza os dados do prestador
 const update = router.put('/', (req, res, next) => {
     console.log("UPDATE request received.");
 
@@ -98,6 +99,7 @@ const update = router.put('/', (req, res, next) => {
     });
 });
 
+// deleta um prestador
 const del = router.delete('/:id', (req, res, next) => {
     const id = req.params.id;
     
@@ -113,14 +115,16 @@ const del = router.delete('/:id', (req, res, next) => {
     });
 });
 
-const add_service_to_provider = router.post('/add', (req, res, next) => {
-    console.log("ADD service request received.");
+// adiciona um novo servico na lista do prestador
+const add_service_to_provider = router.post('/add/:id_servico', (req, res, next) => {
 
-    const { id_servico, id_prestador } = req.body;
-
-    const ref = firebase.database().ref('prestador/' + id_prestador + "/servicos").push();
-    ref.set({"id_servico": id_servico});
+    const { id_prestador } = req.body;
+    const id_servico = req.params.id_servico;
+    
+    const ref = firebase.database().ref('prestador/' + id_prestador);
+    ref.child("servicos").push(id_servico);
     ref.off();
+
     res.sendStatus(200);
 });
 

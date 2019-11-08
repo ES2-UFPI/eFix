@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node bin/server.js"
+    "start": "node bin/server.js",
+    "nodemon": "nodemon bin/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +16,8 @@
     "express": "^4.17.1",
     "firebase": "^7.1.0",
     "httpd": "0.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
   }
 }

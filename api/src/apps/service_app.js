@@ -30,9 +30,7 @@ const create_service = router.post('/', (req, res, next) => {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
-            const json = "{\"id_prestador\": \"" +id_prestador + "\", \"id_servico\": \"" + id_servico + "\"}"
-            console.log("redirect ...");
-            res.redirect(307, '../prestador/add');
+            res.redirect(307, '../prestador/add/' + id_servico);
         }
     });
 });
