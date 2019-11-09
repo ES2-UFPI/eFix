@@ -132,4 +132,54 @@ api.changeProviderDisponibitily = async (provider_id) => {
     return await api.put('/prestador/status/' + encodeURI(provider_id));
 }
 
+// CONTRATO
+
+/**
+ * EXAMPLE
+ * to create a contract
+ {
+	"id_prestador": "2f5f7bbeb1024442922992ab22383faae088e3b35957909979dfb65233876c6e",
+	"id_usuario": "34d61fb7f20eb7e0538544b4b09bfb429b02ddc704a3b7f66ab75cb5ba438397",
+	"id_servico": "a05f51c3bbb449a2b391926af22bd510be1acc7995237c69d0e3961cc8d680cb",
+	"data": "10/11/2019"
+}
+ *
+ */
+
+api.createContract = async (contract) => {
+    return await api.post('/contrato', contract);
+}
+
+api.getContractList = async () => {
+    return await api.get('/contrato');
+}
+
+api.getContract = async (contract_id) => {
+    return await api.get('/contrato/' + contract_id);
+}
+
+api.updateContract = async (contract) => {
+    return await api.put('/contrato', contract);
+}
+
+api.deleteContract = async (contract_id) => {
+    return await api.delete('/contrato/' + contract_id);
+}
+
+api.closeContract = async (contract_id) => {
+    return await api.put('/contrato/close/' + contract_id);
+}
+
+api.getUserContracts = async (user_id) => {
+    return await api.get('/contrato/usuario/' + user_id);
+}
+
+api.getProviderContracts = async (provider_id) => {
+    return await api.get('/contrato/prestador/' + provider_id);
+}
+
+api.addReview = async (review) => {
+    return await api.post('/contrato/avaliacao', review);
+}
+
 export default api;
