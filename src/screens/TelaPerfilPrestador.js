@@ -20,19 +20,30 @@ export default class TelaPerfilPrestador extends Component{
             enderecoUsuario: "Rua Tchurosbangos Tchudosbagos, 2193",
             servicosAutorais: ["Nenhum serviço cadastrado."],
             servicosContratados:'',
-            horariosDisponibilizados:''
+            disponibilidade: 'Serviços Desativados no momento...',
+            horariosDisponibilizados:[]
         }
+        this.trocarDisponibilidade = this.trocarDisponibilidade.bind(this);
     }
 
+    trocarDisponibilidade(){
+        let state = this.state;
+        if(state.disponibilidade == "Serviços Desativados no momento..."){
+            this.setState({disponibilidade: 'Serviços Ativados no momento...'});
+        }
+        else{
+            this.setState({disponibilidade: 'Serviços Desativados no momento...'});
+        }
+    }
 
     render(){
         return (
             <View>
                 <Text style={styles.top_label}>Perfil de Prestador de Servicos</Text>
 
-                <View style={{alignItems:'center', alignContent: 'center', borderBottomWidth: 1, borderBottomColor:'gainsboro', marginBottom: 10}}>
-                  <Image source={{uri:'http://media.agora.com.vc/thumbs/capas/image_1399.jpg'}} style={{height: 150 , width: 150, marginLeft: 10, marginTop: 20, borderRadius: 150/2}}/>
-                  <View style={{marginTop:20}} >
+                <View style={{alignItems:'center', alignContent: 'center', borderBottomColor:'gainsboro', marginBottom: 5}}>
+                  <Image source={{uri:'http://media.agora.com.vc/thumbs/capas/image_1399.jpg'}} style={{height: 120 , width: 120, marginLeft: 10, marginTop: 20, borderRadius: 120/2}}/>
+                  <View style={{marginTop:5}} >
                         <Text style={{textAlign:'center', fontSize: 25, color: 'black'}}>{this.state.nomeUsuario}</Text>
                         <Text style={{textAlign:'center'}}>{this.state.emailUsuario}</Text>
                         <Text style={{textAlign:'center'}}>{this.state.enderecoUsuario}</Text>
@@ -52,11 +63,22 @@ export default class TelaPerfilPrestador extends Component{
                         </TouchableOpacity>
                         </View>
 
+                        <View style={{flexDirection:'row', justifyContent:'center'}}>
+                        <TouchableOpacity style={styles.buttons}  onPress={this.trocarDisponibilidade}>
+                          <Text style={{color:'white'}}>Trocar Disponibilidade</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.buttons}>
+                          <Text style={{color:'white'}}>Visualizar Horários</Text>
+                        </TouchableOpacity>
+                        </View>
+
                   </View> 
                 </View>   
 
                 <View style={{alignContent:'center'}}>
-                      <Text style={{textAlign: 'center'}}>{this.state.servicosAutorais}</Text>
+                    <Text style={{color: 'white', textAlign:'center', borderWidth:1, borderColor:'gainsboro', backgroundColor:'lightskyblue'}}>{this.state.disponibilidade}</Text>
+                    <Text style={{textAlign: 'center'}}>{this.state.servicosAutorais}</Text>
                 </View>
                 
             </View>    
@@ -84,14 +106,14 @@ export default class TelaPerfilPrestador extends Component{
         text_info:{
             justifyContent: 'center',
             alignContent: 'center',
-            fontSize: 15
+            fontSize: 13
         },
         buttons:{
           margin: 5, 
           borderWidth: 1, 
           alignItems:'center', 
           borderRadius:20, 
-          padding: 10, 
+          padding: 7, 
           height: 40,
           backgroundColor: 'dodgerblue',
           borderColor: 'dodgerblue'
