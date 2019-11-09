@@ -178,7 +178,7 @@ api.getProviderContracts = async (provider_id) => {
     return await api.get('/contrato/prestador/' + provider_id);
 }
 
-api.addReview = async (review) => {
+api.addContractReview = async (review) => {
     return await api.post('/contrato/avaliacao', review);
 }
 
