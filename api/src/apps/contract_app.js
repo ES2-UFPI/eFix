@@ -16,14 +16,17 @@ const router = express.Router();
 const create = router.post('/', (req, res, next) => {
     const id_contrato = crypto.randomBytes(32).toString('hex');
     const { id_servico, id_prestador, id_usuario, data } = req.body;
+    const ativo = true;
 
     const refPath = "contratos/" + id_contrato;
+    
     const ref = firebase.database().ref(refPath);
-    ref.update({ id_contrato, id_servico, id_prestador, id_usuario, data }, function(error){
+
+    ref.update({ id_servico, id_contrato, id_prestador, id_usuario, data, ativo }, function(error){
         if(error){
             res.send("Dados não poderam ser salvos " + error);
         } else
-            res.sendStatus(201);
+            res.redirect(307, '../prestador/contrato/' + id_contrato);
     });
     ref.off("value");
 });
@@ -92,10 +95,86 @@ const del = router.delete('/:id', (req, res, next) => {
         });
 });
 
+// altera o campo ativo para false
+const close_contract = router.put('/close/:id', (req,res, next) => {
+    const id_contrato = req.params.id;
+    const ativo = false;
+    const ref = firebase.database().ref('contratos/' + id_contrato);
+
+    ref.update({ ativo }, function(error){
+        if(error){
+            res.sendStatus(502);
+        } else
+            res.sendStatus(200);
+    });
+    ref.off("value");
+});
+
+// recupera todos os contratos de um usuario
+const read_user_contracts = router.get('/usuario/:id', (req, res, next) =>{
+    const id_usuario = req.params.id;
+
+    const ref = firebase.database().ref('contratos/').orderByChild("id_usuario").equalTo(id_usuario);
+
+    ref.on("value", function(snapshot){
+        const data = [];
+        snapshot.forEach(function(childSnapshot){
+            data.push(childSnapshot.val())
+        });
+
+        res.json({ "contratos": data });      
+        ref.off("value");
+    },
+    function(errorObject){
+        console.log("Leitura falhou: " + errorObject.code);
+        res.send(errorObject.code);
+    });
+});
+
+// recupera todos os contratos de um usuario
+const read_provider_contracts = router.get('/prestador/:id', (req, res, next) =>{
+    const id_usuario = req.params.id;
+
+    const ref = firebase.database().ref('contratos/').orderByChild("id_prestador").equalTo(id_usuario);
+
+    ref.on("value", function(snapshot){
+        const data = [];
+        snapshot.forEach(function(childSnapshot){
+            data.push(childSnapshot.val())
+        });
+
+        res.json({ "contratos": data });      
+        ref.off("value");
+    },
+    function(errorObject){
+        console.log("Leitura falhou: " + errorObject.code);
+        res.send(errorObject.code);
+    });
+});
+
+const add_review = router.post('/avaliacao', (req, res, next) => {
+    const { id_contrato } = req.body;
+    const avaliacao = crypto.randomBytes(32).toString('hex');
+    
+    const ref = firebase.database().ref('contratos/' + id_contrato);
+
+    ref.update({ avaliacao }, function(error){
+        if(error){
+            res.sendStatus(502);
+        } else
+            res.redirect(307, '../../prestador/avaliacao/' + avaliacao);
+    })
+    ref.off("value");
+});
+
 contract_app.use('/', create);
 contract_app.use('/', read);
 contract_app.use('/', show);
 contract_app.use('/', update);
 contract_app.use('/', del);
+contract_app.use('/', close_contract);
+contract_app.use('/', read_user_contracts);
+contract_app.use('/', read_provider_contracts);
+contract_app.use('/', add_review);
 
 module.exports = contract_app;
