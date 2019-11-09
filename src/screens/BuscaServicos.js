@@ -9,10 +9,12 @@ import {
     Alert,
     SafeAreaView,
     Picker,
+    TouchableOpacity
   } from 'react-native';
   import React, { Component } from 'react';
   import ListagemServicos from './ListagemServicos';
   import SimpleButton from '../components/SimpleButton';
+  import Icon from 'react-native-vector-icons/MaterialIcons';
   import SimpleTextInput from '../components/SimpleTextInput';
   import api from '../services/API';
 
@@ -96,6 +98,7 @@ export default class Busca extends React.Component {
 
     if((isNaN(test) || p[0] == '.' || test < 0) && t !== ''){
       state.erro='Valor digitado em preço é inválido.';
+      state.preco = 0;
     }
     else{
     state.erro='';
@@ -140,21 +143,25 @@ export default class Busca extends React.Component {
         <View style={ styles.container }>
           
           <View style={styles.input_view}>
-            <SimpleTextInput placeholder="Digite o nome de um serviço..." 
+            <TextInput style={styles.input}  placeholder="Digite o nome de um serviço..." 
               underlineColorAndroid="transparent" 
               onChangeText={this.pegaPesquisa}
               />
+            <TouchableOpacity style={styles.search_Button} onPress={this.showListS}>
+              <Icon style={{color: 'white'}} size={20} name={'search'} onPress={this.showListS}/>
+            </TouchableOpacity>
           </View>
+          
           <Text style={styles.text}>Opções de filtragem:</Text>
           <View style={styles.container2}>
-            <SimpleTextInput placeholder="Preço máximo..." 
+            <TextInput style={styles.input2} placeholder="Preço máximo..." 
               underlineColorAndroid="transparent" 
               onChangeText={this.pegaPreco}
               keyboardType={'numeric'}/>
             
             <Picker
               selectedValue={this.state.categoria}
-              style={{height: 30, width: 180, backgroundColor:'gainsboro', marginLeft:10, borderRadius:12, marginTop: 16}}
+              style={{height: 33, width: 120, backgroundColor:'gainsboro', marginLeft:5, borderRadius:12, marginTop: 10}}
               itemStyle={{alignItems:'center', padding:10}}
               onValueChange={(itemValue, itemIndex) => this.setState({ categoria: itemValue })}>
               <Picker.Item label="Categoria..." value="" />
@@ -162,9 +169,7 @@ export default class Busca extends React.Component {
             </Picker>
           </View>
           {this.state.show_erro}
-          <View style={styles.button_view}>
-              <SimpleButton title="Buscar" onPress={this.showListS}/>
-          </View>
+          
           
         {this.state.servicos}     
         </View>
@@ -179,8 +184,11 @@ const styles = StyleSheet.create({
     },
     container2: {
       flexDirection: "row",
-      justifyContent: "space-between",
-      padding: 10,
+      justifyContent: "space-around",
+      marginBottom: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: "gainsboro",
+      marginBottom: 18,
     },
     button_view:{
       flexDirection: "column",
@@ -188,20 +196,48 @@ const styles = StyleSheet.create({
       marginBottom: 8
     },
     input_view:{
-      justifyContent: 'center',
-      padding: 10
+      flexDirection: 'row',
+      justifyContent: "space-around",
+      marginTop: 10,
     },
     input:{
       borderRadius:12,
       height:40,
       borderWidth:1,
       borderColor: 'gainsboro',
-      width:350,
-      padding: 10
+      width:300,
+      padding: 10,
+      marginTop:7,
+      backgroundColor: 'white'
+    },
+    input2:{
+      borderRadius:12,
+      height:40,
+      borderWidth:1,
+      borderColor: 'gainsboro',
+      width:120,
+      padding: 10,
+      marginTop:7,
+      marginBottom: 10,
+      backgroundColor:"white"
     },
     text: {
       textAlign: "left",
-      marginLeft: 10,
+      marginLeft: 35,
+      marginBottom:6,
       fontSize: 15,
+    },
+    search_Button:{
+      alignItems:"center",
+      alignContent:"center", 
+      borderWidth:1,
+      borderRadius: 10,
+      marginRight: 25,
+      height: 40,
+      padding: 10,
+      marginTop: 7,
+      backgroundColor: '#1e90ff',
+      borderColor: '#1e90ff',
+      elevation: 5
     }
   });
