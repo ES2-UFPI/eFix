@@ -4,7 +4,8 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
 
 export default class TelaPerfilContratante extends Component{
@@ -13,9 +14,11 @@ export default class TelaPerfilContratante extends Component{
         super(props);
 
         this.state = {
+            id:'',
             nomeUsuario: 'Raimundo Nonato',
             emailUsuario: 'raimundocabecao@yahoo.com.br',
-            enderecoUsuario: "Rua Tchurosbangos Tchudosbagos, 2193"
+            enderecoUsuario: "Rua Tchurosbangos Tchudosbagos, 2193",
+            servicos: ["Nenhum serviço contratado."]
         }
     }
 
@@ -24,16 +27,28 @@ export default class TelaPerfilContratante extends Component{
         return (
             <View>
                 <Text style={styles.top_label}>Perfil de Contratante</Text>
+
+                <View style={{alignItems:'center', alignContent: 'center'}}>
+                  <Image source={{uri:'http://media.agora.com.vc/thumbs/capas/image_1399.jpg'}} style={{height: 150 , width: 150, marginLeft: 10, marginTop: 20, borderRadius: 150/2}}/>
+                  <View style={{marginTop:20}} >
+                        <Text style={{textAlign:'center', fontSize: 25, color: 'black'}}>{this.state.nomeUsuario}</Text>
+                        <Text style={{textAlign:'center'}}>{this.state.emailUsuario}</Text>
+                        <Text style={{textAlign:'center'}}>{this.state.enderecoUsuario}</Text>
+                        
+                        <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity style={styles.buttons}>
+                          <Text style={{color:'white'}}>Trocar de Perfil</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.buttons}>
+                          <Text style={{color:'white'}}>Editar Perfil</Text>
+                        </TouchableOpacity>
+                        </View>
+                  </View> 
+                </View>   
+
+              
                 
-                <View style={{flexDirection:'row', marginTop:20}}>
-                    <Text style={styles.text_name}>Nome: </Text>
-                     <Text style={styles.text_info}>{this.state.nomeUsuario}</Text>
-                </View>
-                
-                <View style = {styles.container}>
-                    <Text>Email: {this.state.emailUsuario}</Text>
-                    <Text>Endereço: {this.state.enderecoUsuario}</Text>
-                </View>
             </View>    
         );
     }
@@ -44,19 +59,32 @@ export default class TelaPerfilContratante extends Component{
             backgroundColor:"#1e90ff",
             color: "white",
             fontWeight: 'bold',
-            fontSize: 26,
+            fontSize: 24,
             padding: 20
         },
-        container: {
+        container:{
             borderBottomWidth: 1,
-            borderColor: 'grey'
+            borderColor: 'grey',
         },
         text_name:{
             color: "black",
             fontWeight: "bold",
-            fontSize: 18
+            fontSize: 15
         },
         text_info:{
-            fontSize: 18
+            justifyContent: 'center',
+            alignContent: 'center',
+            fontSize: 15
+        },
+        buttons:{
+          margin: 10, 
+          borderWidth: 1, 
+          alignItems:'center', 
+          borderRadius:20, 
+          padding: 10, 
+          height: 40,
+          backgroundColor: 'dodgerblue',
+          borderColor: 'dodgerblue'
         }
+
     });
