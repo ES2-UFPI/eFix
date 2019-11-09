@@ -38,13 +38,6 @@ api.deleteService = async (service) => {
 
 /// CATEGORIA
 
-// deve ser enviado um json no formato abaixo. Tanto para criar, deletar, ou atualizar
-/*
-    {
-        "id": "c00x", (sendo x o numero)
-        "nome": "nome"
-    }
-*/
 api.createCategory = async (categoria) => {
     return await api.post('/categoria/new', categoria);
 }
@@ -63,19 +56,6 @@ api.deleteCategory = async (categoria) => {
 
 // USUARIO
 
-/* 
-EXAMPLE
-
-to create and update a user:
-{
-	"id": "4c5f5b39c126f5d63f7ce1fc7ff93dc2eae5b5a102d832d5287e15",
-	"nome": "Zéca Garganta",
-	"senha": "soufoda01",
-	"email": "meuemail@example.com",
-	"endereco": "Rua das Aguaceiras, 34555, ZP, Teresina, PI"
-}
-
-*/
 api.createUser = async (user) => {
     return await api.post('/usuario', user);
 }
@@ -94,16 +74,6 @@ api.deleteUser = async (user_id) => {
 
 // PRESTADOR DE SERVICOS
 
-/*
-EXAMPLE
-
-to create a provider:
-{
-	"id_usuario": "óusbduaishbahuydtd3lj44hb13oysdoasgtudo3jg4134o1",
-	"bio": "Sou um eletricista muito louco"
-}
-
-*/
 api.createProvider = async (provider) => {
     return await api.post('/prestador', provider);
 }
@@ -130,6 +100,44 @@ api.addAvaliationToProvider = async (avaliation) => {
 
 api.changeProviderDisponibitily = async (provider_id) => {
     return await api.put('/prestador/status/' + encodeURI(provider_id));
+}
+
+// CONTRATO
+
+api.createContract = async (contract) => {
+    return await api.post('/contrato', contract);
+}
+
+api.getContractList = async () => {
+    return await api.get('/contrato');
+}
+
+api.getContract = async (contract_id) => {
+    return await api.get('/contrato/' + contract_id);
+}
+
+api.updateContract = async (contract) => {
+    return await api.put('/contrato', contract);
+}
+
+api.deleteContract = async (contract_id) => {
+    return await api.delete('/contrato/' + contract_id);
+}
+
+api.closeContract = async (contract_id) => {
+    return await api.put('/contrato/close/' + contract_id);
+}
+
+api.getUserContracts = async (user_id) => {
+    return await api.get('/contrato/usuario/' + user_id);
+}
+
+api.getProviderContracts = async (provider_id) => {
+    return await api.get('/contrato/prestador/' + provider_id);
+}
+
+api.addContractReview = async (review) => {
+    return await api.post('/contrato/avaliacao', review);
 }
 
 export default api;

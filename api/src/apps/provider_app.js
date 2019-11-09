@@ -131,10 +131,13 @@ const add_service_to_provider = router.post('/add/:id_servico', (req, res, next)
 });
 
 // adiciona uma nova avaliação ao prestador
-const add_avaliation_to_provider = router.post('/avaliacao', (req, res, next) => {
+const add_avaliation_to_provider = router.post('/avaliacao/:id_avaliacao', (req, res, next) => {
 
     const { id_prestador, avaliacao } = req.body;
-    const ref = firebase.database().ref('prestador/' + id_prestador);
+    const id_avaliacao = req.params.id_avaliacao;
+    const { nota, comentario } = avaliacao;
+
+    var ref = firebase.database().ref('prestador/' + id_prestador);
     
     ref.once("value", function(snapshot){
         var nota_somada = snapshot.child("nota_somada").val();
@@ -152,9 +155,15 @@ const add_avaliation_to_provider = router.post('/avaliacao', (req, res, next) =>
         ref.update({ nota_media, nota_somada }, function(error){
             if (error) {
                 res.send("Dados não poderam ser salvos " + error);
-            } else {
-                ref.child("avaliacoes").push(avaliacao);
-                res.sendStatus(200);
+            } else{
+                ref.off("value");
+                ref = firebase.database().ref('prestador/' + id_prestador + '/avaliacoes/' + id_avaliacao);
+                ref.update({ id_avaliacao, comentario, nota }, function(error){
+                    if(error){
+                        res.sendStatus(502);
+                    } else
+                        res.sendStatus(200);
+                });
             }
         });
         
@@ -203,6 +212,17 @@ const increment_qnt_services = router.put('/increment', (req, res, next) => {
     });
 });
 
+const add_contract = router.post('/contrato/:id', (req, res, next) => {
+    const id_contrato = req.params.id;
+    const { id_prestador } = req.body;
+
+    const ref = firebase.database().ref('prestador/' + id_prestador);
+    ref.child("contratos").push(id_contrato);
+    ref.off();
+
+    res.redirect(307, '../../usuario/contrato/' + id_contrato);
+});
+
 provider_app.use('/', create);
 provider_app.use('/', read);
 provider_app.use('/', show);
@@ -212,5 +232,6 @@ provider_app.use('/', add_service_to_provider);
 provider_app.use('/', add_avaliation_to_provider);
 provider_app.use('/', change_disponibility);
 provider_app.use('/', increment_qnt_services);
+provider_app.use('/', add_contract);
 
 module.exports = provider_app;

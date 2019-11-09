@@ -19,7 +19,7 @@ const create = router.post('/', (req, res, next) => {
     const contratos = [];
     const id_prestador = null;
 
-    const refPath = "usuario/" + id;
+    const refPath = "usuario/" + id_usuario;
     const ref = firebase.database().ref(refPath)
 
     ref.update({ id_usuario, nome, senha, email, endereco, contratos, id_prestador}, function(error) {
@@ -132,11 +132,23 @@ const add_provider_id = router.post('/addID/:id_prestador', (req, res, next) =>{
 
 });
 
+const add_contract = router.post('/contrato/:id', (req, res, next) => {
+    const id_contrato = req.params.id;
+    const { id_usuario } = req.body;
+
+    const ref = firebase.database().ref('usuario/' + id_usuario);
+    ref.child("contratos").push(id_contrato);
+    ref.off();
+
+    res.sendStatus(201);
+});
+
 user_app.use('/', create);
 user_app.use('/', read);
 user_app.use('/', show);
 user_app.use('/', update);
 user_app.use('/', del);
 user_app.use('/', add_provider_id);
+user_app.use('/', add_contract);
 
 module.exports = user_app;
