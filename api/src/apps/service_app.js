@@ -64,7 +64,6 @@ const read_service = router.get('/id/:id', (req, res, next) => {
 
     const ref = firebase.database().ref("/servico/" + id);
     ref.on("value", function(snapshot){
-            data.push(childSnapshot.val());
             res.json(snapshot.val());
             ref.off("value");
         },
