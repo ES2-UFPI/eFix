@@ -14,7 +14,8 @@ import {
     Container,
     Body,
     Title,
-    ButtonContainer
+    ButtonContainer,
+    Data
 } from './styles';
 
 export default class TelaContrato extends Component {
@@ -24,7 +25,7 @@ export default class TelaContrato extends Component {
         imagem: "http://media.agora.com.vc/thumbs/capas/image_1399.jpg",
         contratante: "d49769d36a1bd1ce6748e6a215fa948871d932c5445b18a99cb4ef853b130cae",
         servico: [],
-        data: null,
+        data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`,
         errorMessage: null,
     }
 
@@ -47,7 +48,6 @@ export default class TelaContrato extends Component {
         console.log("serv: " + this.props.navigation.getParam('servico'));
         console.log("prest: " + this.props.navigation.getParam('servico')['id_prestador']);
         this.getPrestador(this.props.navigation.getParam('servico')['id_prestador']);
-        this.getData();
     }
 
     getService = async (id) => {
@@ -86,6 +86,22 @@ export default class TelaContrato extends Component {
             this.setState({ errorMessage: 'Erro'})
         }
     }
+
+    setDateAndroid = async () => {
+        try {
+            const {
+                action, year, month, day,
+            } = await DatePickerAndroid.open({
+                date: new Date(),
+                minDate: new Date(),
+            });
+            if (action !== DatePickerAndroid.dismissedAction) {
+                this.setState({ data: `${day}/${month + 1}/${year}` });
+            }
+        } catch ({ code, message }) {
+            console.warn('Cannot open date picker', message);
+        }
+    };
 
     getData() {
         const dia = new Date().getDate();
@@ -126,7 +142,13 @@ export default class TelaContrato extends Component {
                         servico={this.props.navigation.getParam('servico')} />
                     <Title>Serviço</Title>
                     <Service servico={this.props.navigation.getParam('servico')}/>
+                    <Title>Data</Title>
+                    <Data>
+                        <Text>{this.state.data}</Text>
+                        
+                    </Data>
                     <ButtonContainer>
+                        <Button text="Alterar Data" onPress={this.setDateAndroid}/>
                         <Button text="Contratar" onPress={this.criarContrato}/>
                     </ButtonContainer>
                 </Body>

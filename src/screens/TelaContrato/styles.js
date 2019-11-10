@@ -25,4 +25,11 @@ export const Title = styled.Text`
 export const ButtonContainer = styled.View`
     align-items: center;
     padding: 10px;
+    flex-direction: row;
+    justify-content: space-around;
+`;
+
+export const Data = styled.View`
+    flex-direction: row;
+    align-items: center;
 `;
