@@ -49,8 +49,8 @@ export default class TelaPerfilPrestador extends Component{
                         <Text style={{textAlign:'center'}}>{this.state.enderecoUsuario}</Text>
                         
                         <View style={{flexDirection:'row'}}>
-                        <TouchableOpacity style={styles.buttons}>
-                          <Text style={{color:'white'}}>Trocar de Perfil</Text>
+                        <TouchableOpacity style={styles.buttons} onPress={() =>  {this.props.navigation.navigate('fillerscreen')}}>
+                          <Text style={{color:'white'}}>Perfil de Contratante</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.buttons}>
