@@ -35,6 +35,20 @@ export default class CadastroServico extends Component{
     this.getCategorias();
   }
 
+  static navigationOptions = {
+    headerStyle: {
+        backgroundColor: '#2196f3',
+        height: 60,
+        elevation: 10,
+    },
+    headerTintColor: '#FFF',
+    headerTitleStyle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        padding: 4,
+    }
+}
+
   pegaPreco(p){
     let state = this.state;
     var t = p;

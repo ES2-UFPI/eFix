@@ -53,7 +53,7 @@ export default class TelaPerfilPrestador extends Component{
 
     render(){
         return (
-            <View>
+            <View style={{overflow: 'scroll'}}>
 
                 <View style={{alignItems:'center', alignContent: 'center', borderBottomColor:'gainsboro', marginBottom: 5}}>
                   <Image source={{uri:'http://media.agora.com.vc/thumbs/capas/image_1399.jpg'}} style={{height: 120 , width: 120, marginLeft: 10, marginTop: 20, borderRadius: 120/2}}/>
@@ -67,7 +67,7 @@ export default class TelaPerfilPrestador extends Component{
                           <Text style={{color:'white'}}>Perfil de Contratante</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.buttons}>
+                        <TouchableOpacity style={styles.buttons} onPress={() => this.props.navigation.navigate('cadastro_servico')}>
                           <Text style={{color:'white'}}>Cadastrar Servicos</Text>
                         </TouchableOpacity>
                       
