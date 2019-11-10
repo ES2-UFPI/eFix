@@ -31,15 +31,6 @@ const BottomTab =  createMaterialBottomTabNavigator(
                 ),  
             }
     },
-    Novo: { screen: CadastroServico,
-            navigationOptions:{
-                tabBarIcon: ({ tintColor }) => (  
-                    <View>  
-                        <Icon style={[{color: tintColor}]} size={25} name={'add'}/>  
-                    </View>
-                ),  
-            }
-    },
     Perfil: { screen: ProfileRoutes,
         navigationOptions:{
             tabBarIcon: ({ tintColor }) => (  
