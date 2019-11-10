@@ -124,7 +124,7 @@ export default class TelaPerfilContratante extends Component {
                             <TouchableOpacity style={styles.buttons}
                             onPress={() =>  { this.getUserprivileges("cbe876ac4f8d8db430e81d46c2510869bc30d24a231d7039bbf1e4137d53b333")
                                 if ( this.state.ehPrestador == true) {
-                                this.props.navigation.navigate('prestadorscreen')}
+                                this.props.navigation.navigate('prestadorscreen', {usuario: this.state.prestador})}
                                 else{console.log("nao é prestador");
                             this.buttonClickded();
                             }}
