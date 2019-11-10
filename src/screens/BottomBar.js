@@ -7,6 +7,7 @@ import BuscaServicos from './BuscaServicos'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import {createAppContainer } from 'react-navigation';
 import Routes from '../routes';
+import TelaPerfilContratante from './TelaPerfilContratante';
 
 const BottomTab =  createMaterialBottomTabNavigator(
   {
@@ -37,6 +38,15 @@ const BottomTab =  createMaterialBottomTabNavigator(
                 ),  
             }
     },
+    Perfil: { screen: TelaPerfilContratante,
+        navigationOptions:{
+            tabBarIcon: ({ tintColor }) => (  
+                <View>  
+                    <Icon style={[{color: tintColor}]} size={25} name={'contacts'}/>  
+                </View>
+            ),  
+        }
+},
   },
   {
     navigationOptions: {
