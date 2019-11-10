@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    Alert
+    Alert,
+    DatePickerAndroid,
 } from 'react-native';
 import Button from '../../components/Button';
 import ProviderButton from '../../components/ProviderButton';
@@ -95,10 +96,11 @@ export default class TelaContrato extends Component {
     }
 
     criarContrato = async () => {
-        var json = "{'id_prestador': '" + this.state.prest_prestador.id_prestador + "', 'id_usuario': '"+ this.state.contratante + "', 'id_servico': '" + this.props.navigation.getParam('servico')['id_servico'] + "', 'data': '" + this.state.data + "'}";
+        var json = "{\"id_prestador\": \"" + this.state.prest_prestador.id_prestador + "\", \"id_usuario\": \""+ this.state.contratante + "\", \"id_servico\": \"" + this.props.navigation.getParam('servico')['id_servico'] + "\", \"data\": \"" + this.state.data + "\"}";
         try {
             console.log(json);
             const response = await api.createContract(json);
+            console.log(response.data);
             Alert.alert("Contrato feito com sucesso!");
         } catch(response) {
             console.log("erro: " + response.data);
