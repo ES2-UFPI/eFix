@@ -102,9 +102,9 @@ export default class TelaContrato extends Component {
                         usuario={this.state.prest_usuario}
                         prestador={this.state.prest_prestador}
                         imagem={this.state.imagem}
-                        servico={this.state.servico} />
+                        servico={this.props.navigation.getParam('servico')} />
                     <Title>Serviço</Title>
-                    <Service servico={this.state.servico}/>
+                    <Service servico={this.props.navigation.getParam('servico')}/>
                     <ButtonContainer>
                         <Button text="Contratar"/>
                     </ButtonContainer>

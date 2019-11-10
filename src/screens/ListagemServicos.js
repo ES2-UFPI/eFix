@@ -50,7 +50,7 @@ export default class ListagemServicos extends Component {
     }
 
     updateServicesList(filter, value, value2, value3, ord) {
-        this.setState({ filter: filter, value: value , value2: value2, value3: value3, ord: ord});
+        this.setState({ filter: filter, value: value , value2: value2, value3: value3, ord: ord });
 
         switch(filter) {
             case 'categoria':
@@ -239,7 +239,7 @@ export default class ListagemServicos extends Component {
                     data={this.state.servicos}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.servicos}
-                    renderItem={({item}) => <ItemServico servico={item} onPress={this.props.contract}/>}
+                    renderItem={({item}) => <ItemServico servico={item} onPress={() => this.props.contract(item)}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
                 <View style={{flexDirection: "row", alignContent:'center', alignItems:"center"}}>
