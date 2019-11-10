@@ -8,15 +8,11 @@ import {
  } from 'react-native';
 
 export default class ItemServico extends Component {
-    showAlert = () => {
-        Alert.alert("Contratar serviço");
-    }
-
     render() {
         console.log(this.props.servico.id_servico);
 
         return(
-            <TouchableOpacity style={styles.container} onPress={this.showAlert}>
+            <TouchableOpacity style={styles.container} onPress={this.props.onPress}>
                 <View style={styles.container_top}>
                     <Text style={styles.name}>{this.props.servico.nome}</Text>
                     <Text>R$ {this.props.servico.preco}</Text>

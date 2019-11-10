@@ -5,7 +5,8 @@ import {
     StyleSheet,
     FlatList,
     Button,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import ItemServico from './ItemServico.js';
 import api from '../services/API';
@@ -218,6 +219,10 @@ export default class ListagemServicos extends Component {
         this.setState({servicos: order, ord: 2});
     }
 
+    showAlert = () => {
+        Alert.alert("Contratar serviço");
+    }
+
     render() {
         const emptyList = <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
             <Text>Nenhum serviço recuperado.</Text> 
@@ -233,7 +238,7 @@ export default class ListagemServicos extends Component {
                     data={this.state.servicos}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.servicos}
-                    renderItem={({item}) => <ItemServico servico={item}/>}
+                    renderItem={({item}) => <ItemServico servico={item} onPress={this.showAlert}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
                 <View style={{flexDirection: "row", alignContent:'center', alignItems:"center"}}>
