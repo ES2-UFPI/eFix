@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { 
     Text, 
     View,
-    StyleSheet
+    StyleSheet,
+    Alert,
+    TouchableOpacity
  } from 'react-native';
 
 export default class ItemServico extends Component {
@@ -10,7 +12,7 @@ export default class ItemServico extends Component {
         console.log(this.props.servico.id_servico);
 
         return(
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={this.props.onPress}>
                 <View style={styles.container_top}>
                     <Text style={styles.name}>{this.props.servico.nome}</Text>
                     <Text>R$ {this.props.servico.preco}</Text>
@@ -19,7 +21,7 @@ export default class ItemServico extends Component {
                 <Text>{this.props.servico.categoria}</Text>
                 <Text style={styles.title}>Descrição</Text>
                 <Text>{this.props.servico.descricao}</Text>
-            </View>
+            </TouchableOpacity>
         );
     }
 }

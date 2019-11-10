@@ -25,7 +25,7 @@ export default class Busca extends React.Component {
     this.state = {
       pesquisa:'', 
       erro:'',
-      servicos: <ListagemServicos />,
+      servicos: <ListagemServicos contract={(serv) => this.props.navigation.navigate('contrato', {servico: serv})} />,
       categorias: [],
       preco: '',
       categoria: '',
@@ -39,6 +39,21 @@ export default class Busca extends React.Component {
     this.getCategorias();
   }
 
+  static navigationOptions = {
+    title: 'Pesquisar Serviços',
+    headerStyle: {
+      backgroundColor: '#2196f3',
+      height: 60,
+      elevation: 10,
+    },
+    headerTintColor: '#FFF',
+    headerTitleStyle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      padding: 4,
+    }
+  }
+
   pegaPesquisa(s){
     let state = this.state;
     state.erro='';
@@ -50,43 +65,43 @@ export default class Busca extends React.Component {
     if (this.state.preco !=null && this.state.categoria == '' && this.state.pesquisa == ''){
       let state = this.state;
       var x = state.preco;
-      this.setState({servicos: <ListagemServicos filter='preco' value={x} />});
+      this.setState({servicos: <ListagemServicos contract={(serv) => this.props.navigation.navigate('contrato', {servico: serv})} filter='preco' value={x} />});
     }
     else if (this.state.categoria!= '' && this.state.pesquisa == '' && this.state.preco =='') {
       let state = this.state;
       var x = state.categoria;
-      this.setState({servicos: <ListagemServicos filter='categoria' value={x} />});
+      this.setState({servicos: <ListagemServicos contract={(serv) => this.props.navigation.navigate('contrato', {servico: serv})} filter='categoria' value={x} />});
     }
     else if (this.state.categoria!= '' && this.state.pesquisa == '' && this.state.preco != '') {
       let state = this.state;
       var x = state.categoria;
       var z = state.preco;
-      this.setState({servicos: <ListagemServicos filter='busca3' value={x} value2={z}/>});
+      this.setState({servicos: <ListagemServicos contract={(serv) => this.props.navigation.navigate('contrato', {servico: serv})} filter='busca3' value={x} value2={z}/>});
     }
     else if (this.state.categoria == '' && this.state.pesquisa != '' && this.state.preco != '') {
       
       let state = this.state;
       var x = state.pesquisa;
       var z = state.preco;
-      this.setState({servicos: <ListagemServicos filter='busca2' value={x} value2={z}/>});
+      this.setState({servicos: <ListagemServicos contract={(serv) => this.props.navigation.navigate('contrato', {servico: serv})} filter='busca2' value={x} value2={z}/>});
     }
     else if (this.state.categoria != '' && this.state.pesquisa != '' && this.state.preco == '') {
       let state = this.state;
       var x = state.pesquisa;
       var z = state.categoria;
-      this.setState({servicos: <ListagemServicos filter='busca4' value={x} value2={z}/>});
+      this.setState({servicos: <ListagemServicos contract={(serv) => this.props.navigation.navigate('contrato', {servico: serv})} filter='busca4' value={x} value2={z}/>});
     }
     else if (this.state.categoria != '' && this.state.pesquisa != '' && this.state.preco != '') {
       let state = this.state;
       var x = state.pesquisa;
       var z = state.categoria;
       var w = state.preco;
-      this.setState({servicos: <ListagemServicos filter='buscatudinho' value={x} value2={z} value3={w}/>});
+      this.setState({servicos: <ListagemServicos contract={(serv) => this.props.navigation.navigate('contrato', {servico: serv})} filter='buscatudinho' value={x} value2={z} value3={w}/>});
     }
      else if (this.state.pesquisa != '' && this.state.preco == '' && this.state.categoria== '') {
       let state = this.state;
       var x = state.pesquisa;
-      this.setState({servicos: <ListagemServicos filter='busca' value={x} />});
+      this.setState({servicos: <ListagemServicos contract={(serv) => this.props.navigation.navigate('contrato', {servico: serv})} filter='busca' value={x} />});
     }
   } 
 

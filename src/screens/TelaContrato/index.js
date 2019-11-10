@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    Alert
+    Alert,
+    DatePickerAndroid,
 } from 'react-native';
 import Button from '../../components/Button';
-import Header from '../../components/Header';
 import ProviderButton from '../../components/ProviderButton';
-import ItemServico from '../ItemServico';
+import Service from '../../components/Service';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../services/API';
 import {
     Container,
     Body,
     Title,
-    ButtonContainer
+    ButtonContainer,
+    Data
 } from './styles';
 
 export default class TelaContrato extends Component {
@@ -22,18 +23,31 @@ export default class TelaContrato extends Component {
         prest_usuario: [],
         prest_prestador: [],
         imagem: "http://media.agora.com.vc/thumbs/capas/image_1399.jpg",
+        contratante: "d49769d36a1bd1ce6748e6a215fa948871d932c5445b18a99cb4ef853b130cae",
         servico: [],
-        horario: null,
+        data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`,
+        errorMessage: null,
+    }
+
+    static navigationOptions = {
+        title: 'Contratar Serviço',
+        headerStyle: {
+            backgroundColor: '#2196f3',
+            height: 60,
+            elevation: 10,
+        },
+        headerTintColor: '#FFF',
+        headerTitleStyle: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            padding: 4,
+        }
     }
 
     componentDidMount() {
-        const id_servico = "37440f00680edb6f3a74fa5db4a859d9e26a80f89c3577afa3e7f1d19df6ba86";
-        const id_usuario = "cbe876ac4f8d8db430e81d46c2510869bc30d24a231d7039bbf1e4137d53b333";
-        const id_prestador = "2f5f7bbeb1024442922992ab22383faae088e3b35957909979dfb65233876c6e"
-
-        this.getService(id_servico);
-        this.getPrestadorUsuario(id_usuario);
-        this.getPrestadorPrestador(id_prestador);
+        console.log("serv: " + this.props.navigation.getParam('servico'));
+        console.log("prest: " + this.props.navigation.getParam('servico')['id_prestador']);
+        this.getPrestador(this.props.navigation.getParam('servico')['id_prestador']);
     }
 
     getService = async (id) => {
@@ -49,20 +63,7 @@ export default class TelaContrato extends Component {
           }
     }
 
-    getPrestadorUsuario = async (id) => {
-        try {
-            const response = await api.getUser(id);
-
-            console.log("Tela: " + response.data);
-
-            this.setState({ prest_usuario: response.data });
-        } catch(response) {
-            console.log("erro: " + response.data);
-            this.setState({ errorMessage: 'Erro'})
-        }
-    }
-
-    getPrestadorPrestador = async (id) => {
+    getPrestador = async (id) => {
         try {
             const response = await api.getProvider(id);
 
@@ -73,27 +74,82 @@ export default class TelaContrato extends Component {
             console.log("erro: " + response.data);
             this.setState({ errorMessage: 'Erro'})
         }
+
+        try {
+            const response = await api.getUser(this.state.prest_prestador.id_usuario);
+
+            console.log("Tela: " + response.data);
+
+            this.setState({ prest_usuario: response.data });
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: 'Erro'})
+        }
+    }
+
+    setDateAndroid = async () => {
+        try {
+            const {
+                action, year, month, day,
+            } = await DatePickerAndroid.open({
+                date: new Date(),
+                minDate: new Date(),
+            });
+            if (action !== DatePickerAndroid.dismissedAction) {
+                this.setState({ data: `${day}/${month + 1}/${year}` });
+            }
+        } catch ({ code, message }) {
+            console.warn('Cannot open date picker', message);
+        }
+    };
+
+    getData() {
+        const dia = new Date().getDate();
+        const mes = new Date().getMonth() + 1;
+        const ano = new Date().getFullYear();
+        const data = dia + "/" + mes + "/" + ano;
+        this.setState({ data: data });
+    }
+
+    criarContrato = async () => {
+        var json = "{\"id_prestador\": \"" + this.state.prest_prestador.id_prestador + "\", \"id_usuario\": \""+ this.state.contratante + "\", \"id_servico\": \"" + this.props.navigation.getParam('servico')['id_servico'] + "\", \"data\": \"" + this.state.data + "\"}";
+        try {
+            console.log(json);
+            const response = await api.createContract(json);
+            console.log(response.data);
+            Alert.alert("Contrato feito com sucesso!");
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: response.data });
+            Alert.alert("Contrato não pode ser efetuado.");
+        }
     }
 
     showAlert = () => {
+        console.log(this.state.servico);
         Alert.alert("Perfil do prestador");
     }
 
     render() {
         return(
             <Container>
-                <Header title="Contratar Serviço"/>
                 <Body>
                     <Title>Provedor</Title>
                     <ProviderButton onPress={this.showAlert}
                         usuario={this.state.prest_usuario}
                         prestador={this.state.prest_prestador}
                         imagem={this.state.imagem}
-                        servico={this.state.servico} />
+                        servico={this.props.navigation.getParam('servico')} />
                     <Title>Serviço</Title>
-                    <ItemServico servico={this.state.servico}/>
+                    <Service servico={this.props.navigation.getParam('servico')}/>
+                    <Title>Data</Title>
+                    <Data>
+                        <Text>{this.state.data}</Text>
+                        
+                    </Data>
                     <ButtonContainer>
-                        <Button text="Contratar"/>
+                        <Button text="Alterar Data" onPress={this.setDateAndroid}/>
+                        <Button text="Contratar" onPress={this.criarContrato}/>
                     </ButtonContainer>
                 </Body>
             </Container>
