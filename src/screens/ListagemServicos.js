@@ -233,7 +233,7 @@ export default class ListagemServicos extends Component {
                     data={this.state.servicos}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.servicos}
-                    renderItem={({item}) => <ItemServico nome={item.nome} preco={item.preco} categoria={item.categoria} descricao={item.descricao}/>}
+                    renderItem={({item}) => <ItemServico servico={item}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
                 <View style={{flexDirection: "row", alignContent:'center', alignItems:"center"}}>

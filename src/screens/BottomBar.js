@@ -3,7 +3,8 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Home from './Home';
 import CadastroServico from './CadastroServico';
-import BuscaServicos from './BuscaServicos'
+import BuscaServicos from './BuscaServicos';
+import TelaContrato from './TelaContrato';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import {createAppContainer } from 'react-navigation';
 import Routes from '../routes';
