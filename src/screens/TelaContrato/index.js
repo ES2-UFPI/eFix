@@ -21,8 +21,10 @@ export default class TelaContrato extends Component {
         prest_usuario: [],
         prest_prestador: [],
         imagem: "http://media.agora.com.vc/thumbs/capas/image_1399.jpg",
+        contratante: "d49769d36a1bd1ce6748e6a215fa948871d932c5445b18a99cb4ef853b130cae",
         servico: [],
-        horario: null,
+        data: null,
+        errorMessage: null,
     }
 
     static navigationOptions = {
@@ -44,6 +46,7 @@ export default class TelaContrato extends Component {
         console.log("serv: " + this.props.navigation.getParam('servico'));
         console.log("prest: " + this.props.navigation.getParam('servico')['id_prestador']);
         this.getPrestador(this.props.navigation.getParam('servico')['id_prestador']);
+        this.getData();
     }
 
     getService = async (id) => {
@@ -83,6 +86,27 @@ export default class TelaContrato extends Component {
         }
     }
 
+    getData() {
+        const dia = new Date().getDate();
+        const mes = new Date().getMonth() + 1;
+        const ano = new Date().getFullYear();
+        const data = dia + "/" + mes + "/" + ano;
+        this.setState({ data: data });
+    }
+
+    criarContrato = async () => {
+        var json = "{'id_prestador': '" + this.state.prest_prestador.id_prestador + "', 'id_usuario': '"+ this.state.contratante + "', 'id_servico': '" + this.props.navigation.getParam('servico')['id_servico'] + "', 'data': '" + this.state.data + "'}";
+        try {
+            console.log(json);
+            const response = await api.createContract(json);
+            Alert.alert("Contrato feito com sucesso!");
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: response.data });
+            Alert.alert("Contrato não pode ser efetuado.");
+        }
+    }
+
     showAlert = () => {
         console.log(this.state.servico);
         Alert.alert("Perfil do prestador");
@@ -101,7 +125,7 @@ export default class TelaContrato extends Component {
                     <Title>Serviço</Title>
                     <Service servico={this.props.navigation.getParam('servico')}/>
                     <ButtonContainer>
-                        <Button text="Contratar"/>
+                        <Button text="Contratar" onPress={this.criarContrato}/>
                     </ButtonContainer>
                 </Body>
             </Container>
