@@ -29,7 +29,7 @@ const BottomTab =  createMaterialBottomTabNavigator(
                 ),  
             }
     },
-    Novo: { screen: TelaContrato,
+    Novo: { screen: CadastroServico,
             navigationOptions:{
                 tabBarIcon: ({ tintColor }) => (  
                     <View>  
