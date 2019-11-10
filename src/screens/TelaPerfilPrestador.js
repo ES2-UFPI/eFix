@@ -26,6 +26,21 @@ export default class TelaPerfilPrestador extends Component{
         this.trocarDisponibilidade = this.trocarDisponibilidade.bind(this);
     }
 
+    static navigationOptions = {
+        title: 'Perfil de Prestador de Serviços',
+        headerStyle: {
+            backgroundColor: '#2196f3',
+            height: 60,
+            elevation: 10,
+        },
+        headerTintColor: '#FFF',
+        headerTitleStyle: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            padding: 4,
+        }
+    }
+
     trocarDisponibilidade(){
         let state = this.state;
         if(state.disponibilidade == "Serviços Desativados no momento..."){
@@ -39,7 +54,6 @@ export default class TelaPerfilPrestador extends Component{
     render(){
         return (
             <View>
-                <Text style={styles.top_label}>Perfil de Prestador de Servicos</Text>
 
                 <View style={{alignItems:'center', alignContent: 'center', borderBottomColor:'gainsboro', marginBottom: 5}}>
                   <Image source={{uri:'http://media.agora.com.vc/thumbs/capas/image_1399.jpg'}} style={{height: 120 , width: 120, marginLeft: 10, marginTop: 20, borderRadius: 120/2}}/>

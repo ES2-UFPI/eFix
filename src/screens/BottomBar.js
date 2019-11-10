@@ -7,7 +7,8 @@ import BuscaServicos from './BuscaServicos';
 import TelaContrato from './TelaContrato';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import {createAppContainer } from 'react-navigation';
-import Routes from '../routes';
+import SearchRoutes from '../routes/SearchRoutes';
+import ProfileRoutes from '../routes/ProfileRoutes';
 import TelaPerfilContratante from './TelaPerfilContratante';
 
 const BottomTab =  createMaterialBottomTabNavigator(
@@ -21,7 +22,7 @@ const BottomTab =  createMaterialBottomTabNavigator(
                 ),  
             }
     },
-    Busca: { screen: Routes,
+    Busca: { screen: SearchRoutes,
             navigationOptions:{
                 tabBarIcon: ({ tintColor }) => (  
                     <View>  
@@ -39,7 +40,7 @@ const BottomTab =  createMaterialBottomTabNavigator(
                 ),  
             }
     },
-    Perfil: { screen: TelaPerfilContratante,
+    Perfil: { screen: ProfileRoutes,
         navigationOptions:{
             tabBarIcon: ({ tintColor }) => (  
                 <View>  
