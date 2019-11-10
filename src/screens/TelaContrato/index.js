@@ -4,7 +4,7 @@ import {
     Text,
     Alert
 } from 'react-native';
-import SimpleButton from '../../components/SimpleButton';
+import Button from '../../components/Button';
 import Header from '../../components/Header';
 import ProviderButton from '../../components/ProviderButton';
 import ItemServico from '../ItemServico';
@@ -12,9 +12,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../services/API';
 import {
     Container,
-    Service,
     Body,
     Title,
+    ButtonContainer
 } from './styles';
 
 export default class TelaContrato extends Component {
@@ -90,11 +90,11 @@ export default class TelaContrato extends Component {
                         prestador={this.state.prest_prestador}
                         imagem={this.state.imagem}
                         servico={this.state.servico} />
-                    <Service>
-                        <ItemServico servico={this.state.servico}/>
-                    </Service>
-                    <SimpleButton title="Agendamento"/>
-                    <SimpleButton title="Contratar"/>
+                    <Title>Serviço</Title>
+                    <ItemServico servico={this.state.servico}/>
+                    <ButtonContainer>
+                        <Button text="Contratar"/>
+                    </ButtonContainer>
                 </Body>
             </Container>
         );

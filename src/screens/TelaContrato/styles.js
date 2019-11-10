@@ -21,6 +21,7 @@ export const Title = styled.Text`
     margin: 10px 0 10px 0;
 `;
 
-export const Service = styled.View`
-    padding: 10px 0 10px 0;
+export const ButtonContainer = styled.View`
+    align-items: center;
+    padding: 10px;
 `;
