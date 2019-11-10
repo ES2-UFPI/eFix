@@ -7,7 +7,7 @@ import {
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import ProviderButton from '../../components/ProviderButton';
-import ItemServico from '../ItemServico';
+import Service from '../../components/Service';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../services/API';
 import {
@@ -91,7 +91,7 @@ export default class TelaContrato extends Component {
                         imagem={this.state.imagem}
                         servico={this.state.servico} />
                     <Title>Serviço</Title>
-                    <ItemServico servico={this.state.servico}/>
+                    <Service servico={this.state.servico}/>
                     <ButtonContainer>
                         <Button text="Contratar"/>
                     </ButtonContainer>
