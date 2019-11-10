@@ -10,6 +10,7 @@ import api from '../../services/API';
 import {
     Container,
     Service,
+    Body,
 } from './styles';
 
 export default class TelaContrato extends Component {
@@ -17,6 +18,10 @@ export default class TelaContrato extends Component {
         prestador: null,
         servico: [],
         horario: null
+    }
+
+    componentDidMount() {
+        this.getService("0096a43749737bc43bd53c00d59d3d44d05ef5a6d9b0751af2571894f53322ca");
     }
 
     getService = async (id) => {
@@ -33,18 +38,19 @@ export default class TelaContrato extends Component {
     }
 
     render() {
-        this.getService("0096a43749737bc43bd53c00d59d3d44d05ef5a6d9b0751af2571894f53322ca");
 
         return(
             <Container>
-                <Header title="Contrato de Serviço"/>
-                <Text>Prestador</Text>
-                <Text>Avaliação: Tal</Text>
-                <Service>
-                    <ItemServico servico={this.state.servico}/>
-                </Service>
-                <SimpleButton title="Agendamento"/>
-                <SimpleButton title="Contratar"/>
+                <Header title="Contratar Serviço"/>
+                <Body>
+                    <Text>Prestador</Text>
+                    <Text>Avaliação: Tal</Text>
+                    <Service>
+                        <ItemServico servico={this.state.servico}/>
+                    </Service>
+                    <SimpleButton title="Agendamento"/>
+                    <SimpleButton title="Contratar"/>
+                </Body>
             </Container>
         );
     }
