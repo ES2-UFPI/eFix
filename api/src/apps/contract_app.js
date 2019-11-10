@@ -104,10 +104,16 @@ const close_contract = router.put('/close/:id', (req,res, next) => {
     ref.update({ ativo }, function(error){
         if(error){
             res.sendStatus(502);
-        } else
-            res.sendStatus(200);
+        } else{
+            ref.off("value");
+            
+            ref.once("value", function(snapshot){
+                const id_prestador = snapshot.child("id_prestador").val();
+                res.redirect(307, '../../prestador/incremento/' + id_prestador);
+                ref.off("value");
+            });
+        }
     });
-    ref.off("value");
 });
 
 // recupera todos os contratos de um usuario
