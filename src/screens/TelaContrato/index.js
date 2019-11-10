@@ -41,13 +41,9 @@ export default class TelaContrato extends Component {
     }
 
     componentDidMount() {
-        const id_servico = "37440f00680edb6f3a74fa5db4a859d9e26a80f89c3577afa3e7f1d19df6ba86";
-        const id_usuario = "cbe876ac4f8d8db430e81d46c2510869bc30d24a231d7039bbf1e4137d53b333";
-        const id_prestador = "2f5f7bbeb1024442922992ab22383faae088e3b35957909979dfb65233876c6e"
-
-        this.getService(id_servico);
-        this.getPrestadorUsuario(id_usuario);
-        this.getPrestadorPrestador(id_prestador);
+        console.log("serv: " + this.props.navigation.getParam('servico'));
+        console.log("prest: " + this.props.navigation.getParam('servico')['id_prestador']);
+        this.getPrestador(this.props.navigation.getParam('servico')['id_prestador']);
     }
 
     getService = async (id) => {
@@ -63,20 +59,7 @@ export default class TelaContrato extends Component {
           }
     }
 
-    getPrestadorUsuario = async (id) => {
-        try {
-            const response = await api.getUser(id);
-
-            console.log("Tela: " + response.data);
-
-            this.setState({ prest_usuario: response.data });
-        } catch(response) {
-            console.log("erro: " + response.data);
-            this.setState({ errorMessage: 'Erro'})
-        }
-    }
-
-    getPrestadorPrestador = async (id) => {
+    getPrestador = async (id) => {
         try {
             const response = await api.getProvider(id);
 
@@ -87,9 +70,21 @@ export default class TelaContrato extends Component {
             console.log("erro: " + response.data);
             this.setState({ errorMessage: 'Erro'})
         }
+
+        try {
+            const response = await api.getUser(this.state.prest_prestador.id_usuario);
+
+            console.log("Tela: " + response.data);
+
+            this.setState({ prest_usuario: response.data });
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: 'Erro'})
+        }
     }
 
     showAlert = () => {
+        console.log(this.state.servico);
         Alert.alert("Perfil do prestador");
     }
 
