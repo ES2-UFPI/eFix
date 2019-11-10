@@ -193,8 +193,8 @@ const change_disponibility = router.put('/status/:id_prestador', (req, res, next
 });
 
 // incrementa em 1 a quantidade de servicos prestados
-const increment_qnt_services = router.put('/increment', (req, res, next) => {
-    const id_prestador = req.body.id_prestador;
+const increment_qnt_services = router.put('/incremento/:id_prestador', (req, res, next) => {
+    const id_prestador = req.params.id_prestador;
 
     const refPath = "prestador/" + id_prestador;
     const ref = firebase.database().ref(refPath);
