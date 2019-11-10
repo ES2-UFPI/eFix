@@ -6,6 +6,7 @@ import BuscaServicos from './screens/BuscaServicos';
 import TelaContrato from './screens/TelaContrato';
 import TelaPerfilContratante from './screens/TelaPerfilContratante';
 import TelaPerfilPrestador from './screens/TelaPerfilPrestador';
+import CadastroServico from './screens/CadastroServico';
 
 const AppNavigator = createStackNavigator(
 	{
@@ -14,7 +15,8 @@ const AppNavigator = createStackNavigator(
         filterscreen:{screen: TelaFiltroServicos },
         listscreen:{ screen: ListagemServicos },
         fillerscreen:{ screen: TelaPerfilContratante },
-        prestadorscreen:{ screen: TelaPerfilPrestador }
+        prestadorscreen:{ screen: TelaPerfilPrestador },
+        cadastro_servico: { screen: CadastroServico }
     },
     {
         inicialRouteName: 'busca'
