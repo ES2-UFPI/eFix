@@ -15,6 +15,7 @@ export default class ListagemServicos extends Component {
     
     state = {
         servicos: [],
+        servico: [],
         errorMessage: null,
         filter: null,
         value: null,
@@ -238,7 +239,7 @@ export default class ListagemServicos extends Component {
                     data={this.state.servicos}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.servicos}
-                    renderItem={({item}) => <ItemServico servico={item} onPress={this.showAlert}/>}
+                    renderItem={({item}) => <ItemServico servico={item} onPress={this.props.contract}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
                 <View style={{flexDirection: "row", alignContent:'center', alignItems:"center"}}>

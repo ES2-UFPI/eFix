@@ -5,7 +5,6 @@ import {
     Alert
 } from 'react-native';
 import Button from '../../components/Button';
-import Header from '../../components/Header';
 import ProviderButton from '../../components/ProviderButton';
 import Service from '../../components/Service';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -24,6 +23,21 @@ export default class TelaContrato extends Component {
         imagem: "http://media.agora.com.vc/thumbs/capas/image_1399.jpg",
         servico: [],
         horario: null,
+    }
+
+    static navigationOptions = {
+        title: 'Contratar Serviço',
+        headerStyle: {
+            backgroundColor: '#2196f3',
+            height: 60,
+            elevation: 10,
+        },
+        headerTintColor: '#FFF',
+        headerTitleStyle: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            padding: 4,
+        }
     }
 
     componentDidMount() {
@@ -82,7 +96,6 @@ export default class TelaContrato extends Component {
     render() {
         return(
             <Container>
-                <Header title="Contratar Serviço"/>
                 <Body>
                     <Title>Provedor</Title>
                     <ProviderButton onPress={this.showAlert}

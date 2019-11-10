@@ -25,7 +25,8 @@ export default class Busca extends React.Component {
     this.state = {
       pesquisa:'', 
       erro:'',
-      servicos: <ListagemServicos />,
+      servicos: <ListagemServicos contract={() => this.props.navigation.navigate('contrato')} />,
+      servico: [],
       categorias: [],
       preco: '',
       categoria: '',
@@ -37,6 +38,21 @@ export default class Busca extends React.Component {
     this.showErro = this.showErro.bind(this);
     this.getCategorias = this.getCategorias.bind(this);
     this.getCategorias();
+  }
+
+  static navigationOptions = {
+    title: 'Pesquisar Serviços',
+    headerStyle: {
+      backgroundColor: '#2196f3',
+      height: 60,
+      elevation: 10,
+    },
+    headerTintColor: '#FFF',
+    headerTitleStyle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      padding: 4,
+    }
   }
 
   pegaPesquisa(s){

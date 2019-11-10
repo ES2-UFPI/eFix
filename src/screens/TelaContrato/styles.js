@@ -13,6 +13,7 @@ export const Body = styled.View`
     border-width: 1px;
     background-color: #ebf0f0;
     elevation: 10px;
+    margin: 8px 5px 0 5px;
 `;
 
 export const Title = styled.Text`
