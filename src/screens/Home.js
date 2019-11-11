@@ -55,7 +55,6 @@ export default class Home extends Component {
                             keyExtractor={(item, id_servico) => item.nome + id_servico}
                         />
                     </View>
-                    <SimpleButton title="Ir para serviço"/>
                 </View>
             </View>
         );   
