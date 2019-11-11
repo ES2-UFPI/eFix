@@ -72,12 +72,13 @@ export default class CadastroServico extends Component{
       state.erroEnv= "Não foi possível cadastrar este serviço, talvez algum campo não tenha sido escrito ou existe um campo inserido de maneira errônea."
       Alert.alert("Erro!");
     }else{  
-      var env = "{\"categoria\": \"" +  state.categoria +"\", \"descricao\": \"" + state.descricao +"\", \"id_prestador\": \""+ state.idprestador + "\", \"id_servico\": \""+ state.idservico + "\", \"nome\": \""+ state.nome + "\", \"preco\" : \" "+ state.precos + "\"}";
+      var env = "{\"categoria\": \"" +  state.categoria +"\", \"descricao\": \"" + state.descricao +"\", \"id_prestador\": \""+ this.props.navigation.getParam('id_prestador') + "\", \"nome\": \""+ state.nome + "\", \"preco\" : \" "+ state.precos + "\"}";
       state.erroEnv = '';
       api.createService(env);
       Alert.alert("Cadastrado!");
     }
     this.setState(state);
+    this.props.navigation.goBack();
   }
 
   getCategorias = async () => {
@@ -97,6 +98,7 @@ export default class CadastroServico extends Component{
     let CategoriaItem = this.state.categorias.map((v, k) => {
       return <Picker.Item key={v} value={v.nome} label={v.nome} />
     });
+    console.log('prov: ' + this.props.navigation.getParam('id_prestador'));
 
     return(
     

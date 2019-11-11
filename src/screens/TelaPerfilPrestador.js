@@ -71,7 +71,7 @@ export default class TelaPerfilPrestador extends Component{
                           <Text style={{color:'white'}}>Perfil de Contratante</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.buttons} onPress={() => this.props.navigation.navigate('cadastro_servico')}>
+                        <TouchableOpacity style={styles.buttons} onPress={() => this.props.navigation.navigate('cadastro_servico', {id_prestador: this.props.navigation.getParam('usuario')['id_prestador']})}>
                           <Text style={{color:'white'}}>Cadastrar Servicos</Text>
                         </TouchableOpacity>
                       
