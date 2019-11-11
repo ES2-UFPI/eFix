@@ -8,11 +8,8 @@ import {
     TouchableOpacity,
     Alert
 } from 'react-native';
-import {createSwitchNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
 import api from '../services/API';
-import TelaPerfilPrestador from './TelaPerfilPrestador';
-import '../routes'
+
 export default class TelaPerfilContratante extends Component {
 
     constructor(props) {
@@ -45,6 +42,21 @@ export default class TelaPerfilContratante extends Component {
             ehPrestador: false
         }
        
+    }
+
+    static navigationOptions = {
+        title: 'Perfil',
+        headerStyle: {
+            backgroundColor: '#2196f3',
+            height: 60,
+            elevation: 10,
+        },
+        headerTintColor: '#FFF',
+        headerTitleStyle: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            padding: 4,
+        }
     }
 
 	mudarPerfil() {
@@ -101,7 +113,6 @@ export default class TelaPerfilContratante extends Component {
 
         return (
             <View>
-                <Text style={styles.top_label}>Perfil de Contratante</Text>
 
                 <View style={{alignItems:'center', alignContent: 'center'}}>
                   <Image source={{uri:usuario.imagem}} style={{height: 150 , width: 150, marginLeft: 10, marginTop: 20, borderRadius: 150/2}}/>
@@ -113,7 +124,7 @@ export default class TelaPerfilContratante extends Component {
                             <TouchableOpacity style={styles.buttons}
                             onPress={() =>  { this.getUserprivileges("cbe876ac4f8d8db430e81d46c2510869bc30d24a231d7039bbf1e4137d53b333")
                                 if ( this.state.ehPrestador == true) {
-                                this.props.navigation.navigate('prestadorscreen')}
+                                this.props.navigation.navigate('prestadorscreen', {usuario: this.state.prestador})}
                                 else{console.log("nao é prestador");
                             this.buttonClickded();
                             }}

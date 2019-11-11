@@ -20,10 +20,29 @@ export default class TelaPerfilPrestador extends Component{
             enderecoUsuario: "Rua Tchurosbangos Tchudosbagos, 2193",
             servicosAutorais: ["Nenhum serviço cadastrado."],
             servicosContratados:'',
-            disponibilidade: 'Serviços Desativados no momento...',
-            horariosDisponibilizados:[]
+            disponibilidade: 'Serviços Ativados no momento...',
+            horariosDisponibilizados:[],
         }
         this.trocarDisponibilidade = this.trocarDisponibilidade.bind(this);
+    }
+
+    static navigationOptions = {
+        title: 'Perfil de Prestador de Serviços',
+        headerStyle: {
+            backgroundColor: '#2196f3',
+            height: 60,
+            elevation: 10,
+        },
+        headerTintColor: '#FFF',
+        headerTitleStyle: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            padding: 4,
+        }
+    }
+
+    componentDidMount() {
+        console.log(this.props.navigation.getParam('usuario'));
     }
 
     trocarDisponibilidade(){
@@ -38,22 +57,21 @@ export default class TelaPerfilPrestador extends Component{
 
     render(){
         return (
-            <View>
-                <Text style={styles.top_label}>Perfil de Prestador de Servicos</Text>
+            <View style={{overflow: 'scroll'}}>
 
                 <View style={{alignItems:'center', alignContent: 'center', borderBottomColor:'gainsboro', marginBottom: 5}}>
                   <Image source={{uri:'http://media.agora.com.vc/thumbs/capas/image_1399.jpg'}} style={{height: 120 , width: 120, marginLeft: 10, marginTop: 20, borderRadius: 120/2}}/>
                   <View style={{marginTop:5}} >
-                        <Text style={{textAlign:'center', fontSize: 25, color: 'black'}}>{this.state.nomeUsuario}</Text>
-                        <Text style={{textAlign:'center'}}>{this.state.emailUsuario}</Text>
-                        <Text style={{textAlign:'center'}}>{this.state.enderecoUsuario}</Text>
+                        <Text style={{textAlign:'center', fontSize: 25, color: 'black'}}>{this.props.navigation.getParam('usuario')['nome']}</Text>
+                        <Text style={{textAlign:'center'}}>{this.props.navigation.getParam('usuario')['email']}</Text>
+                        <Text style={{textAlign:'center'}}>{this.props.navigation.getParam('usuario')['endereco']}</Text>
                         
                         <View style={{flexDirection:'row'}}>
                         <TouchableOpacity style={styles.buttons} onPress={() =>  {this.props.navigation.navigate('fillerscreen')}}>
                           <Text style={{color:'white'}}>Perfil de Contratante</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.buttons}>
+                        <TouchableOpacity style={styles.buttons} onPress={() => this.props.navigation.navigate('cadastro_servico', {id_prestador: this.props.navigation.getParam('usuario')['id_prestador']})}>
                           <Text style={{color:'white'}}>Cadastrar Servicos</Text>
                         </TouchableOpacity>
                       
