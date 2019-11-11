@@ -118,6 +118,7 @@ export default class TelaContrato extends Component {
             const response = await api.createContract(json);
             console.log(response.data);
             Alert.alert("Contrato feito com sucesso!");
+            this.props.navigation.goBack();
         } catch(response) {
             console.log("erro: " + response.data);
             this.setState({ errorMessage: response.data });

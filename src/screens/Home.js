@@ -20,7 +20,7 @@ export default class Home extends Component {
 
     getService = async () => {
         try{
-          const response = await api.getServiceById("suadh0uhu1uh232ewqeq1");
+          const response = await api.getServiceById("099d9edb068ea6fdda507c339708e6d129637d3fb5cc3b407e19530189854fd5");
     
           console.log("Tela: " + response.data);
     
@@ -55,7 +55,6 @@ export default class Home extends Component {
                             keyExtractor={(item, id_servico) => item.nome + id_servico}
                         />
                     </View>
-                    <SimpleButton title="Ir para serviço"/>
                 </View>
             </View>
         );   

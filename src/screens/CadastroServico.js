@@ -72,8 +72,14 @@ export default class CadastroServico extends Component{
       state.erroEnv= "Não foi possível cadastrar este serviço, talvez algum campo não tenha sido escrito ou existe um campo inserido de maneira errônea."
       Alert.alert("Erro!");
     }else{  
-      var env = "{\"categoria\": \"" +  state.categoria +"\", \"descricao\": \"" + state.descricao +"\", \"id_prestador\": \""+ this.props.navigation.getParam('id_prestador') + "\", \"nome\": \""+ state.nome + "\", \"preco\" : \" "+ state.precos + "\"}";
+      var env = "{\"categoria\": \"" +  state.categoria +
+            "\", \"descricao\": \"" + state.descricao +
+            "\", \"id_prestador\": \""+ this.props.navigation.getParam('id_prestador') + 
+            "\", \"nome\": \""+ state.nome + 
+            "\", \"preco\" : \" "+ state.precos +
+             "\"}";
       state.erroEnv = '';
+      console.log(env)
       api.createService(env);
       Alert.alert("Cadastrado!");
     }
