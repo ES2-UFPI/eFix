@@ -1,6 +1,6 @@
 'use strict'
 
-const app = require('../src/app');
+const app = require('../src/router_app');
 const debug = require('debug')('eFix:server');
 const http = require('http');
 
