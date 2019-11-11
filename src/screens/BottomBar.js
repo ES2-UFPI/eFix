@@ -35,7 +35,7 @@ const BottomTab =  createMaterialBottomTabNavigator(
         navigationOptions:{
             tabBarIcon: ({ tintColor }) => (  
                 <View>  
-                    <Icon style={[{color: tintColor}]} size={25} name={'contacts'}/>  
+                    <Icon style={[{color: tintColor}]} size={25} name={'account-circle'}/>  
                 </View>
             ),  
         }

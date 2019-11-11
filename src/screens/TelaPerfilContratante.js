@@ -99,7 +99,7 @@ export default class TelaPerfilContratante extends Component {
         );}
     
     componentDidMount(){
-        this.getUserprivileges("cbe876ac4f8d8db430e81d46c2510869bc30d24a231d7039bbf1e4137d53b333");
+        this.getUserprivileges("34d61fb7f20eb7e0538544b4b09bfb429b02ddc704a3b7f66ab75cb5ba438397");
     
         }
     render() {

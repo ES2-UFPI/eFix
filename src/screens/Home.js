@@ -20,7 +20,7 @@ export default class Home extends Component {
 
     getService = async () => {
         try{
-          const response = await api.getServiceById("suadh0uhu1uh232ewqeq1");
+          const response = await api.getServiceById();
     
           console.log("Tela: " + response.data);
     
@@ -48,12 +48,12 @@ export default class Home extends Component {
                         </Text>
                     </View>
                     <View style={styles.container}>
-                        <FlatList 
+                        {/* <FlatList 
                             data={this.state.servicos}
                             ListEmptyComponent={emptyList}
                             renderItem={({item}) => <ItemServico servico={item}/>}
                             keyExtractor={(item, id_servico) => item.nome + id_servico}
-                        />
+                        /> */}
                     </View>
                     <SimpleButton title="Ir para serviço"/>
                 </View>
