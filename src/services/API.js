@@ -36,8 +36,8 @@ api.deleteService = async (service) => {
     return await api.delete('/servico', service);
 }
 
-api.getProviderServices = async (id_prestador) => {
-    return await api.get('/servico/prestador/' + encodeURI(id_prestador));
+api.getProviderServices = async (id_provider) => {
+    return await api.get('/servico/prestador/' + encodeURI(id_provider));
 }
 
 /// CATEGORIA
@@ -142,6 +142,36 @@ api.getProviderContracts = async (provider_id) => {
 
 api.addContractReview = async (review) => {
     return await api.post('/contrato/avaliacao', review);
+}
+
+// HORÁRIOS
+
+api.createSchedule = async (schedule) => {
+    return;
+}
+
+api.updateSchedule = async (schedule) => {
+    return;
+}
+
+api.deleteSchedule = async(schedule) => {
+    return;
+}
+
+api.getProviderSchedule = async (id_provider) => {
+    return;
+}
+
+api.getProviderFullSchedule = async (id_provider) => {
+    return;
+}
+
+api.getProviderAllocatedSchedule = async (id_provider) => {
+    return;
+}
+
+api.getProviderFreeSchedule = async (id_provider) => {
+    return;
 }
 
 export default api;
