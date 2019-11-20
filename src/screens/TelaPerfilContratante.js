@@ -134,6 +134,9 @@ export default class TelaPerfilContratante extends Component {
                             <TouchableOpacity style={styles.buttons}>
                             <Text style={{color:'white'}}>Editar Perfil</Text>
                             </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress = {() => this.props.navigation.navigate('ListagemContratosscreen')}>
+                          <Text style={{color:'white'}}>Visualizar Contratos</Text>
+                        </TouchableOpacity>
                         </View>
                     </View> 
                 </View>                
