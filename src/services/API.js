@@ -36,6 +36,10 @@ api.deleteService = async (service) => {
     return await api.delete('/servico', service);
 }
 
+api.getProviderServices = async (id_prestador) => {
+    return await api.get('/servico/prestador/' + encodeURI(id_prestador));
+}
+
 /// CATEGORIA
 
 api.createCategory = async (categoria) => {
