@@ -158,7 +158,7 @@ api.deleteSchedule = async(schedule) => {
     return;
 }
 
-api.getProviderSchedule = async (id_provider) => {
+api.getProviderSchedule = async (id_provider, day) => {
     return;
 }
 
