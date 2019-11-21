@@ -82,7 +82,7 @@ const update = router.put('/', (req, res, next) => {
 
 // delete o horario de um prestador
 const del = router.delete('/:id', (req, res, next) => {
-    // const { id } = req.params;
+    const { id } = req.params;
 
     const refPath = "prestador/" + id;
     var ref = firebase.database().ref(refPath);
@@ -91,7 +91,7 @@ const del = router.delete('/:id', (req, res, next) => {
         if(snapshot.val() == null)
             res.sendStatus(406);
 
-        // ref.child("horario").remove();
+        ref.child("horario").remove();
         res.sendStatus(200);
     }, function(errorObject){
         res.sendStatus(401);
