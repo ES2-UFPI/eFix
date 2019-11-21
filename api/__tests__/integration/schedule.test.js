@@ -144,4 +144,23 @@ describe('Running Tests...', () =>{
         expect(response.status).toBe(406);
         done();
     });
+
+    it('should delete a entire schedule provider', async (done) => {
+        
+        const response = await request(schedule_app)
+        .delete('/' + id_prestador)
+
+        expect(response.status).toBe(200);
+        done();
+    });
+
+    it('should not be able to delete a entire schedule provider with invalid id', async (done) => {
+        const id_prestador = "dummy-four";
+        
+        const response = await request(schedule_app)
+        .get('/' + id_prestador)
+
+        expect(response.status).toBe(401);
+        done();
+    });    
 });

@@ -71,10 +71,28 @@ const update = router.put('/', (req, res, next) => {
             if (error) {
                 res.send("Dados não poderam ser atualizados " + error);
             } else {
-                res.sendStatus(200);
+                res.status(200).send();
             }
         });
         ref.off("value"); 
+    }, function(errorObject){
+        res.sendStatus(401);
+    });
+});
+
+// delete o horario de um prestador
+const del = router.delete('/:id', (req, res, next) => {
+    // const { id } = req.params;
+
+    const refPath = "prestador/" + id;
+    var ref = firebase.database().ref(refPath);
+    
+    ref.once("value", function(snapshot){
+        if(snapshot.val() == null)
+            res.sendStatus(406);
+
+        // ref.child("horario").remove();
+        res.sendStatus(200);
     }, function(errorObject){
         res.sendStatus(401);
     });
