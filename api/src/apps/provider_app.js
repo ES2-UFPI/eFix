@@ -11,7 +11,7 @@ provider_app.use(bodyParser.urlencoded({extended: false}));
 
 const router = express.Router();
 
-const create = router.post('/', (req, res, next) => {
+const create = router.post('/', async (req, res, next) => {
  
     const id_prestador = crypto.randomBytes(32).toString('hex');
     const id_usuario = req.body.id_usuario;
@@ -26,17 +26,17 @@ const create = router.post('/', (req, res, next) => {
     const disponibilidade = true;
 
     const refPath = "prestador/" + id_prestador;
-    const ref = firebase.database().ref(refPath);
+    var ref = firebase.database().ref(refPath);
 
     ref.update({ id_prestador, id_usuario, bio, horarios, servicos, contratos,
                 nota_media, nota_somada, avaliacoes, qnt_servicos_prestados, disponibilidade 
                 }, function(error) {
                     if (error) {
-                        res.send("Dados não poderam ser salvos " + error);
+                        res.sendStatus(401);
                     } else {
-                        res.redirect(307, '../usuario/addID/' + id_prestador);
+                        ref = firebase.database().ref('usuario/' + id_usuario).child("id_prestador").set(id_prestador);
+                        res.status(201).json({ id_prestador: id_prestador }).send();
                     }
-        ref.off("value");
     });
 });
 

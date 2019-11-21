@@ -26,7 +26,7 @@ const create = router.post('/', (req, res, next) => {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
-            res.send("Dados salvos com sucesso " + 200);
+            res.status(201).json({ id_usuario: id_usuario}).send();
         }
     });
 });
@@ -121,17 +121,6 @@ const del = router.delete('/:id', (req, res, next) => {
     });
 });
 
-// adiciona o valor do id de prestador ao usuario
-const add_provider_id = router.post('/addID/:id_prestador', (req, res, next) =>{
-    const { id_prestador } = req.params;
-    const id_usuario = req.body.id_usuario;
-
-    const ref = firebase.database().ref('usuario/' + id_usuario).child("id_prestador").set(id_prestador);
-    
-    res.sendStatus(200);
-
-});
-
 const add_contract = router.post('/contrato/:id', (req, res, next) => {
     const id_contrato = req.params.id;
     const { id_usuario } = req.body;
@@ -148,7 +137,6 @@ user_app.use('/', read);
 user_app.use('/', show);
 user_app.use('/', update);
 user_app.use('/', del);
-user_app.use('/', add_provider_id);
 user_app.use('/', add_contract);
 
 module.exports = user_app;
