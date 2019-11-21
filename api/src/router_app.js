@@ -6,6 +6,7 @@ const category = require('./apps/category_app');
 const user = require('./apps/user_app');
 const provider = require('./apps/provider_app');
 const contract = require('./apps/contract_app');
+const schedule = require('./apps/schedule_app');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use('/categoria', category);
 app.use('/usuario', user);
 app.use('/prestador', provider);
 app.use('/contrato', contract);
+app.use('/prestador/horario', schedule);
 
 module.exports = app;
 

@@ -15,14 +15,16 @@ const create = router.post('/', (req, res, next) => {
     const { id_prestador, schedule } = req.body;
     console.log("CREATE schedule for " + id_prestador);
 
-    const refPath = "prestador/" + id_prestador + '/horario';
+    const horario = schedule;
+
+    const refPath = "prestador/" + id_prestador;
     const ref = firebase.database().ref(refPath)
 
-    ref.update({ schedule }, function(error) {
+    ref.update({ horario }, function(error) {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
-            res.sendStatus(201);
+            res.status(201).send();
         }
     });
 });

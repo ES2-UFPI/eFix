@@ -1,19 +1,16 @@
-const supertest = require('supertest');
-const router_app = require('../../src/router_app');
-const request = supertest(router_app);
+const request = require('supertest');
+const app = require('../../src/apps/schedule_app');
 
 beforeAll(done => {
-    console.log('before')
     done();
 });
   
 afterAll(done => {
-    console.log('after')
     done();
 });
 
 describe('Running Tests...', () =>{
-    it('create provider schedules', async() => {
+    it('create provider schedules', async (done) => {
         const json = {
             id_prestador: "36ec71c245a2f9ad45c6c76aef507eff8b556b6063deef6fe7ceec353a5271a7",
             schedule: {
@@ -26,10 +23,11 @@ describe('Running Tests...', () =>{
                 domingo: []
             }
         }
-        
-        const response = await request.post('/prestador/horario')
-        .send(JSON.stringify(json))
-        
-        expect(response.statusCode).toEqual(201);
+        const response = await request(app)
+        .post('/')
+        .send(json)
+
+        expect(response.status).toBe(201);
+        done();
     });
 });
