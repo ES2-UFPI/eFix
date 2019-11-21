@@ -101,4 +101,26 @@ describe('Running Tests...', () =>{
         done();
     });
 
+    it('should uptade a schedule provider with valid id', async (done) => {
+        const json = {
+            id_prestador: id_prestador,
+            schedule: {
+                segunda: [["08:00", "12:00"], ["14:00", "18:00"]],
+                terca:   [["08:00", "11:00"], ["14:00", "15:30"]],
+                quarta:  [["08:00", "12:00"], ["14:00", "18:00"]],
+                quinta:  [["08:00", "12:00"], ["14:00", "18:00"]],
+                sexta:   [["08:00", "12:00"], ["14:00", "18:00"]],
+                sabado:  [["08:00", "10:30"], ["08:00", "10:30"], ["13:10", "14:30"], ["16:00", "19:15"]],
+                domingo: []
+            }
+        }
+        
+        const response = await request(schedule_app)
+        .put('/')
+        .send(json)
+
+        expect(response.status).toBe(200);
+        done();
+    });
+
 });
