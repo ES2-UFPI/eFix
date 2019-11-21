@@ -56,6 +56,30 @@ const show = router.get('/:id', (req, res, next) => {
     });
 });
 
+// atualiza as informações de horario de um prestador
+const update = router.put('/', (req, res, next) => {
+    const { id_prestador, horario } = req.body;
+
+    const refPath = "prestador/" + id_prestador;
+    const ref = firebase.database().ref(refPath);
+
+    ref.once("value", function(snapshot){
+        if(snapshot.val() == null)
+            res.sendStatus(406);
+
+        ref.update({ horario }, function(error) {
+            if (error) {
+                res.send("Dados não poderam ser atualizados " + error);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+        ref.off("value"); 
+    }, function(errorObject){
+        res.sendStatus(401);
+    });
+});
+
 schedule_app.use('/', create);
 schedule_app.use('/', show);
 
