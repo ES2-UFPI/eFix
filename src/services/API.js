@@ -82,6 +82,10 @@ api.getProvidersList = async () => {
     return await api.get('/prestador');
 }
 
+api.getProviderServicesList = async (provider_id) => {
+    return await api.get('/servico/prestador/' + encodeURI(provider_id));
+}
+
 api.getProvider = async (provider_id) => {
     return await api.get('/prestador/' + encodeURI(provider_id));
 }

@@ -21,6 +21,7 @@ export default class ListagemServicoPrestador extends Component {
         value: null,
         value2: null, 
         value3: null,
+        id_prestador: null,
         ord: null
     };
 
@@ -119,6 +120,15 @@ export default class ListagemServicoPrestador extends Component {
         }
     }
 
+    getServicesByProvider = async (id_prestador) => {
+        try{
+            const response = await api.getServicesByProvider(id_prestador);
+            this.setState({servicos: response.data["servicos"]})
+        }   catch (response) {
+            this.setState({errorMessage: "Erro"});
+        }
+    }
+
     getServicesByPreco = async (preco) => {
         try {
             const response = await api.getServicesUnderPrice(preco);
@@ -205,21 +215,6 @@ export default class ListagemServicoPrestador extends Component {
         }
     }
 
-    orderByPrecoC = () =>{
-        var order = this.state.servicos.sort((a, b) => parseFloat(a.preco) > parseFloat(b.preco));
-        this.setState({servicos: order, ord: 1});
-    }
-
-    orderByPrecoD = () =>{
-        var order = this.state.servicos.sort((a, b) => parseFloat(a.preco) < parseFloat(b.preco));
-        this.setState({servicos: order, ord: 2});
-    }
-
-    orderByAlfa = () =>{
-        var order = this.state.servicos.sort((a, b) => a.nome.toUpperCase() > b.nome.toUpperCase());
-        this.setState({servicos: order, ord: 2});
-    }
-
     showAlert = () => {
         Alert.alert("Contratar serviço");
     }
@@ -242,17 +237,6 @@ export default class ListagemServicoPrestador extends Component {
                     renderItem={({item}) => <ItemServico servico={item} onPress={() => this.props.contract(item)}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
-                <View style={{flexDirection: "row", alignContent:'center', alignItems:"center"}}>
-                    <TouchableOpacity style={styles.buttons, {marginLeft:3 ,borderTopWidth: 1,borderTopColor:'gainsboro', borderRightWidth:1, borderRightColor: "gainsboro"}} onPress={this.orderByPrecoC}>
-                        <Text style={styles.buttonText}>Ord. por Preço Cre.</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity style={styles.buttons, {borderTopWidth: 1,borderTopColor:'gainsboro', borderRightWidth:1, borderRightColor: "gainsboro"}} onPress={this.orderByPrecoD}>
-                        <Text style={styles.buttonText}>Ord. por Preço Decre.</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttons, {borderTopWidth: 1,borderTopColor:'gainsboro', borderRightWidth:0, borderRightColor: "gainsboro"}} onPress={this.orderByAlfa}>
-                        <Text style={styles.buttonText}>Ord. Alfabética</Text>
-                    </TouchableOpacity> 
-                </View>
             </View>
             
         );
