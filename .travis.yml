@@ -21,7 +21,8 @@ matrix:
     before_script:
       working_dir: api/
       - npm install jest supertest --save-dev
-      - npm test
       
     script:
+      working_dir: api/
+        - npm test
       - "./android/gradlew assembleRelease -p android/"
