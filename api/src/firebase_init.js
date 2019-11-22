@@ -1,7 +1,7 @@
-var util = require('../util.js');
 
 if(process.env.NODE_ENV === "test")
-    util = require('../dev_util');
+    const util = require('../dev_util');
+else const util = require('../util.js');
 
 const firebase = require('firebase');
 
