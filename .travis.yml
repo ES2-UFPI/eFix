@@ -2,6 +2,10 @@ install:
 - nvm install 10
 - npm install -g "npm@$(jq -r '.engines.npm' package.json)"
 - npm ci
+
+cache:
+  directories:
+  - node_modules
 matrix:
   include:
   - os: linux
@@ -14,5 +18,10 @@ matrix:
     before_install:
       - yes | sdkmanager "platforms;android-28"
       - yes | sdkmanager "build-tools;28.0.3"
+    before_script:
+      working_dir: api/
+      - npm install jest supertest --save-dev
+      - npm test
+      
     script:
       - "./android/gradlew assembleRelease -p android/"
