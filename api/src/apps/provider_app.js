@@ -117,19 +117,6 @@ const del = router.delete('/:id', (req, res, next) => {
     });
 });
 
-// adiciona um novo servico na lista do prestador
-const add_service_to_provider = router.post('/add/:id_servico', (req, res, next) => {
-
-    const { id_prestador } = req.body;
-    const id_servico = req.params.id_servico;
-    
-    const ref = firebase.database().ref('prestador/' + id_prestador);
-    ref.child("servicos").push(id_servico);
-    ref.off();
-
-    res.sendStatus(200);
-});
-
 // adiciona uma nova avaliação ao prestador
 const add_avaliation_to_provider = router.post('/avaliacao/:id_avaliacao', (req, res, next) => {
 
@@ -228,7 +215,6 @@ provider_app.use('/', read);
 provider_app.use('/', show);
 provider_app.use('/', update);
 provider_app.use('/', del);
-provider_app.use('/', add_service_to_provider);
 provider_app.use('/', add_avaliation_to_provider);
 provider_app.use('/', change_disponibility);
 provider_app.use('/', increment_qnt_services);

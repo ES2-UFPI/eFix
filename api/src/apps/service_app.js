@@ -24,13 +24,16 @@ const create_service = router.post('/', (req, res, next) => {
     const descricao = req.body.descricao;
 
     const refPath = "servico/" + id_servico;
-    const ref = firebase.database().ref(refPath)
+    var ref = firebase.database().ref(refPath)
 
     ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {
-            res.redirect(307, '../prestador/add/' + id_servico);
+            ref = firebase.database().ref('prestador/' + id_prestador);
+            ref.child("servicos").push(id_servico);
+
+            res.status(201).json({ id_servico: id_servico }).send();
         }
     });
 });

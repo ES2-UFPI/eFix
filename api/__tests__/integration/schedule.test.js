@@ -2,11 +2,13 @@ const request = require('supertest');
 const schedule_app = require('../../src/apps/schedule_app');
 const user_app = require('../../src/apps/user_app');
 const provider_app = require('../../src/apps/provider_app');
+const service_app = require('../../src/apps/service_app');
 
 const firebase = require('../../src/firebase_init');
 
 describe('Running Tests...', () =>{
     var id_prestador = null;
+    var id_servico = null;
     beforeAll(async done => {
         var response = await request(user_app).post('/').send({
             nome :  "Jose" ,
@@ -23,6 +25,18 @@ describe('Running Tests...', () =>{
         })
 
         id_prestador = response.body.id_prestador;
+
+        response = await request(service_app).post('/').send({
+            id_prestador: id_prestador,
+            categoria: "Eletricista",
+            nome: "Troca de  Fios",
+            descricao: "Troco os fios da sua casa",
+            preco: "40",
+            duracao: [2, 15] // [hr, min]
+        });
+
+        id_servico = response.body.id_servico;
+
         done();
     });
     
@@ -162,5 +176,15 @@ describe('Running Tests...', () =>{
 
         expect(response.status).toBe(401);
         done();
-    });    
+    }); 
+    
+    it('should be able to verify if the date passed is valid', async (done) =>{
+        const date_test = new Date("November 23, 2019 08:30");
+
+
+
+
+
+        done();
+    });
 });
