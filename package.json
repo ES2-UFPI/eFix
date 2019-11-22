@@ -6,11 +6,12 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit",
     "lint": "eslint ."
   },
   "dependencies": {
     "apisauce": "^1.1.1",
+    "cross-env": "^6.0.3",
     "react": "16.9.0",
     "react-native": "0.61.2",
     "react-native-gesture-handler": "^1.4.1",
@@ -29,12 +30,9 @@
     "@react-native-community/eslint-config": "0.0.3",
     "babel-jest": "24.9.0",
     "eslint": "6.5.1",
-    "jest": "24.9.0",
+    "jest": "^24.9.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.9.0"
-  },
-  "jest": {
-    "preset": "react-native"
   },
   "engines": {
     "node": "10.16.3",
