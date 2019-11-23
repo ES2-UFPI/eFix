@@ -23,7 +23,7 @@ export default class TelaContrato extends Component {
         prest_usuario: [],
         prest_prestador: [],
         imagem: "http://media.agora.com.vc/thumbs/capas/image_1399.jpg",
-        contratante: "d49769d36a1bd1ce6748e6a215fa948871d932c5445b18a99cb4ef853b130cae",
+        contratante: "2e6d9b3a01d160d77f46fd9e5798344f77be8de245da0b13eb537982d50f94a8",
         servico: [],
         data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`,
         errorMessage: null,
