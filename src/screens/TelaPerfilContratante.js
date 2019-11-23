@@ -99,7 +99,7 @@ export default class TelaPerfilContratante extends Component {
         );}
     
     componentDidMount(){
-        this.getUserprivileges("34d61fb7f20eb7e0538544b4b09bfb429b02ddc704a3b7f66ab75cb5ba438397");
+        this.getUserprivileges("2e6d9b3a01d160d77f46fd9e5798344f77be8de245da0b13eb537982d50f94a8");
     
         }
     render() {
@@ -122,7 +122,7 @@ export default class TelaPerfilContratante extends Component {
                         <Text style={{textAlign:'center'}}>{this.state.prestador.endereco}</Text>
                         <View style={{flexDirection:'row'}}>
                             <TouchableOpacity style={styles.buttons}
-                            onPress={() =>  { this.getUserprivileges("cbe876ac4f8d8db430e81d46c2510869bc30d24a231d7039bbf1e4137d53b333")
+                            onPress={() =>  { this.getUserprivileges("2e6d9b3a01d160d77f46fd9e5798344f77be8de245da0b13eb537982d50f94a8")
                                 if ( this.state.ehPrestador == true) {
                                 this.props.navigation.navigate('prestadorscreen', {usuario: this.state.prestador})}
                                 else{console.log("nao é prestador");

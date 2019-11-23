@@ -8,10 +8,10 @@ import {
     TouchableOpacity,
     Alert
 } from 'react-native';
-import ItemContrato from './ItemContrato';
+import ItemContratoPrestador from './ItemContratoPrestador';
 import api from '../services/API';
 
-export default class ListagemContratos extends Component {
+export default class ListagemContratosPrestador extends Component {
     
     state = {
     
@@ -50,7 +50,7 @@ export default class ListagemContratos extends Component {
         switch(filter) {
 
             default:
-                this.getContractList("2e6d9b3a01d160d77f46fd9e5798344f77be8de245da0b13eb537982d50f94a8");
+                this.getContractList("9e7b7c0eae0f298079d33045376142631820bfa174916656849a92959a069341");
                 console.log("cara especifico");
                 break;
         }
@@ -58,7 +58,7 @@ export default class ListagemContratos extends Component {
 
     getContractList = async (id_usuario) => {
         try {
-            const response = await api.getUserContracts(id_usuario);
+            const response = await api.getProviderContracts(id_usuario);
 
             console.log("Tela firs response: " + response.data);
 
@@ -88,7 +88,7 @@ export default class ListagemContratos extends Component {
                     data={this.state.contratos}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.contratos}
-                    renderItem={({item}) => <ItemContrato contrato ={item} onPress={() => this.props.contract(item)}/>}
+                    renderItem={({item}) => <ItemContratoPrestador contrato ={item} onPress={() => this.props.contract(item)}/>}
                     keyExtractor={(item, id_contrato) => item.id_usuario + id_contrato}
                 />
                 

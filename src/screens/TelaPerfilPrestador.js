@@ -86,7 +86,7 @@ export default class TelaPerfilPrestador extends Component{
                           <Text style={{color:'white'}}>Trocar Disponibilidade</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.buttons} onPress = {() => this.props.navigation.navigate('ListagemContratosscreen')}>
+                        <TouchableOpacity style={styles.buttons} onPress = {() => this.props.navigation.navigate('ListagemContratosPrestadorscreen')}>
                           <Text style={{color:'white'}}>Visualizar Contratos</Text>
                         </TouchableOpacity>
 

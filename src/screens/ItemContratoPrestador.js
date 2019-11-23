@@ -8,12 +8,13 @@ import {
  } from 'react-native';
  import api from '../services/API';
 
-export default class ItemContrato extends Component {
+export default class ItemContratoPrestador extends Component {
     
     state = {
         prest_usuario: [],
         prest_prestador: {},
         servico: [],
+        contratante:[],
         errorMessage: null,
     }
   
@@ -41,7 +42,19 @@ export default class ItemContrato extends Component {
             this.setState({ errorMessage: 'Erro'})
         }
     }
-    
+    getContratante = async () => {
+      
+        try {
+            const response = await api.getUser(this.props.contrato.id_usuario);
+
+            console.log("recebedo usuario: " + response.data);
+
+            this.setState({ contratante: response.data });
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: 'Erro'})
+        }
+    }
     getServico = async () => {
         try {
             const response = await api.getServiceById(this.props.contrato.id_servico);
@@ -73,6 +86,7 @@ export default class ItemContrato extends Component {
    componentDidMount(){
     this.getPrestador();
     this.getServico();
+    this.getContratante();
     }
     render() {
         console.log(this.props.contrato.id_contrato);
@@ -81,7 +95,7 @@ export default class ItemContrato extends Component {
                 <View style={styles.container_top}>
                     <Text style={styles.name}>{this.state.servico.nome}</Text>
                     </View>
-                    <Text>Prestador: {this.state.prest_usuario.nome}</Text>
+                    <Text>Contratante: {this.state.contratante.nome}</Text>
                     <Text>Status: {this.getAtivoOuNao()}</Text>
                     <Text>Data: {this.props.contrato.data}</Text>
                 
