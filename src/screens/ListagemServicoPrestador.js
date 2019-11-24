@@ -55,7 +55,7 @@ export default class ListagemServicoPrestador extends Component {
         console.log("ENTROU AQUI 1");
         switch(filter) {
             case 'provider':
-                console.log("ENTROU AQUI 2");
+                console.log("ENTROU AQUI 2 ID: " + value);
                 this.getServicesProvider(value);
                 break;
             default:
@@ -69,10 +69,12 @@ export default class ListagemServicoPrestador extends Component {
 
     getServicesProvider = async (id_prestador) => {
         try{
+            console.log("AAAAAAAAAAAA");
             const response = await api.getProviderServicesList(id_prestador);
             console.log("Telassssss: " + response.data);
             this.setState({servicos: response.data["servicos"]})
         }   catch (response) {
+            console.log("DEU ERRO");
             this.setState({errorMessage: "Erro"});
         }
     }
