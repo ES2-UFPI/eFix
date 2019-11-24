@@ -7,6 +7,7 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
+import ListagemServicoPrestador from './ListagemServicoPrestador.js';
 
 export default class TelaPerfilPrestador extends Component{
 
@@ -24,6 +25,8 @@ export default class TelaPerfilPrestador extends Component{
             horariosDisponibilizados:[],
         }
         this.trocarDisponibilidade = this.trocarDisponibilidade.bind(this);
+        this.listarServicos = this.listarServicos.bind(this);
+        this.listarServicos();
     }
 
     static navigationOptions = {
@@ -55,6 +58,15 @@ export default class TelaPerfilPrestador extends Component{
         }
     }
 
+    listarServicos(){
+        let state = this.state;
+        console.log('ID de prestado: ' + this.props.navigation.getParam('usuario')['id_prestador']);
+        state.servicosAutorais = [];
+        state.servicosAutorais = <ListagemServicoPrestador filter='provider' value={this.props.navigation.getParam('usuario')['id_prestador']}/>;
+        this.setState(state);
+
+    }
+
     render(){
         return (
             <View style={{overflow: 'scroll'}}>
@@ -84,6 +96,10 @@ export default class TelaPerfilPrestador extends Component{
                         <View style={{flexDirection:'row', justifyContent:'center'}}>
                         <TouchableOpacity style={styles.buttons}  onPress={this.trocarDisponibilidade}>
                           <Text style={{color:'white'}}>Trocar Disponibilidade</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.buttons} onPress = {() => this.props.navigation.navigate('ListagemContratosPrestadorscreen')}>
+                          <Text style={{color:'white'}}>Visualizar Contratos</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.buttons}>

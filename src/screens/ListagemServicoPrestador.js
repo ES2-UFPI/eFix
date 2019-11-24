@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     Alert
 } from 'react-native';
-import ItemServico from './ItemServico.js';
+import ItemServicoShow from './ItemServicoShow.js';
 import api from '../services/API';
 
 export default class ListagemServicoPrestador extends Component {
@@ -52,40 +52,11 @@ export default class ListagemServicoPrestador extends Component {
 
     updateServicesList(filter, value, value2, value3, ord) {
         this.setState({ filter: filter, value: value , value2: value2, value3: value3, ord: ord });
-
+        console.log("ENTROU AQUI 1");
         switch(filter) {
-            case 'categoria':
-                this.getServicesByCategoria(value);
-                console.log("Filtro por categoria " + value);
-                break;
-            case 'preco':
-                this.getServicesByPreco(value);
-                console.log("Filtro por preco " + value);
-                break;
-            case 'busca':
-                this.getServicesBySearch(value);
-                console.log("Filtro de busca por " + value);
-                break;
-            case 'busca2':
-                this.getServicesBySearch2(value, value2);
-                console.log("Filtro de busca por " + value);
-                break;
-            case 'busca3':
-                this.getServicesBySearch3(value, value2);
-                console.log("Filtro de busca por " + value);
-                break;
-            case 'busca4':
-                this.getServicesBySearch4(value, value2);
-                console.log("Filtro de busca4 por " + value);
-                console.log("pesquiza::" + value);
-                console.log("categoria:" + value2);
-                break;
-            case 'buscatudinho':
-                this.getServicesBySearchtudinho(value, value2, value3);
-                console.log("Filtro de busca4 por " + value);
-                console.log("pesquiza::" + value);
-                console.log("categoria:" + value2);
-                console.log("preço:" + value3);
+            case 'provider':
+                console.log("ENTROU AQUI 2");
+                this.getServicesProvider(value);
                 break;
             default:
                 this.getServicesList();
@@ -94,35 +65,12 @@ export default class ListagemServicoPrestador extends Component {
         }
     }
 
-    getServicesList = async () => {
-        try {
-            const response = await api.getServices();
+   
 
-            console.log("Tela: " + response.data);
-
-            this.setState({servicos: response.data["servicos"]});
-        } catch (response) {
-            console.log("Erro: " + response.data);
-            this.setState({errorMessage: "Erro"});
-        }
-    }
-
-    getServicesByCategoria = async (categoria) => {
-        try {
-            const response = await api.getServicesByCategory(categoria);
-
-            console.log("Tela: " + response.data);
-
-            this.setState({servicos: response.data["servicos"]});
-        } catch (response) {
-            console.log("Erro: " + response.data);
-            this.setState({errorMessage: "Erro"});
-        }
-    }
-
-    getServicesByProvider = async (id_prestador) => {
+    getServicesProvider = async (id_prestador) => {
         try{
-            const response = await api.getServicesByProvider(id_prestador);
+            const response = await api.getProviderServicesList(id_prestador);
+            console.log("Telassssss: " + response.data);
             this.setState({servicos: response.data["servicos"]})
         }   catch (response) {
             this.setState({errorMessage: "Erro"});
@@ -136,79 +84,6 @@ export default class ListagemServicoPrestador extends Component {
             console.log("Tela: " + response.data);
 
             this.setState({servicos: response.data["servicos"]});
-        } catch (response) {
-            console.log("Erro: " + response.data);
-            this.setState({errorMessage: "Erro"});
-        }
-    }
-
-    getServicesBySearch = async (texto) => {
-        try {
-            const response = await api.getServicesSearch(texto);
-
-            console.log("Tela: " + response.data);
-
-            this.setState({servicos: response.data["servicos"]});
-        } catch (response) {
-            console.log("Erro: " + response.data);
-            this.setState({errorMessage: "Erro"});
-        }
-    }
-    getServicesBySearch2 = async (texto, texto2) => {
-        try {
-            const response = await api.getServicesSearch(texto);
-            console.log("Tela: " + response.data);
-		let filtrados = []
-		filtrados = response.data["servicos"].filter(function(a){
-            return a.preco <= texto2;})
-            this.setState({servicos: filtrados});
-        } catch (response) {
-            console.log("Erro: " + response.data);
-            this.setState({errorMessage: "Erro"});
-        }
-    }
-    getServicesBySearch3 = async (categoria, texto2) => {
-        try {
-            const response = await api.getServicesByCategory(categoria);
-            console.log("Tela: " + response.data);
-		let filtrados = []
-		filtrados = response.data["servicos"].filter(function(a){
-            return a.preco <= texto2;})
-            this.setState({servicos: filtrados});
-        } catch (response) {
-            console.log("Erro: " + response.data);
-            this.setState({errorMessage: "Erro"});
-        }
-    }
-    getServicesBySearch4 = async (texto, texto2) => {
-        try {
-            const response = await api.getServicesSearch(texto);
-
-            console.log("Tela: " + response.data);
-
-            let filtrados = []
-            filtrados = response.data["servicos"].filter(function(a){
-                return a.categoria === texto2;})
-                this.setState({servicos: filtrados});
-           
-            // this.setState({servicos: response.data["servicos"]});
-        } catch (response) {
-            console.log("Erro: " + response.data);
-            this.setState({errorMessage: "Erro"});
-        }
-    }
-    getServicesBySearchtudinho = async (texto, texto2, texto3) => {
-        try {
-            const response = await api.getServicesSearch(texto);
-
-            console.log("Tela: " + response.data);
-
-            let filtrados = []
-            filtrados = response.data["servicos"].filter(function(a){
-                return a.categoria === texto2 && a.preco <= texto3;})
-                this.setState({servicos: filtrados});
-           
-            // this.setState({servicos: response.data["servicos"]});
         } catch (response) {
             console.log("Erro: " + response.data);
             this.setState({errorMessage: "Erro"});
@@ -234,7 +109,7 @@ export default class ListagemServicoPrestador extends Component {
                     data={this.state.servicos}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.servicos}
-                    renderItem={({item}) => <ItemServico servico={item} onPress={() => this.props.contract(item)}/>}
+                    renderItem={({item}) => <ItemServicoShow servico={item}/>}
                     keyExtractor={(item, id_servico) => item.nome + id_servico}
                 />
             </View>
