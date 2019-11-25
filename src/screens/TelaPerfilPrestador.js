@@ -93,6 +93,7 @@ export default class TelaPerfilPrestador extends Component{
                         </View>
 
                         <View style={{flexDirection:'row', justifyContent:'center', marginTop: 5}}>
+                          
                         <TouchableOpacity style={styles.buttons_left}  onPress={this.trocarDisponibilidade}>
                           <Text style={{color:'white', fontSize:11.5}}>Trocar Disponibilidade</Text>
                         </TouchableOpacity>
@@ -103,6 +104,7 @@ export default class TelaPerfilPrestador extends Component{
 
                         <TouchableOpacity style={styles.buttons_right}>
                           <Text style={{color:'white', fontSize:11.5}}>Visualizar Horários</Text>
+
                         </TouchableOpacity>
                         </View>
 
