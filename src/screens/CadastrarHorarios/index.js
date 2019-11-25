@@ -10,9 +10,16 @@ import {
     Container,
     Body,
     Title,
+    ButtonContainer,
 } from './styles';
 
 export default class CadastrarHorarios extends Component {
+    state = {
+        horarios: [],
+        data: null,
+        errorMessage: null,
+    }
+
     static navigationOptions = {
         title: 'Horários Disponíveis',
         headerStyle: {
@@ -33,7 +40,9 @@ export default class CadastrarHorarios extends Component {
             <Container>
                 <Body>
                     <Schedule day="Segunda-feira" start="14h" finish="18h"/>
-                    <Button text="Novo Horário"/>
+                    <ButtonContainer>
+                        <Button text="Novo"/>
+                    </ButtonContainer>
                 </Body>
             </Container>
         );

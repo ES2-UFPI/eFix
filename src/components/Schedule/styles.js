@@ -8,6 +8,7 @@ export const Container = styled.View`
     border-color: #ebf0f0;
     border-radius: 5px;
     elevation: 10px;
+    margin: 5px 0;
 `;
 
 export const Item = styled.View`
