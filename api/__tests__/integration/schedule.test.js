@@ -181,9 +181,15 @@ describe('Running Tests...', () =>{
     it('should be able to verify if the date passed is valid', async (done) =>{
         const date_test = new Date("November 23, 2019 08:30");
 
+        const send = {
+            id_prestador: id_prestador,
+            id_servico: id_servico,
+            data: date_test.getTime()
+        }
 
+        const response = await request.get('/validar').send(send);
 
-
+        expect(response.status).toBe(200);
 
         done();
     });
