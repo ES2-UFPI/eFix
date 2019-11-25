@@ -150,7 +150,8 @@ export default class TelaPerfilPrestador extends Component{
             borderColor: 'dodgerblue'
           },
           buttons_left:{
-              margin: 1,
+            margin: 1,
+            marginLeft: 0.6,
             borderWidth: 0, 
             alignItems:'center', 
             borderTopLeftRadius:20,
@@ -161,7 +162,8 @@ export default class TelaPerfilPrestador extends Component{
             borderColor: 'dodgerblue'
           },
           buttons_right:{
-            margin: 1, 
+            margin: 1,
+            marginRight: 0.1, 
             borderWidth: 0, 
             alignItems:'center', 
             borderTopRightRadius:20,
