@@ -5,6 +5,12 @@ import {
 } from 'react-native';
 import Button from '../../components/Button';
 import TextInput from '../../components/SimpleTextInput';
+import Schedule from '../../components/Schedule';
+import {
+    Container,
+    Body,
+    Title,
+} from './styles';
 
 export default class CadastrarHorarios extends Component {
     static navigationOptions = {
@@ -24,15 +30,12 @@ export default class CadastrarHorarios extends Component {
 
     render() {
         return(
-            <View>
-                <Text>Agenda de Trabalho</Text>
-                <Text>Segunda de 8 as 10</Text>
-                <Text>Terça de 14 as 16</Text>
-                <Button text="Novo Horário"/>
-                <TextInput placeholder="Dia"/>
-                <TextInput placeholder="Inicio"/>
-                <TextInput placeholder="Fim"/>
-            </View>
+            <Container>
+                <Body>
+                    <Schedule day="Segunda-feira" start="14h" finish="18h"/>
+                    <Button text="Novo Horário"/>
+                </Body>
+            </Container>
         );
     }
 }
