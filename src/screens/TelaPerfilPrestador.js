@@ -102,7 +102,7 @@ export default class TelaPerfilPrestador extends Component{
                           <Text style={{color:'white', fontSize:11.5}}>Visualizar Contratos</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.buttons_right}>
+                        <TouchableOpacity style={styles.buttons_right} onPress={() => this.props.navigation.navigate('cadastrar_horarios')}>
                           <Text style={{color:'white', fontSize:11.5}}>Visualizar Horários</Text>
 
                         </TouchableOpacity>
