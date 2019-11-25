@@ -98,6 +98,39 @@ const del = router.delete('/:id', (req, res, next) => {
     });
 });
 
+const validate = router.get('/validar', (req, res, next) => {
+    const { id_prestador, id_servico, data } = req.body;
+
+    if(!verifyProvider(id_prestador))
+        res.status(402).json({ message: `invalid provider id ${id_prestador}` }).send();
+    else if(!verifyService(id_servico))
+        res.status(402).json({ message: `invalid service id ${id_servico}` }).send();
+    
+    const date = Date(data);
+
+    
+
+
+
+});
+
+function verifyService(id){
+    var ref = firebase.database().ref(`/servico/${id}`).on("value", function(snapshot){ref = snapshot.val()});
+
+    if(ref != null)
+        return true;
+    else return false;
+}
+
+function verifyProvider(id){
+    var ref = firebase.database().ref(`/prestador/${id}`).on("value", function(snapshot){ref = snapshot.val()});
+
+    if(ref != null)
+        return true;
+    else return false;
+}
+
+
 schedule_app.use('/', create);
 schedule_app.use('/', show);
 

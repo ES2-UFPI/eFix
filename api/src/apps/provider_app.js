@@ -199,17 +199,6 @@ const increment_qnt_services = router.put('/incremento/:id_prestador', (req, res
     });
 });
 
-const add_contract = router.post('/contrato/:id', (req, res, next) => {
-    const id_contrato = req.params.id;
-    const { id_prestador } = req.body;
-
-    const ref = firebase.database().ref('prestador/' + id_prestador);
-    ref.child("contratos").push(id_contrato);
-    ref.off();
-
-    res.redirect(307, '../../usuario/contrato/' + id_contrato);
-});
-
 provider_app.use('/', create);
 provider_app.use('/', read);
 provider_app.use('/', show);
@@ -218,6 +207,5 @@ provider_app.use('/', del);
 provider_app.use('/', add_avaliation_to_provider);
 provider_app.use('/', change_disponibility);
 provider_app.use('/', increment_qnt_services);
-provider_app.use('/', add_contract);
 
 module.exports = provider_app;

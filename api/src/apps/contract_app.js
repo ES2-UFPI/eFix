@@ -15,8 +15,10 @@ const router = express.Router();
 // cria um novo contrato
 const create = router.post('/', (req, res, next) => {
     const id_contrato = crypto.randomBytes(32).toString('hex');
-    const { id_servico, id_prestador, id_usuario, data } = req.body;
+    var { id_servico, id_prestador, id_usuario, data } = req.body;
     const ativo = true;
+
+    data = Date(data);
 
     const refPath = "contratos/" + id_contrato;
     
@@ -25,8 +27,17 @@ const create = router.post('/', (req, res, next) => {
     ref.update({ id_servico, id_contrato, id_prestador, id_usuario, data, ativo }, function(error){
         if(error){
             res.send("Dados não poderam ser salvos " + error);
-        } else
-            res.redirect(307, '../prestador/contrato/' + id_contrato);
+        } else{
+            var ref = firebase.database().ref('prestador/' + id_prestador);
+            ref.child("contratos").push(id_contrato);
+            ref.off();
+
+            ref = firebase.database().ref('usuario/' + id_usuario);
+            ref.child("contratos").push(id_contrato);
+            ref.off();
+            
+            res.status(201).json({ id_contrato: id_contrato }).send();
+        }
     });
     ref.off("value");
 });
