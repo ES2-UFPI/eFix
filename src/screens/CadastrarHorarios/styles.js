@@ -15,6 +15,7 @@ export const Title = styled.Text`
     color: #2196f3;
     font-weight: bold;
     margin: 0 0 10px 0;
+    font-size: 17px;
 `;
 
 export const ButtonContainer = styled.View`
@@ -36,7 +37,7 @@ export const NovoContainer = styled.View`
     elevation: 10px;
     align-items: center;
     flex-direction: column;
-    width: 75%;
+    width: 85%;
 `;
 
 export const Item = styled.View`
@@ -44,7 +45,7 @@ export const Item = styled.View`
     align-items: center;
     justify-content: space-between;
     padding: 5px 0;
-    width: 90%;
+    width: 92%;
 `;
 
 export const Label = styled.Text`
@@ -53,7 +54,7 @@ export const Label = styled.Text`
 `;
 
 export const TimeInput = styled.View`
-    width: 32%;
+    width: 80px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;

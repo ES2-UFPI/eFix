@@ -66,8 +66,16 @@ export default class CadastrarHorarios extends Component {
     }
 
     salvarHorario = async () => {
-        this.setState({ dia: null, horaInicio: "00:00", horaFim: "00:00" });
-        this.setNovoVisivel(false);
+        var timeInicio = new Date('1970-01-01T' + this.state.horaInicio + ":00" + 'Z');
+        var timeFim = new Date('1970-01-01T' + this.state.horaFim + ":00" + 'Z');
+        if (timeInicio.getTime() >= timeFim.getTime()) {
+            this.setState({ errorMessage: "Intervalo inválido!" });
+            return;
+        } else {
+            this.setState({ errorMessage: null });
+            this.setState({ dia: null, horaInicio: "00:00", horaFim: "00:00" });
+            this.setNovoVisivel(false);
+        }
     }
 
     render() {
@@ -109,6 +117,8 @@ export default class CadastrarHorarios extends Component {
                                             onPress={() => this.TimePickerInicio.open()}
                                         />
                                         <TimePicker
+                                            textConfirm="Confirmar"
+                                            textCancel="Cancelar"
                                             itemStyle={{color: 'yellow'}}
                                             ref={ref => {
                                                 this.TimePickerInicio = ref;
