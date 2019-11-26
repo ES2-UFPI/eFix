@@ -30,8 +30,8 @@ export default class CadastrarHorarios extends Component {
         errorMessage: null,
         novoVisivel: false,
         dia: null,
-        horaInicio: "0:00",
-        horaFim: "0:00",
+        horaInicio: "00:00",
+        horaFim: "00:00",
     }
 
     static navigationOptions = {
@@ -54,17 +54,19 @@ export default class CadastrarHorarios extends Component {
     }
 
     setHoraInicio(horas, minutos) {
-        this.setState({ horaInicio: horas + ":" + minutos });
-        this.TimePicker.close();
+        let horario = ((horas < 10) ? ("0" + horas) : horas) + ":" + minutos;
+        this.setState({ horaInicio: horario });
+        this.TimePickerInicio.close();
     }
 
     setHoraFim(horas, minutos) {
-        this.setState({ horaFim: horas + ":" + minutos });
-        this.TimePicker.close();
+        let horario = ((horas < 10) ? ("0" + horas) : horas) + ":" + minutos;
+        this.setState({ horaFim: horario });
+        this.TimePickerFim.close();
     }
 
     salvarHorario = async () => {
-        this.setState({ dia: null, horaInicio: "0:00", horaFim: "0:00" });
+        this.setState({ dia: null, horaInicio: "00:00", horaFim: "00:00" });
         this.setNovoVisivel(false);
     }
 
@@ -103,17 +105,15 @@ export default class CadastrarHorarios extends Component {
                                     <Label>Início</Label>
                                     <TimeInput>
                                         <Text>{this.state.horaInicio}</Text>
-                                        <ButtonContainer>
-                                            <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
-                                                onPress={() => this.TimePicker.open()}
-                                            />
-                                        </ButtonContainer>
+                                        <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
+                                            onPress={() => this.TimePickerInicio.open()}
+                                        />
                                         <TimePicker
                                             itemStyle={{color: 'yellow'}}
                                             ref={ref => {
-                                                this.TimePicker = ref;
+                                                this.TimePickerInicio = ref;
                                             }}
-                                            onCancel={() => this.TimePicker.close()}
+                                            onCancel={() => this.TimePickerInicio.close()}
                                             onConfirm={(hours, minutes) => this.setHoraInicio(hours, minutes)}
                                         />
                                     </TimeInput>
@@ -122,16 +122,14 @@ export default class CadastrarHorarios extends Component {
                                     <Label>Fim</Label>
                                     <TimeInput>
                                         <Text>{this.state.horaFim}</Text>
-                                        <ButtonContainer>
-                                            <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
-                                                onPress={() => this.TimePicker.open()}
-                                            />
-                                        </ButtonContainer>
+                                        <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
+                                            onPress={() => this.TimePickerFim.open()}
+                                        />
                                         <TimePicker
                                             ref={ref => {
-                                                this.TimePicker = ref;
+                                                this.TimePickerFim = ref;
                                             }}
-                                            onCancel={() => this.TimePicker.close()}
+                                            onCancel={() => this.TimePickerFim.close()}
                                             onConfirm={(hours, minutes) => this.setHoraFim(hours, minutes)}
                                         />
                                     </TimeInput>

@@ -36,6 +36,7 @@ export const NovoContainer = styled.View`
     elevation: 10px;
     align-items: center;
     flex-direction: column;
+    width: 75%;
 `;
 
 export const Item = styled.View`
@@ -43,7 +44,7 @@ export const Item = styled.View`
     align-items: center;
     justify-content: space-between;
     padding: 5px 0;
-    width: 250;
+    width: 90%;
 `;
 
 export const Label = styled.Text`
@@ -52,7 +53,7 @@ export const Label = styled.Text`
 `;
 
 export const TimeInput = styled.View`
-    width: 80;
+    width: 32%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
