@@ -88,7 +88,7 @@ export default class ListagemContratos extends Component {
                     data={this.state.contratos}
                     ListEmptyComponent={emptyList}
                     extraData={this.state.contratos}
-                    renderItem={({item}) => <ItemContrato contrato ={item} onPress={() => this.props.contract(item)}/>}
+                    renderItem={({item}) => <ItemContrato contrato ={item} onPress={() => this.props.navigation.navigate('ContratoOptionsscreen', { contrato: item })}/>}
                     keyExtractor={(item, id_contrato) => item.id_usuario + id_contrato}
                 />
                 

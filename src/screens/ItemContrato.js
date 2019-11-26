@@ -4,6 +4,7 @@ import {
     View,
     StyleSheet,
     Alert,
+    Button,
     TouchableOpacity
  } from 'react-native';
  import api from '../services/API';
@@ -77,14 +78,14 @@ export default class ItemContrato extends Component {
     render() {
         console.log(this.props.contrato.id_contrato);
         return(
-            <TouchableOpacity style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={this.props.onPress} >
                 <View style={styles.container_top}>
                     <Text style={styles.name}>{this.state.servico.nome}</Text>
                     </View>
                     <Text>Prestador: {this.state.prest_usuario.nome}</Text>
                     <Text>Status: {this.getAtivoOuNao()}</Text>
                     <Text>Data: {this.props.contrato.data}</Text>
-                
+         
             </TouchableOpacity>
         );
     }
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
         borderColor: 'lightgray',
         overflow: 'hidden',
         borderRadius: 10,
-        marginTop: 3,
+        marginTop: 1,
         marginBottom: 3,
         marginLeft: 10,
         marginRight: 10,
@@ -118,5 +119,27 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 10,
         color: 'gray',
-    }
+    },
+    login: {
+        backgroundColor: '#1e90ff',
+        color: 'white',
+        width: "75%",
+        borderRadius: 10,
+        textAlign: 'center',
+        marginLeft: '10%',
+        padding: "2%",
+        fontSize:  16,
+        marginTop: '2%'
+        
+      },
+    buttons:{
+        margin: 5, 
+        borderWidth: 1, 
+        alignItems:'center', 
+        borderRadius:20, 
+        padding: 7, 
+        height: 40,
+        backgroundColor: 'dodgerblue',
+        borderColor: 'dodgerblue'
+      }
 });
