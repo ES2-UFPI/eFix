@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text
+    Text,
+    FlatList,
 } from 'react-native';
 import {
     Container,
@@ -23,8 +24,11 @@ export default class Schedule extends Component {
                     <Text>{this.props.day}</Text>
                 </Item>
                 <Item>
-                    <Title>Intervalo</Title>
-                    <Text>{this.props.start} às {this.props.finish}</Text>
+                    <Title>Intervalos</Title>
+                    <FlatList 
+                        data={this.props.intervals}
+                        renderItem={({item}) => <Text>{item[0]} - {item[1]}</Text>}
+                    />
                 </Item>
             </Container>
         );

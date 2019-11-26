@@ -54,13 +54,13 @@ export default class CadastrarHorarios extends Component {
     }
 
     setHoraInicio(horas, minutos) {
-        let horario = ((horas < 10) ? ("0" + horas) : horas) + ":" + minutos;
+        var horario = ((horas < 10) ? ("0" + horas) : horas) + ":" + minutos;
         this.setState({ horaInicio: horario });
         this.TimePickerInicio.close();
     }
 
     setHoraFim(horas, minutos) {
-        let horario = ((horas < 10) ? ("0" + horas) : horas) + ":" + minutos;
+        var horario = ((horas < 10) ? ("0" + horas) : horas) + ":" + minutos;
         this.setState({ horaFim: horario });
         this.TimePickerFim.close();
     }
@@ -78,12 +78,30 @@ export default class CadastrarHorarios extends Component {
         }
     }
 
+    agenda = [
+        {
+            dia: "Segunda-feira",
+            intervalos: [
+                ["10:00", "12:00"],
+                ["14:00", "18:00"],
+            ]
+        },
+        {
+            dia: "Terça-feira",
+            intervalos: [
+                ["09:00", "11:00"],
+                ["13:00", "14:30"],
+                ["15:30", "17:00"],
+            ]
+        }
+    ];
+
     render() {
         return(
             <Container>
                 <Body>
-                    <Schedule day="Segunda-feira" start="14h" finish="18h"/>
-                    <Schedule day="Segunda-feira" start="8h" finish="11h"/>
+                    <Schedule day={this.agenda[0].dia} intervals={this.agenda[0].intervalos}/>
+                    <Schedule day={this.agenda[1].dia} intervals={this.agenda[1].intervalos}/>
                     
                     <ButtonContainer>
                         <Button text="Novo" onPress={() => this.setNovoVisivel(true)}/>
