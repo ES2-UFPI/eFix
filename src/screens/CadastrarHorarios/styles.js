@@ -52,7 +52,10 @@ export const Label = styled.Text`
 `;
 
 export const TimeInput = styled.View`
-    width: 170;
+    width: 80;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 export const Error = styled.Text`

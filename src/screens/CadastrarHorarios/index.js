@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import TextInput from '../../components/SimpleTextInput';
 import Schedule from '../../components/Schedule';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import TimePicker from 'react-native-simple-time-picker';
+import TimePicker from 'react-native-24h-timepicker';
 import {
     Container,
     Body,
@@ -30,8 +30,8 @@ export default class CadastrarHorarios extends Component {
         errorMessage: null,
         novoVisivel: false,
         dia: null,
-        horaInicio: "00:00",
-        horaFim: "00:00",
+        horaInicio: "0:00",
+        horaFim: "0:00",
     }
 
     static navigationOptions = {
@@ -55,14 +55,16 @@ export default class CadastrarHorarios extends Component {
 
     setHoraInicio(horas, minutos) {
         this.setState({ horaInicio: horas + ":" + minutos });
+        this.TimePicker.close();
     }
 
     setHoraFim(horas, minutos) {
         this.setState({ horaFim: horas + ":" + minutos });
+        this.TimePicker.close();
     }
 
     salvarHorario = async () => {
-        this.setState({ dia: null, horaInicio: "00:00", horaFim: "00:00" });
+        this.setState({ dia: null, horaInicio: "0:00", horaFim: "0:00" });
         this.setNovoVisivel(false);
     }
 
@@ -100,20 +102,37 @@ export default class CadastrarHorarios extends Component {
                                 <Item>
                                     <Label>Início</Label>
                                     <TimeInput>
+                                        <Text>{this.state.horaInicio}</Text>
+                                        <ButtonContainer>
+                                            <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
+                                                onPress={() => this.TimePicker.open()}
+                                            />
+                                        </ButtonContainer>
                                         <TimePicker
-                                            selectedHours={0}
-                                            selectedMinutes={0}
-                                            onChange={(hours, minutes) => this.setHoraInicio(hours, minutes)}
+                                            itemStyle={{color: 'yellow'}}
+                                            ref={ref => {
+                                                this.TimePicker = ref;
+                                            }}
+                                            onCancel={() => this.TimePicker.close()}
+                                            onConfirm={(hours, minutes) => this.setHoraInicio(hours, minutes)}
                                         />
                                     </TimeInput>
                                 </Item>
                                 <Item>
                                     <Label>Fim</Label>
                                     <TimeInput>
+                                        <Text>{this.state.horaFim}</Text>
+                                        <ButtonContainer>
+                                            <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
+                                                onPress={() => this.TimePicker.open()}
+                                            />
+                                        </ButtonContainer>
                                         <TimePicker
-                                            selectedHours={0}
-                                            selectedMinutes={0}
-                                            onChange={(hours, minutes) => this.setHoraFim(hours, minutes)}
+                                            ref={ref => {
+                                                this.TimePicker = ref;
+                                            }}
+                                            onCancel={() => this.TimePicker.close()}
+                                            onConfirm={(hours, minutes) => this.setHoraFim(hours, minutes)}
                                         />
                                     </TimeInput>
                                 </Item>
