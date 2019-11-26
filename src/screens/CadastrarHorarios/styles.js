@@ -38,17 +38,22 @@ export const NovoContainer = styled.View`
     flex-direction: column;
 `;
 
-export const InputContainer = styled.View`
-    flex-direction: row;
-    justify-content: center;
-`;
-
 export const Item = styled.View`
-    flex-direction: column;
-    padding: 5px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+    width: 220;
 `;
 
 export const Label = styled.Text`
     color: grey;
-    font-size: 12px;
+    font-size: 13px;
+`;
+
+export const TimeInput = styled.View`
+    flex-direction: row;
+    align-items: center;
+    width: 80;
+    justify-content: space-between;
 `;

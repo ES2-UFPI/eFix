@@ -26,6 +26,7 @@ export const ButtonContainer = styled.View`
     align-items: center;
     flex-direction: row;
     justify-content: space-around;
+    padding: 10px;
 `;
 
 export const Data = styled.View`
