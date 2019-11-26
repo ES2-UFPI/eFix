@@ -19,7 +19,7 @@ export const Title = styled.Text`
 
 export const ButtonContainer = styled.View`
     align-items: center;
-    padding: 10px 10px 0 10px;
+    padding: 5px 10px 0 10px;
     flex-direction: row;
     justify-content: space-around;
 `;
@@ -43,17 +43,19 @@ export const Item = styled.View`
     align-items: center;
     justify-content: space-between;
     padding: 5px 0;
-    width: 220;
+    width: 250;
 `;
 
 export const Label = styled.Text`
     color: grey;
-    font-size: 13px;
+    font-size: 15px;
 `;
 
 export const TimeInput = styled.View`
-    flex-direction: row;
-    align-items: center;
-    width: 80;
-    justify-content: space-between;
+    width: 170;
+`;
+
+export const Error = styled.Text`
+    color: red;
+    font-size: 14px;
 `;

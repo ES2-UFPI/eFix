@@ -9,6 +9,7 @@ import Button from '../../components/Button';
 import TextInput from '../../components/SimpleTextInput';
 import Schedule from '../../components/Schedule';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import TimePicker from 'react-native-simple-time-picker';
 import {
     Container,
     Body,
@@ -19,6 +20,7 @@ import {
     Item,
     Label,
     TimeInput,
+    Error,
 } from './styles';
 
 export default class CadastrarHorarios extends Component {
@@ -51,8 +53,16 @@ export default class CadastrarHorarios extends Component {
         this.setState({ novoVisivel: visibility });
     }
 
+    setHoraInicio(horas, minutos) {
+        this.setState({ horaInicio: horas + ":" + minutos });
+    }
+
+    setHoraFim(horas, minutos) {
+        this.setState({ horaFim: horas + ":" + minutos });
+    }
+
     salvarHorario = async () => {
-        this.setState({ dia: null });
+        this.setState({ dia: null, horaInicio: "00:00", horaFim: "00:00" });
         this.setNovoVisivel(false);
     }
 
@@ -90,17 +100,24 @@ export default class CadastrarHorarios extends Component {
                                 <Item>
                                     <Label>Início</Label>
                                     <TimeInput>
-                                        <Text>{this.state.horaInicio}</Text>
-                                        <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}/>
+                                        <TimePicker
+                                            selectedHours={0}
+                                            selectedMinutes={0}
+                                            onChange={(hours, minutes) => this.setHoraInicio(hours, minutes)}
+                                        />
                                     </TimeInput>
                                 </Item>
                                 <Item>
                                     <Label>Fim</Label>
                                     <TimeInput>
-                                        <Text>{this.state.horaFim}</Text>
-                                        <Button text={<Icon style={[{color: '#FFF'}]} size={16} name={'access-time'}/>}/>
+                                        <TimePicker
+                                            selectedHours={0}
+                                            selectedMinutes={0}
+                                            onChange={(hours, minutes) => this.setHoraFim(hours, minutes)}
+                                        />
                                     </TimeInput>
                                 </Item>
+                                <Error>{this.state.errorMessage}</Error>
                                 <ButtonContainer>
                                     <Button text="Salvar" onPress={() => this.salvarHorario()}/>
                                 </ButtonContainer>
