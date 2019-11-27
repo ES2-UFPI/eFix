@@ -4,6 +4,7 @@ import {
     Text,
     Modal,
     Picker,
+    ScrollView
 } from 'react-native';
 import Button from '../../components/Button';
 import TextInput from '../../components/SimpleTextInput';
@@ -78,99 +79,98 @@ export default class CadastrarHorarios extends Component {
         }
     }
 
-    agenda = [
-        {
-            dia: "Segunda-feira",
-            intervalos: [
-                ["10:00", "12:00"],
-                ["14:00", "18:00"],
-            ]
-        },
-        {
-            dia: "Terça-feira",
-            intervalos: [
-                ["09:00", "11:00"],
-                ["13:00", "14:30"],
-                ["15:30", "17:00"],
-            ]
-        }
-    ];
+    horario = {
+        segunda: [["08:00", "11:00"], ["13:00", "17:00"]],
+        terca: [["08:00", "11:00"], ["13:00", "17:00"]],
+        quarta: [["08:00", "11:00"], ["13:00", "17:00"]],
+        quinta: [["08:00", "11:00"], ["13:00", "17:00"]],
+        sexta: [["08:00", "11:00"], ["13:00", "17:00"]],
+        sabado: [["08:00", "11:00"]],
+        domingo: []
+    };
 
     render() {
         return(
-            <Container>
-                <Body>
-                    <Schedule day={this.agenda[0].dia} intervals={this.agenda[0].intervalos}/>
-                    <Schedule day={this.agenda[1].dia} intervals={this.agenda[1].intervalos}/>
-                    
-                    <ButtonContainer>
-                        <Button text="Novo" onPress={() => this.setNovoVisivel(true)}/>
-                    </ButtonContainer>
+            <ScrollView>
+                <Container>
+                    <Body>
+                        <Schedule day={"Segunda-feira"} intervals={this.horario.segunda}/>
+                        <Schedule day={"Terça-feira"} intervals={this.horario.terca}/>
+                        <Schedule day={"Quarta-feira"} intervals={this.horario.quarta}/>
+                        <Schedule day={"Quinta-feira"} intervals={this.horario.quinta}/>
+                        <Schedule day={"Sexta-feira"} intervals={this.horario.sexta}/>
+                        <Schedule day={"Sábado"} intervals={this.horario.sabado}/>
+                        <Schedule day={"Domingo"} intervals={this.horario.domingo}/>
+                        
+                        <ButtonContainer>
+                            <Button text="Novo" onPress={() => this.setNovoVisivel(true)}/>
+                        </ButtonContainer>
 
-                    <Modal transparent={true}
-                        visible={this.state.novoVisivel}
-                        animationType={'fade'}>
-                        <NovoBody>
-                            <NovoContainer>
-                                <Title>Novo Horário</Title>
-                                <Item>
-                                    <Label>Dia</Label>
-                                    <Picker selectedValue={this.state.dia}
-                                        style={{width: 165, height: 30}}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ dia: itemValue })}>
-                                        <Picker.Item label="Segunda-feira" value={0}/>
-                                        <Picker.Item label="Terça-feira" value={1}/>
-                                        <Picker.Item label="Quarta-feira" value={2}/>
-                                        <Picker.Item label="Quinta-feira" value={3}/>
-                                        <Picker.Item label="Sexta-feira" value={4}/>
-                                        <Picker.Item label="Sábado" value={5}/>
-                                        <Picker.Item label="Domingo" value={6}/>
-                                    </Picker>
-                                </Item>
-                                <Item>
-                                    <Label>Início</Label>
-                                    <TimeInput>
-                                        <Text>{this.state.horaInicio}</Text>
-                                        <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
-                                            onPress={() => this.TimePickerInicio.open()}
-                                        />
-                                        <TimePicker
-                                            textConfirm="Confirmar"
-                                            textCancel="Cancelar"
-                                            itemStyle={{color: 'yellow'}}
-                                            ref={ref => {
-                                                this.TimePickerInicio = ref;
-                                            }}
-                                            onCancel={() => this.TimePickerInicio.close()}
-                                            onConfirm={(hours, minutes) => this.setHoraInicio(hours, minutes)}
-                                        />
-                                    </TimeInput>
-                                </Item>
-                                <Item>
-                                    <Label>Fim</Label>
-                                    <TimeInput>
-                                        <Text>{this.state.horaFim}</Text>
-                                        <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
-                                            onPress={() => this.TimePickerFim.open()}
-                                        />
-                                        <TimePicker
-                                            ref={ref => {
-                                                this.TimePickerFim = ref;
-                                            }}
-                                            onCancel={() => this.TimePickerFim.close()}
-                                            onConfirm={(hours, minutes) => this.setHoraFim(hours, minutes)}
-                                        />
-                                    </TimeInput>
-                                </Item>
-                                <Error>{this.state.errorMessage}</Error>
-                                <ButtonContainer>
-                                    <Button text="Salvar" onPress={() => this.salvarHorario()}/>
-                                </ButtonContainer>
-                            </NovoContainer>
-                        </NovoBody>
-                    </Modal>
-                </Body>
-            </Container>
+                        <Modal transparent={true}
+                            visible={this.state.novoVisivel}
+                            animationType={'fade'}>
+                            <NovoBody>
+                                <NovoContainer>
+                                    <Title>Novo Horário</Title>
+                                    <Item>
+                                        <Label>Dia</Label>
+                                        <Picker selectedValue={this.state.dia}
+                                            style={{width: 165, height: 30}}
+                                            onValueChange={(itemValue, itemIndex) => this.setState({ dia: itemValue })}>
+                                            <Picker.Item label="Segunda-feira" value="segunda"/>
+                                            <Picker.Item label="Terça-feira" value="terca"/>
+                                            <Picker.Item label="Quarta-feira" value="quarta"/>
+                                            <Picker.Item label="Quinta-feira" value="quinta"/>
+                                            <Picker.Item label="Sexta-feira" value="sexta"/>
+                                            <Picker.Item label="Sábado" value="sabado"/>
+                                            <Picker.Item label="Domingo" value="domingo"/>
+                                        </Picker>
+                                    </Item>
+                                    <Item>
+                                        <Label>Início</Label>
+                                        <TimeInput>
+                                            <Text>{this.state.horaInicio}</Text>
+                                            <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
+                                                onPress={() => this.TimePickerInicio.open()}
+                                            />
+                                            <TimePicker
+                                                textConfirm="Confirmar"
+                                                textCancel="Cancelar"
+                                                itemStyle={{color: 'yellow'}}
+                                                ref={ref => {
+                                                    this.TimePickerInicio = ref;
+                                                }}
+                                                onCancel={() => this.TimePickerInicio.close()}
+                                                onConfirm={(hours, minutes) => this.setHoraInicio(hours, minutes)}
+                                            />
+                                        </TimeInput>
+                                    </Item>
+                                    <Item>
+                                        <Label>Fim</Label>
+                                        <TimeInput>
+                                            <Text>{this.state.horaFim}</Text>
+                                            <Button text={<Icon style={[{color: '#FFF'}]} size={15} name={'access-time'}/>}
+                                                onPress={() => this.TimePickerFim.open()}
+                                            />
+                                            <TimePicker
+                                                ref={ref => {
+                                                    this.TimePickerFim = ref;
+                                                }}
+                                                onCancel={() => this.TimePickerFim.close()}
+                                                onConfirm={(hours, minutes) => this.setHoraFim(hours, minutes)}
+                                            />
+                                        </TimeInput>
+                                    </Item>
+                                    <Error>{this.state.errorMessage}</Error>
+                                    <ButtonContainer>
+                                        <Button text="Salvar" onPress={() => this.salvarHorario()}/>
+                                    </ButtonContainer>
+                                </NovoContainer>
+                            </NovoBody>
+                        </Modal>
+                    </Body>
+                </Container>
+            </ScrollView>
         );
     }
 }

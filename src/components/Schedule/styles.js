@@ -27,3 +27,8 @@ export const Title = styled.Text`
 export const IconView = styled.View`
     margin: 0 5px;
 `;
+
+export const Day = styled.Text`
+    font-size: 15px;
+    color: gray;
+`;
