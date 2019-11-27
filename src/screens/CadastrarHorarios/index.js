@@ -145,6 +145,7 @@ export default class CadastrarHorarios extends Component {
                 this.setState({ errorMessage: null });
                 this.setState({ dia: "segunda", horaInicio: "00:00", horaFim: "00:00" });
                 this.setNovoVisivel(false);
+                this.getPrestador(this.state.prestador.id_prestador);
             } catch(response) {
                 console.log("erro: " + response.data);
                 this.setState({ errorMessage: response.data });
