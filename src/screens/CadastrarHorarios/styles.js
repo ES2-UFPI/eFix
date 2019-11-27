@@ -8,6 +8,7 @@ export const Body = styled.View`
     flex-direction: column;
     padding: 5px;
     margin: 5px 8px;
+    align-items: center;
 `;
 
 export const Title = styled.Text`
@@ -22,6 +23,7 @@ export const ButtonContainer = styled.View`
     padding: 5px 10px 0 10px;
     flex-direction: row;
     justify-content: space-around;
+    width: 70%;
 `;
 
 export const NovoBody = styled.View`

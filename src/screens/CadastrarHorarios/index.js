@@ -23,10 +23,18 @@ import {
     TimeInput,
     Error,
 } from './styles';
+import api from '../../services/API';
 
 export default class CadastrarHorarios extends Component {
     state = {
-        horarios: [],
+        segunda: <View></View>,
+        terca: <View></View>,
+        quarta: <View></View>,
+        quinta: <View></View>,
+        sexta: <View></View>,
+        sabado: <View></View>,
+        domingo: <View></View>,
+        prestador: [],
         data: null,
         errorMessage: null,
         novoVisivel: false,
@@ -48,6 +56,50 @@ export default class CadastrarHorarios extends Component {
             fontWeight: 'bold',
             padding: 4,
         }
+    }
+
+    componentDidMount() {
+        console.log("Prest: " + this.props.navigation.getParam("id_prestador"));
+        this.getPrestador(this.props.navigation.getParam("id_prestador"));
+    }
+
+    setHorarios() {
+        const segunda = <Schedule day="Segunda-feira" intervals={this.state.prestador["horario"]["segunda"]}/>;
+        const terca = <Schedule day="Terça-feira" intervals={this.state.prestador["horario"]["terca"]}/>;
+        const quarta = <Schedule day="Quarta-feira" intervals={this.state.prestador["horario"]["quarta"]}/>;
+        const quinta = <Schedule day="Quinta-feira" intervals={this.state.prestador["horario"]["quinta"]}/>;
+        const sexta = <Schedule day="Sexta-feira" intervals={this.state.prestador["horario"]["sexta"]}/>;
+        const sabado = <Schedule day="Sábado" intervals={this.state.prestador["horario"]["sabado"]}/>;
+        const domingo = <Schedule day="Domingo" intervals={this.state.prestador["horario"]["domingo"]}/>;
+        console.log("Ele nao se encontra");
+        console.log(this.state.prestador["horario"]["segunda"].length);
+        this.setState({
+            segunda: this.state.prestador["horario"]["segunda"] !== undefined && this.state.prestador["horario"]["segunda"].length !== 0 ? segunda : <View></View>,
+            terca: this.state.prestador["horario"]["terca"] !== undefined && this.state.prestador["horario"]["terca"].length !== 0 ? terca : <View></View>,
+            quarta: this.state.prestador["horario"]["quarta"] !== undefined && this.state.prestador["horario"]["quarta"].length !== 0 ? quarta : <View></View>,
+            quinta: this.state.prestador["horario"]["quinta"] !== undefined && this.state.prestador["horario"]["quinta"].length !== 0  ? quinta : <View></View>,
+            sexta: this.state.prestador["horario"]["sexta"] !== undefined && this.state.prestador["horario"]["sexta"].length !== 0  ? sexta : <View></View>,
+            sabado: this.state.prestador["horario"]["sabado"] !== undefined && this.state.prestador["horario"]["sabado"].length !== 0  ? sabado : <View></View>,
+            domingo: this.state.prestador["horario"]["domingo"] !== undefined && this.state.prestador["horario"]["domingo"].length !== 0 ? domingo : <View></View>
+        });
+        console.log("Volte mais tarde");
+    }
+
+    getPrestador = async (id) => {
+        try {
+            const response = await api.getProvider(id);
+
+            console.log("Dados: " + response.data);
+
+            this.setState({ prestador: response.data });
+            console.log(this.state.prestador["id_usuario"]);
+            console.log("Olá Barbara");
+            console.log("Onde está seu pai Barbara");
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: 'Erro'})
+        }
+        this.setHorarios();
     }
 
     setNovoVisivel(visibility) {
@@ -79,29 +131,19 @@ export default class CadastrarHorarios extends Component {
         }
     }
 
-    horario = {
-        segunda: [["08:00", "11:00"], ["13:00", "17:00"]],
-        terca: [["08:00", "11:00"], ["13:00", "17:00"]],
-        quarta: [["08:00", "11:00"], ["13:00", "17:00"]],
-        quinta: [["08:00", "11:00"], ["13:00", "17:00"]],
-        sexta: [["08:00", "11:00"], ["13:00", "17:00"]],
-        sabado: [["08:00", "11:00"]],
-        domingo: []
-    };
-
     render() {
         return(
             <ScrollView>
                 <Container>
                     <Body>
-                        <Schedule day={"Segunda-feira"} intervals={this.horario.segunda}/>
-                        <Schedule day={"Terça-feira"} intervals={this.horario.terca}/>
-                        <Schedule day={"Quarta-feira"} intervals={this.horario.quarta}/>
-                        <Schedule day={"Quinta-feira"} intervals={this.horario.quinta}/>
-                        <Schedule day={"Sexta-feira"} intervals={this.horario.sexta}/>
-                        <Schedule day={"Sábado"} intervals={this.horario.sabado}/>
-                        <Schedule day={"Domingo"} intervals={this.horario.domingo}/>
-                        
+                        {this.state.segunda}
+                        {this.state.terca}
+                        {this.state.quarta}
+                        {this.state.quinta}
+                        {this.state.sexta}
+                        {this.state.sabado}
+                        {this.state.domingo}
+
                         <ButtonContainer>
                             <Button text="Novo" onPress={() => this.setNovoVisivel(true)}/>
                         </ButtonContainer>
@@ -163,6 +205,7 @@ export default class CadastrarHorarios extends Component {
                                     </Item>
                                     <Error>{this.state.errorMessage}</Error>
                                     <ButtonContainer>
+                                        <Button text="Cancelar" onPress={() => this.setNovoVisivel(false)}/>
                                         <Button text="Salvar" onPress={() => this.salvarHorario()}/>
                                     </ButtonContainer>
                                 </NovoContainer>
