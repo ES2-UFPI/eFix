@@ -107,6 +107,63 @@ const validate = router.get('/validar', (req, res, next) => {
         res.status(402).json({ message: `invalid service id ${id_servico}` }).send();
     
     const date = Date(data);
+    const dia = date.getDate();
+    const mes = date.getMonth();
+    const ano = date.getFullYear();
+    const hora = date.getHours();
+    const minute = date.getMinutes();
+
+    var ref = firebase.database().ref(`/servicos/${id_servico}/duracao`);
+    var duracao = null;
+
+    ref.on("value", function(snapshot){
+        duracao = snapshot.val();
+        ref.off("value");
+    });
+
+    ref = firebase.database().ref(`contratos/`).orderByChild("id_prestador").equalTo(id_prestador);
+    
+    ref.on("value", function(snapshot){
+        var contracts_after = [];
+        var contracts_before = [];
+        
+        snapshot.forEach(function(childsnapshot){
+            var contract = childsnapshot.val();
+            if(contract.dia == dia && contract.mes == mes && contract.ano == ano){
+                if(contract.hora < hora){
+                    contracts_before.push(contract);
+                } else if( contract.hora == hora){
+                    if(contract.min < minute){
+                        contracts_before.push(contract);
+                    } else if(contract.min == minute){
+                        res.status(402).json({ message: "Invalid date selected, provider is not free" }).send();
+                    } else {
+                        contracts_after.push(contract);
+                    }
+                } else {
+                    contracts_after.push(contract); 
+                }
+            }
+        });
+
+        contracts_before.forEach(contract => {
+            if(contract.hora + duracao[0] < hora){
+                if(contract.min + duracao[1] == 60){
+                    if(contract.hora + duracao[0] +1 < hora){
+                        
+                    }
+                }
+            }else if(contract.hora + duracao[0] == hora){
+                if(contract.min + duracao[1] < min){
+                    
+                } else 
+                    res.status(402).json({ message: "Invalid date selected, provider is not free" }).send();
+            }
+        });
+
+
+        
+    });
 
     
 

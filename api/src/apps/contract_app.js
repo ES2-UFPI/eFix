@@ -17,8 +17,18 @@ const create = router.post('/', (req, res, next) => {
     const id_contrato = crypto.randomBytes(32).toString('hex');
     var { id_servico, id_prestador, id_usuario, data } = req.body;
     const ativo = true;
+    
+    const dt = Date(data);
 
-    data = Date(data);
+    data ={
+        data: dt, 
+        dia: dt.getDate(),
+        mes: dt.getMonth(),
+        ano: dt.getFullyear(),
+        hora: dt.getHours(),
+        min: dt.getMinutes()
+    } 
+
 
     const refPath = "contratos/" + id_contrato;
     
