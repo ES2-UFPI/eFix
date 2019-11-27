@@ -4,7 +4,8 @@ import {
     Text,
     Modal,
     Picker,
-    ScrollView
+    ScrollView,
+    Alert,
 } from 'react-native';
 import Button from '../../components/Button';
 import TextInput from '../../components/SimpleTextInput';
@@ -38,7 +39,7 @@ export default class CadastrarHorarios extends Component {
         data: null,
         errorMessage: null,
         novoVisivel: false,
-        dia: null,
+        dia: "segunda",
         horaInicio: "00:00",
         horaFim: "00:00",
     }
@@ -125,9 +126,30 @@ export default class CadastrarHorarios extends Component {
             this.setState({ errorMessage: "Intervalo inválido!" });
             return;
         } else {
-            this.setState({ errorMessage: null });
-            this.setState({ dia: null, horaInicio: "00:00", horaFim: "00:00" });
-            this.setNovoVisivel(false);
+            // Salvar horario no bd
+            console.log(this.state.dia);
+            console.log(this.state.horaInicio + " - " + this.state.horaFim);
+            var novoHorario = this.state.prestador["horario"];
+            if (novoHorario[this.state.dia] === undefined)
+                novoHorario[this.state.dia] = [];
+            novoHorario[this.state.dia].push([this.state.horaInicio, this.state.horaFim]);
+            var json = {
+                id_prestador: this.state.prestador["id_prestador"],
+                horario: novoHorario
+            }
+            json = JSON.stringify(json);
+            console.log(json);
+            try {
+                const response = await api.updateSchedule(json);
+                console.log(response.data);
+                this.setState({ errorMessage: null });
+                this.setState({ dia: "segunda", horaInicio: "00:00", horaFim: "00:00" });
+                this.setNovoVisivel(false);
+            } catch(response) {
+                console.log("erro: " + response.data);
+                this.setState({ errorMessage: response.data });
+                Alert.alert("Novo horário disponível não pôde ser salvo!");
+            }
         }
     }
 
