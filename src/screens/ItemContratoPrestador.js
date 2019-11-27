@@ -91,7 +91,7 @@ export default class ItemContratoPrestador extends Component {
     render() {
         console.log(this.props.contrato.id_contrato);
         return(
-            <TouchableOpacity style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={this.props.onPress} >
                 <View style={styles.container_top}>
                     <Text style={styles.name}>{this.state.servico.nome}</Text>
                     </View>
@@ -132,5 +132,15 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 10,
         color: 'gray',
+    },
+    buttons:{
+        margin: 10, 
+        borderWidth: 1, 
+        alignItems:'center', 
+        borderRadius:20, 
+        padding: 10, 
+        height: 40,
+        backgroundColor: 'dodgerblue',
+        borderColor: 'dodgerblue'
     }
 });

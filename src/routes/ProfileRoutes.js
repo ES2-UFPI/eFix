@@ -6,6 +6,8 @@ import CadastroServico from '../screens/CadastroServico';
 import ListagemContratos from '../screens/ListagemContratos';
 import ListagemContratosPrestador from '../screens/ListagemContratosPrestador';
 import CadastrarHorarios from '../screens/CadastrarHorarios';
+import TelaContratoFuncionalidades from '../screens/TelaContratoFuncionalidades/index';
+import TelaContratoFuncionalidadesP from '../screens/TelaContratoFuncionalidadesPrestador/index';
 
 const AppNavigator = createStackNavigator(
 	{
@@ -14,7 +16,9 @@ const AppNavigator = createStackNavigator(
         cadastro_servico: { screen: CadastroServico },
         ListagemContratosscreen: { screen: ListagemContratos },
         ListagemContratosPrestadorscreen: { screen: ListagemContratosPrestador },
-        cadastrar_horarios: { screen: CadastrarHorarios }
+        cadastrar_horarios: { screen: CadastrarHorarios },
+        ContratoOptionsscreen: {screen: TelaContratoFuncionalidades},
+        ContratoOptionsscreenP: {screen: TelaContratoFuncionalidadesP},
     },
     {
         inicialRouteName: 'fillerscreen'
