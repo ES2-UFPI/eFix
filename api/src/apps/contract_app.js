@@ -18,23 +18,25 @@ const create = router.post('/', (req, res, next) => {
     var { id_servico, id_prestador, id_usuario, data } = req.body;
     const ativo = true;
     
-    const dt = Date(data);
+    const dt = new Date();
+    dt.setTime(data);
 
     data ={
-        data: dt, 
+        data: dt.getTime(), 
         dia: dt.getDate(),
         mes: dt.getMonth(),
-        ano: dt.getFullyear(),
+        ano: dt.getFullYear(),
         hora: dt.getHours(),
         min: dt.getMinutes()
     } 
 
+    console.log(data);
 
     const refPath = "contratos/" + id_contrato;
     
     const ref = firebase.database().ref(refPath);
 
-    ref.update({ id_servico, id_contrato, id_prestador, id_usuario, data, ativo }, function(error){
+    ref.update({ id_contrato, id_prestador, id_servico, id_usuario, data, ativo }, function(error){
         if(error){
             res.send("Dados não poderam ser salvos " + error);
         } else{

@@ -3,6 +3,7 @@ const schedule_app = require('../../src/apps/schedule_app');
 const user_app = require('../../src/apps/user_app');
 const provider_app = require('../../src/apps/provider_app');
 const service_app = require('../../src/apps/service_app');
+const contract_app = require('../../src/apps/contract_app');
 
 const firebase = require('../../src/firebase_init');
 
@@ -37,13 +38,20 @@ describe('Running Tests...', () =>{
 
         id_servico = response.body.id_servico;
 
+        response = await request(contract_app).post('/').send({
+            id_prestador: id_prestador,
+            id_usuario: user_id_created,
+            id_servico: id_servico,
+            data: new Date("November 23, 2019 05:30").getTime()
+        });
+
         done();
     });
     
-    afterAll(done => {
-        firebase.database().ref().remove();
-        done();
-    });
+    // afterAll(done => {
+    //     firebase.database().ref().remove();
+    //     done();
+    // });
 
     it('create provider schedules', async (done) => {
         const json = {
@@ -186,8 +194,9 @@ describe('Running Tests...', () =>{
             id_servico: id_servico,
             data: date_test.getTime()
         }
+        console.log(send)
 
-        const response = await request.get('/validar').send(send);
+        const response = await request(schedule_app).put('/validar').send(send);
 
         expect(response.status).toBe(200);
 
