@@ -148,34 +148,27 @@ api.addContractReview = async (review) => {
     return await api.post('/contrato/avaliacao', review);
 }
 
+api.getContractsOfDay = async (provider_id, dateTime) => {
+    return await api.get(`/contrato/prestador/data/${provider_id}`, dateTime);
+}
+
+
 // HORÁRIOS
 
 api.createSchedule = async (schedule) => {
-    return;
+    return await api.post('/prestador/horario', schedule);
 }
 
 api.updateSchedule = async (schedule) => {
-    return;
+    return api.put('/prestador/horario', schedule);
 }
 
-api.deleteSchedule = async(schedule) => {
-    return;
+api.deleteSchedule = async(provider_id) => {
+    return await api.delete(`/prestador/horario/${provider_id}`);
 }
 
-api.getProviderSchedule = async (id_provider, day) => {
-    return;
-}
-
-api.getProviderFullSchedule = async (id_provider) => {
-    return;
-}
-
-api.getProviderAllocatedSchedule = async (id_provider) => {
-    return;
-}
-
-api.getProviderFreeSchedule = async (id_provider) => {
-    return;
+api.getProviderSchedule = async (provider_id) => {
+    return 
 }
 
 export default api;

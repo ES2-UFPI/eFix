@@ -11,7 +11,7 @@ provider_app.use(bodyParser.urlencoded({extended: false}));
 
 const router = express.Router();
 
-const create = router.post('/', (req, res, next) => {
+const create = router.post('/', async (req, res, next) => {
  
     const id_prestador = crypto.randomBytes(32).toString('hex');
     const id_usuario = req.body.id_usuario;
@@ -26,17 +26,17 @@ const create = router.post('/', (req, res, next) => {
     const disponibilidade = true;
 
     const refPath = "prestador/" + id_prestador;
-    const ref = firebase.database().ref(refPath);
+    var ref = firebase.database().ref(refPath);
 
     ref.update({ id_prestador, id_usuario, bio, horarios, servicos, contratos,
                 nota_media, nota_somada, avaliacoes, qnt_servicos_prestados, disponibilidade 
                 }, function(error) {
                     if (error) {
-                        res.send("Dados não poderam ser salvos " + error);
+                        res.sendStatus(401);
                     } else {
-                        res.redirect(307, '../usuario/addID/' + id_prestador);
+                        ref = firebase.database().ref('usuario/' + id_usuario).child("id_prestador").set(id_prestador);
+                        res.status(201).json({ id_prestador: id_prestador }).send();
                     }
-        ref.off("value");
     });
 });
 
@@ -115,19 +115,6 @@ const del = router.delete('/:id', (req, res, next) => {
             res.send("Deletado com sucesso " + 200);
         }
     });
-});
-
-// adiciona um novo servico na lista do prestador
-const add_service_to_provider = router.post('/add/:id_servico', (req, res, next) => {
-
-    const { id_prestador } = req.body;
-    const id_servico = req.params.id_servico;
-    
-    const ref = firebase.database().ref('prestador/' + id_prestador);
-    ref.child("servicos").push(id_servico);
-    ref.off();
-
-    res.sendStatus(200);
 });
 
 // adiciona uma nova avaliação ao prestador
@@ -212,26 +199,13 @@ const increment_qnt_services = router.put('/incremento/:id_prestador', (req, res
     });
 });
 
-const add_contract = router.post('/contrato/:id', (req, res, next) => {
-    const id_contrato = req.params.id;
-    const { id_prestador } = req.body;
-
-    const ref = firebase.database().ref('prestador/' + id_prestador);
-    ref.child("contratos").push(id_contrato);
-    ref.off();
-
-    res.redirect(307, '../../usuario/contrato/' + id_contrato);
-});
-
 provider_app.use('/', create);
 provider_app.use('/', read);
 provider_app.use('/', show);
 provider_app.use('/', update);
 provider_app.use('/', del);
-provider_app.use('/', add_service_to_provider);
 provider_app.use('/', add_avaliation_to_provider);
 provider_app.use('/', change_disponibility);
 provider_app.use('/', increment_qnt_services);
-provider_app.use('/', add_contract);
 
 module.exports = provider_app;
