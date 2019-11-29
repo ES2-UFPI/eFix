@@ -36,6 +36,10 @@ api.deleteService = async (service) => {
     return await api.delete('/servico', service);
 }
 
+api.getProviderServices = async (id_provider) => {
+    return await api.get('/servico/prestador/' + encodeURI(id_provider));
+}
+
 /// CATEGORIA
 
 api.createCategory = async (categoria) => {
@@ -80,6 +84,10 @@ api.createProvider = async (provider) => {
 
 api.getProvidersList = async () => {
     return await api.get('/prestador');
+}
+
+api.getProviderServicesList = async (provider_id) => {
+    return await api.get('/servico/prestador/' + provider_id);
 }
 
 api.getProvider = async (provider_id) => {
@@ -158,7 +166,7 @@ api.deleteSchedule = async(provider_id) => {
 }
 
 api.getProviderSchedule = async (provider_id) => {
-    return await api.get(`/prestador/horario/${provider_id}`);
+    return 
 }
 
 export default api;
