@@ -48,10 +48,10 @@ describe('Running Tests...', () =>{
         done();
     });
     
-    // afterAll(done => {
-    //     firebase.database().ref().remove();
-    //     done();
-    // });
+    afterAll(done => {
+        firebase.database().ref().remove();
+        done();
+    });
 
     it('create provider schedules', async (done) => {
         const json = {
@@ -185,21 +185,4 @@ describe('Running Tests...', () =>{
         expect(response.status).toBe(401);
         done();
     }); 
-    
-    it('should be able to verify if the date passed is valid', async (done) =>{
-        const date_test = new Date("November 23, 2019 08:30");
-
-        const send = {
-            id_prestador: id_prestador,
-            id_servico: id_servico,
-            data: date_test.getTime()
-        }
-        console.log(send)
-
-        const response = await request(schedule_app).put('/validar').send(send);
-
-        expect(response.status).toBe(200);
-
-        done();
-    });
 });

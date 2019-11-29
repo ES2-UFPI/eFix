@@ -22,11 +22,12 @@ const create_service = router.post('/', (req, res, next) => {
     const nome = req.body.nome;
     const preco = req.body.preco;
     const descricao = req.body.descricao;
+    const duracao = req.body.duracao;
 
     const refPath = "servico/" + id_servico;
     var ref = firebase.database().ref(refPath)
 
-    ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
+    ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao, duracao }, function(error) {
         if (error) {
             res.send("Dados não poderam ser salvos " + error);
         } else {

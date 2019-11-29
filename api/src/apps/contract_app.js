@@ -196,6 +196,43 @@ const add_review = router.post('/avaliacao', (req, res, next) => {
     ref.off("value");
 });
 
+const get_contracts_of_day = router.get('/prestador/data/:id_prestador', (req, res, next) => {
+    const { id_prestador } = req.params;
+    const { data } = req.body;
+    
+    var date1 = new Date();
+    date1.setTime(data);
+
+    const dia = date1.getDate();
+    const mes = date1.getMonth();
+    const ano = date1.getFullYear();
+
+    const ref1 = firebase.database().ref("contratos/").orderByChild("id_prestador").equalTo(id_prestador);
+
+    var contracts_after = [];
+    var contracts_before = [];
+
+    ref1.on("value", function(snapshot){
+        snapshot.forEach(function(childsnapshot){
+            var contract = childsnapshot.val();
+            if(contract.data.ano == ano && contract.data.mes == mes && contract.data.dia == dia){
+                if(contract.data.data < data){
+                    contracts_before.push(contract);
+                } else
+                    contracts_after.push(contract); 
+            }
+        });
+        res.status(200).json({
+            before: contracts_before,
+            after: contracts_after
+        }).send();
+        
+        ref1.off("value");
+    }, function(errorObject){
+        res.status(402).json({ error: errorObject }).send();
+    });
+});
+
 contract_app.use('/', create);
 contract_app.use('/', read);
 contract_app.use('/', show);
@@ -205,5 +242,6 @@ contract_app.use('/', close_contract);
 contract_app.use('/', read_user_contracts);
 contract_app.use('/', read_provider_contracts);
 contract_app.use('/', add_review);
+contract_app.use('/', get_contracts_of_day);
 
 module.exports = contract_app;
