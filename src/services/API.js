@@ -143,6 +143,7 @@ api.addContractReview = async (review) => {
 api.getContractsOfDay = async (provider_id, dateTime) => {
     return await api.get(`/contrato/prestador/data/${provider_id}`, dateTime);
 }
+
 // HORÁRIOS
 
 api.createSchedule = async (schedule) => {
