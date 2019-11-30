@@ -26,9 +26,11 @@ export default class TelaContrato extends Component {
         imagem: "http://media.agora.com.vc/thumbs/capas/image_1399.jpg",
         contratante: "2e6d9b3a01d160d77f46fd9e5798344f77be8de245da0b13eb537982d50f94a8",
         servico: [],
-        data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()} ${new Date().getUTCHours() + 21}:${new Date().getUTCMinutes()}`,
+        data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()} ${new Date().getUTCHours() - 3}:${new Date().getUTCMinutes()}`,
         realtime: null,
         dia: null,
+        hour: null,
+        minute: null,
         miliseconds: null,
         errorMessage: null,
         stringData: null
@@ -115,13 +117,12 @@ export default class TelaContrato extends Component {
                 var m=(minute<10)?"0"+ minute:minute;
                 var h=(hour<10)?"0"+ hour:hour;
                 console.log("minutes = " + m + ", h = "+ h);
-                this.setState({ data: `${day}/${month + 1}/${year} ${h}:${m}` });
+                this.setState({ data: `${day}/${month + 1}/${year} ${h}:${m}`, hour: h, minute: m});
             }
              var x= new Date(year,month,day,hour,minute);
              var y = x.toUTCString();
              var z = x.getTime() + 10800000;   
              this.setState({realtime: y, miliseconds: z});
-             console.log("eeeeeeeeeeeeee2:"+ z);
              console.log("eeeeeeeeeeeeee:"+ this.state.realtime);
             
             x = x.getDay(); 
@@ -146,6 +147,7 @@ export default class TelaContrato extends Component {
                     this.setState({dia: "sexta"});
                     break;
                 default:
+                        this.setState({dia: "sabado"});
                     break;
             }
             console.log("Hoje é :" + this.state.dia);
@@ -180,15 +182,20 @@ export default class TelaContrato extends Component {
         }
     }
 
-    showAlert = () => {
+    showAlert = async () => {
         console.log(this.state.servico);
         Alert.alert("Perfil do prestador");
     }
 
     validarData = async () =>{
 
-        console.log("horairo do prestador" + this.state.prest_prestador.horario.quarta[0]);
-        testarDia();
+        console.log("horairo do prestador " + this.state.prest_prestador.horario.domingo);
+        var trab = 1;
+        trab = this.testarDia();
+        if (trab == 0){
+            console.log("não foi possível realizar contrato.");
+            return 0;}
+
         try{
             console.log("{\"data\":\""+this.state.miliseconds+"\"}");
             const response = await api.getContractsOfDay(this.state.prest_prestador.id_prestador, "{\"data\": \""+this.state.miliseconds+"\"}");
@@ -201,11 +208,122 @@ export default class TelaContrato extends Component {
         }
     }
     
-    testarDia = () =>{
+    testarHorario = (horariosF) =>{
         let state = this.state;
+        var h;
+        var m;
+        var m2;
+        var h2; 
+
+        for(var horarios in horariosF){
+                h = horariosF[horarios][0];
+                h2 = horariosF[horarios][1];
+                m = h.split(":");
+                m2 = h2.split(":")
+                
+                if (m[0]<= state.hour && m[1]<= state.minute && m2[0]>= state.hour && m2[1]>= state.minute){
+                    return 1;
+                }
+            }
+
+            return 0;
+    }
+
+    testarDia = () =>{
+        console.log("PASSOU AQUI");
+        let state = this.state;
+        var horas = [];
+        var resp = 0;
         if(state.dia == "quarta"){
-           state.prest_prestador.horario.quarta; 
-        }
+           if(state.prest_prestador.horario.quarta == null){
+                Alert.alert("O prestador não trabalha no dia escolhido.");
+                return 0;
+            }
+            horas = state.prest_prestador.horario.quarta;
+            resp = this.testarHorario(horas);
+
+            if(resp == 1)
+                return 1;
+
+        } else if(state.dia == "quinta"){
+            if(state.prest_prestador.horario.quinta == null){
+                Alert.alert("O prestador não trabalha no dia escolhido.");
+                return 0;
+            }
+
+            horas = state.prest_prestador.horario.quinta;
+            resp = this.testarHorario(horas);
+
+            if(resp == 1)
+                return 1;
+
+
+        } else if(state.dia == "segunda"){
+            if(state.prest_prestador.horario.segunda == null){
+                Alert.alert("O prestador não trabalha no dia escolhido.");
+                return 0;
+            }
+
+            horas = state.prest_prestador.horario.segunda;
+            resp = this.testarHorario(horas);
+
+            if(resp == 1)
+                return 1;
+
+
+        } else if(state.dia == "sabado"){
+            if(state.prest_prestador.horario.sabado == null){
+                Alert.alert("O prestador não trabalha no dia escolhido.");
+                return 0;
+            }
+
+            horas = state.prest_prestador.horario.sabado;
+            resp = this.testarHorario(horas);
+
+            if(resp == 1)
+                return 1;
+
+
+        } else if(state.dia == "sexta"){
+            if(state.prest_prestador.horario.sexta == null){
+                Alert.alert("O prestador não trabalha no dia escolhido.");
+                return 0;
+            }
+
+            horas = state.prest_prestador.horario.sexta;
+            resp = this.testarHorario(horas);
+
+            if(resp == 1)
+                return 1;
+
+
+        } else if(state.dia == "terca"){
+            if(state.prest_prestador.horario.terca == null){
+                Alert.alert("O prestador não trabalha no dia escolhido.");
+                return 0;
+            }
+
+            horas = state.prest_prestador.horario.terca;
+            resp = this.testarHorario(horas);
+
+            if(resp == 1)
+                return 1;
+
+        } else if(state.dia == "domingo"){
+            if(state.prest_prestador.horario.domingo == null){
+                Alert.alert("O prestador não trabalha no dia escolhido.");
+                return 0;
+            }
+
+            horas = state.prest_prestador.horario.domingo;
+            resp = this.testarHorario(horas);
+
+            if(resp == 1)
+                return 1;
+
+        }  
+        Alert.alert("Horário inválido para o dia escolhido.");
+        return 0;
     }
 
     render() {
