@@ -26,7 +26,7 @@ export default class TelaContrato extends Component {
         imagem: "http://media.agora.com.vc/thumbs/capas/image_1399.jpg",
         contratante: "2e6d9b3a01d160d77f46fd9e5798344f77be8de245da0b13eb537982d50f94a8",
         servico: [],
-        data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()} ${new Date().getUTCHours() - 3}:${new Date().getUTCMinutes()}`,
+        data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()} ${new Date().getUTCHours()-3}:${new Date().getUTCMinutes()}`,
         realtime: null,
         dia: null,
         hour: null,
@@ -106,10 +106,11 @@ export default class TelaContrato extends Component {
             }
 
             const {action2, hour, minute} = await TimePickerAndroid.open({
-                hour: 14,
+                hour: 12,
                 minute: 0,
-                is24Hour: false, // Will display '2 PM'
+                is24Hour: true, // Will display '2 PM'
             });
+            console.log("Month1 " + month)
             if (action2 !== TimePickerAndroid.dismissedAction) {
                 // Selected hour (0-23), minute (0-59)
                 //Applying extra 0 before the hour/minute for better visibility
@@ -119,11 +120,12 @@ export default class TelaContrato extends Component {
                 console.log("minutes = " + m + ", h = "+ h);
                 this.setState({ data: `${day}/${month + 1}/${year} ${h}:${m}`, hour: h, minute: m});
             }
+             console.log("Month2 " + month)
              var x= new Date(year,month,day,hour,minute);
              var y = x.toUTCString();
-             var z = x.getTime() + 10800000;   
+             var z = x.getTime();   
              this.setState({realtime: y, miliseconds: z});
-             console.log("eeeeeeeeeeeeee:"+ this.state.realtime);
+             console.log("tempo em milisegundos:"+ this.state.miliseconds);
             
             x = x.getDay(); 
             
@@ -168,7 +170,7 @@ export default class TelaContrato extends Component {
     }
 
     criarContrato = async () => {
-        var json = "{\"id_prestador\": \"" + this.state.prest_prestador.id_prestador + "\", \"id_usuario\": \""+ this.state.contratante + "\", \"id_servico\": \"" + this.props.navigation.getParam('servico')['id_servico'] + "\", \"data\": \"" + this.state.data + "\"}";
+        var json = "{\"id_prestador\": \"" + this.state.prest_prestador.id_prestador + "\", \"id_usuario\": \""+ this.state.contratante + "\", \"id_servico\": \"" + this.props.navigation.getParam('servico')['id_servico'] + "\", \"data\": \"" + this.state.miliseconds + "\"}";
         try {
             console.log(json);
             const response = await api.createContract(json);
@@ -188,10 +190,19 @@ export default class TelaContrato extends Component {
     }
 
     validarData = async () =>{
-
-        console.log("horairo do prestador " + this.state.prest_prestador.horario.domingo);
+        if (this.state.miliseconds == null || isNaN(this.state.miliseconds) || this.state.hour == undefined){
+            Alert.alert("Insira uma data no Agendamento.");
+        }
+        console.log("horairo do prestador " + this.state.prest_prestador.horario.segunda);
         var trab = 1;
+        var teste = this.state.miliseconds;
+        var testb = ["1575366400000"];
+        var testa = ["1575374000000","1575388800000"];
+        testb.sort((a,b)=> a > b);
+        testa.sort((a,b)=> a > b);
+        
         trab = this.testarDia();
+
         if (trab == 0){
             console.log("não foi possível realizar contrato.");
             return 0;}
@@ -199,8 +210,33 @@ export default class TelaContrato extends Component {
         try{
             console.log("{\"data\":\""+this.state.miliseconds+"\"}");
             const response = await api.getContractsOfDay(this.state.prest_prestador.id_prestador, "{\"data\": \""+this.state.miliseconds+"\"}");
-            console.log("Validar data: " + response);
-            var valid = response.data;
+            console.log("Validar data: " + response.data);
+            var before = response.data["before"];
+            var after = response.data["after"];
+            after.sort((a,b)=> a > b);
+            before.sort((a,b)=> a > b);
+            console.log("before: " + before);
+            console.log("after: " + after);
+            
+            if(!before.length && !after.length){
+                console.log("deu certo lista vazia");
+                this.criarContrato();
+                return 0;
+            }
+            else if((teste + 3600000) > before[before.length - 1] && (teste + 3600000) < after[0]){
+                console.log("deu certo, entre before e after");
+                this.criarContrato();
+                return 0;
+            } else{
+                for(var i = 0 ; i < before.length-1; i++){
+                    if((teste + 3600000) > after[i] && (teste + 3600000) < after[i+1]){
+                        console.log("deu certo, entre dois numeros no after");
+                        this.criarContrato();
+                        return 0;
+                    }
+                }
+            }
+            Alert.alert("Não foi possível realizar contrato, horário já preenchido.");
         }catch(response){
             console.log("erro: " + response.data);
             this.setState({ errorMessage: response.data });
@@ -220,10 +256,21 @@ export default class TelaContrato extends Component {
                 h2 = horariosF[horarios][1];
                 m = h.split(":");
                 m2 = h2.split(":")
-                
-                if (m[0]<= state.hour && m[1]<= state.minute && m2[0]>= state.hour && m2[1]>= state.minute){
+                console.log("m = " + m);
+
+                if (m[0]< state.hour && m2[0]> state.hour){
                     return 1;
+
+                }else if (m[0] == state.hour){
+                    if(m[1]<= state.minute)
+                        return 1;
+                
+                } else if (m2[0] == state.hour){
+                    if(m2[1] >= state.minute){
+                        return 1;
+                    }
                 }
+
             }
 
             return 0;
