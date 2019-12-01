@@ -33,7 +33,9 @@ export default class TelaContrato extends Component {
         minute: null,
         miliseconds: null,
         errorMessage: null,
-        stringData: null
+        stringData: null,
+        before: [],
+        after: []
     }
 
     static navigationOptions = {
@@ -95,6 +97,7 @@ export default class TelaContrato extends Component {
     }
 
     setDateAndroid = async () => {
+
         try {
             const {
                 action, year, month, day,
@@ -153,7 +156,7 @@ export default class TelaContrato extends Component {
                     break;
             }
             console.log("Hoje é :" + this.state.dia);
-
+        
         } catch ({ code, message }) {
             console.warn('Cannot open date picker', message);
         }
@@ -193,55 +196,64 @@ export default class TelaContrato extends Component {
         if (this.state.miliseconds == null || isNaN(this.state.miliseconds) || this.state.hour == undefined){
             Alert.alert("Insira uma data no Agendamento.");
         }
-        console.log("horairo do prestador " + this.state.prest_prestador.horario.segunda);
+        console.log("horairo do prestador " + this.state.prest_prestador.id_prestador);
         var trab = 1;
-        var teste = this.state.miliseconds;
+        var teste = parseInt(this.state.miliseconds);
         var testb = ["1575366400000"];
         var testa = ["1575374000000","1575388800000"];
         testb.sort((a,b)=> a > b);
         testa.sort((a,b)=> a > b);
         
         trab = this.testarDia();
-
         if (trab == 0){
             console.log("não foi possível realizar contrato.");
             return 0;}
-
+        
         try{
             console.log("{\"data\":\""+this.state.miliseconds+"\"}");
-            const response = await api.getContractsOfDay(this.state.prest_prestador.id_prestador, "{\"data\": \""+this.state.miliseconds+"\"}");
-            console.log("Validar data: " + response.data);
-            var before = response.data["before"];
-            var after = response.data["after"];
-            after.sort((a,b)=> a > b);
-            before.sort((a,b)=> a > b);
-            console.log("before: " + before);
-            console.log("after: " + after);
-            
-            if(!before.length && !after.length){
-                console.log("deu certo lista vazia");
-                this.criarContrato();
-                return 0;
-            }
-            else if((teste + 3600000) > before[before.length - 1] && (teste + 3600000) < after[0]){
-                console.log("deu certo, entre before e after");
-                this.criarContrato();
-                return 0;
-            } else{
-                for(var i = 0 ; i < before.length-1; i++){
-                    if((teste + 3600000) > after[i] && (teste + 3600000) < after[i+1]){
-                        console.log("deu certo, entre dois numeros no after");
-                        this.criarContrato();
-                        return 0;
-                    }
-                }
-            }
-            Alert.alert("Não foi possível realizar contrato, horário já preenchido.");
+            var response = await api.getContractsOfDay(this.state.prest_prestador.id_prestador, "{\"data\": \""+this.state.miliseconds+"\"}");
+            this.setState({before: response.data["before"], after: response.data["after"]});
         }catch(response){
             console.log("erro: " + response.data);
             this.setState({ errorMessage: response.data });
             Alert.alert("Contrato não pode ser efetuado.");
         }
+        var after = this.state.after;
+        var before = this.state.before;
+
+        console.log("before: " + before.length);
+        console.log("after: " + after);
+        console.log("after: " + after.length);
+
+        after.sort((a,b)=> a.data.data > b.data.data);
+        before.sort((a,b)=> a.data.data > b.data.data);
+        
+        if(!before.length && !after.length){
+            console.log("deu certo lista vazia");
+            this.criarContrato();
+            return 0;
+        }else if(!before.length && teste < after[0].data.data - 3600000){
+            console.log("deu certo, before vazia e teste menor que after");
+            this.criarContrato();
+            return 0;
+
+        }else if(!after.length && teste > before[before.length - 1].data.data + 3600000){
+            console.log("Teste =" + teste + ", data =" + before[before.length - 1].data.data);
+            console.log("deu certo, after vazia e teste maior que before");
+            this.criarContrato();
+            return 0;
+
+        } 
+        
+        if(before.length != 0 && after.length != 0)
+            if(teste > before[before.length - 1].data.data + 3600000 && teste < after[0].data.data - 3600000){
+                console.log("deu certo, entre before e after");
+                this.criarContrato();
+                return 0;
+            }
+
+
+        Alert.alert("Horário já preenchido.");
     }
     
     testarHorario = (horariosF) =>{
