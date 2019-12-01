@@ -149,7 +149,7 @@ api.addContractReview = async (review) => {
 }
 
 api.getContractsOfDay = async (provider_id, dateTime) => {
-    return await api.get(`/contrato/prestador/data/${provider_id}`, dateTime);
+    return await api.put(`/contrato/prestador/data/${provider_id}`, dateTime);
 }
 
 
@@ -168,7 +168,7 @@ api.deleteSchedule = async(provider_id) => {
 }
 
 api.getProviderSchedule = async (provider_id) => {
-    return 
+    return await api.get(`/prestador/horario/${provider_id}`);
 }
 
 export default api;

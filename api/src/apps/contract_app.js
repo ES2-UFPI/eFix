@@ -196,7 +196,7 @@ const add_review = router.post('/avaliacao', (req, res, next) => {
     ref.off("value");
 });
 
-const get_contracts_of_day = router.get('/prestador/data/:id_prestador', (req, res, next) => {
+const get_contracts_of_day = router.put('/prestador/data/:id_prestador', (req, res, next) => {
     const { id_prestador } = req.params;
     const { data } = req.body;
     
