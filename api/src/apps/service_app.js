@@ -230,17 +230,28 @@ const update_service = router.put('/', (req, res, next) => {
     const descricao = req.body.descricao;
     
     console.log("UPDATE " + id_servico + " recebida");
-
     const refPath = "servico/" + id_servico;
     const ref = firebase.database().ref(refPath)
-
-    ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
-        if (error) {
-            res.send("Dados não poderam ser atualizados " + error);
-        } else {
-            res.send("Dados atualizados com sucesso " + 200);
+   
+    ref.on("value", function(snapshot){
+        if(snapshot.val() == null){
+            res.status(406).json({message: "Não existe este serviço!"}).send();
+        } else{
+            ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
+                if (error) {
+                    res.send("Dados não poderam ser atualizados " + error);
+                } else {
+                    res.send("Dados atualizados com sucesso " + 200);
+                }
+            });
+            
         }
+    },
+    function(errorObject){
+        console.log("Leitura falhou: " + errorObject.code);
+        res.send(errorObject.code);
     });
+
 });
 
 // deleta um servico com o id recebido.
