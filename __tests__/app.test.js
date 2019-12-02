@@ -12,13 +12,15 @@ it('Update Serviço', async (done) => {
     preco: "130"
   }
 
+  var x = null;
 
   try{
     const response = await api.updateService(json);
+    x = response;
   }
   catch(response){
-      console.log("Error");
+      console.log("Error: " + x.status);
   }
 
-  expect(response.status).toBe(406);
+  expect(x.status).toBe(406);
 });
