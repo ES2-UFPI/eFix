@@ -117,7 +117,9 @@ getPrestador = async (id) => {
     render() {
       {
           
-       
+        var data = this.props.navigation.getParam('contrato').data.dia + "/" + this.props.navigation.getParam('contrato').data.mes + "/" 
+            + this.props.navigation.getParam('contrato').data.ano + " às " + this.props.navigation.getParam('contrato').data.hora + ":"
+            + (this.props.navigation.getParam('contrato').data.min < 10 ? "0" : "") + this.props.navigation.getParam('contrato').data.min;
         return(
             <Container>
                 <Body>
@@ -130,7 +132,7 @@ getPrestador = async (id) => {
                     <Text>R$: {this.state.servico.preco}</Text>
                     <Title>Data</Title>
                     <Data>
-                        <Text>{ this.props.navigation.getParam('contrato')['data'] }</Text>
+                        <Text>{data}</Text>
                         
                     </Data>
                     <ButtonContainer>
