@@ -113,10 +113,40 @@ getPrestador = async (id) => {
         this.setState({ data: data });
     }
 
+    cancelarContrato = async () => {
+        try {
+            const response = await api.deleteContract(this.props.navigation.getParam('contrato').id_contrato);
+            Alert.alert("Contrato cancelado.");
+            this.props.navigation.goBack();
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: response.data });
+            Alert.alert("Contrato não pode ser cancelado.");
+        }
+    }
+
+    cancelar() {
+        Alert.alert(
+            'Cancelar contrato',
+            'Deseja cancelar o contrato? O prestador do serviço será notificado.',
+            [
+                {
+                    text: 'Sim',
+                    onPress: () => this.cancelarContrato()
+                },
+                {
+                    text: 'Não',
+                    onPress: () => console.log("Voltar"),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false },
+        );
+    }
 
     render() {
       {
-          
+        console.log(this.props.navigation.getParam('contrato'));
         var data = this.props.navigation.getParam('contrato').data.dia + "/" + this.props.navigation.getParam('contrato').data.mes + "/" 
             + this.props.navigation.getParam('contrato').data.ano + " às " + this.props.navigation.getParam('contrato').data.hora + ":"
             + (this.props.navigation.getParam('contrato').data.min < 10 ? "0" : "") + this.props.navigation.getParam('contrato').data.min;
@@ -136,8 +166,8 @@ getPrestador = async (id) => {
                         
                     </Data>
                     <ButtonContainer>
-                        <Button text="Cancelar" />
-                        <Button text="finalizar"/>
+                        <Button text="Cancelar" onPress={() => this.cancelar()}/>
+                        <Button text="Finalizar"/>
 
                         
                     </ButtonContainer>
