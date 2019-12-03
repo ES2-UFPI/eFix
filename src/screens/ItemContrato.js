@@ -63,7 +63,7 @@ export default class ItemContrato extends Component {
                 
                 return "Ativo";
             } else {
-                return "Inativo";
+                return "Encerrado";
             }
            
         } catch (error) {

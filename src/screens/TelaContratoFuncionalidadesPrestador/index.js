@@ -158,7 +158,6 @@ getContratante = async (id) => {
                         
                     </Data>
                     <ButtonContainer>
-                        <Button text="Confirmar"/>
                         <Button text="Cancelar" onPress={() => this.cancelar()}/>
                         <Button text="Finalizar" />
                       

@@ -75,7 +75,7 @@ export default class ItemContratoPrestador extends Component {
                 
                 return "Ativo";
             } else {
-                return "Inativo";
+                return "Encerrado";
             }
            
         } catch (error) {
