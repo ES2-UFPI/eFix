@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import Button from '../../components/Button';
 import ProviderButton from '../../components/ProviderButton';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../services/API';
 import {
     Container,
@@ -102,10 +103,46 @@ getContratante = async (id) => {
         this.setState({ data: data });
     }
 
+    cancelarContrato = async () => {
+        try {
+            const response = await api.deleteContract(this.props.navigation.getParam('contrato').id_contrato);
+            Alert.alert("Contrato cancelado.");
+            this.props.navigation.goBack();
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: response.data });
+            Alert.alert("Contrato não pode ser cancelado.");
+        }
+    }
+
+    cancelar() {
+        Alert.alert(
+            'Cancelar contrato',
+            'Deseja cancelar o contrato? O contratante do serviço será notificado.',
+            [
+                {
+                    text: 'Sim',
+                    onPress: () => this.cancelarContrato()
+                },
+                {
+                    text: 'Não',
+                    onPress: () => console.log("Voltar"),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+
     render() {
       {
           
-       
+        var data = this.props.navigation.getParam('contrato').data.dia + "/" + (this.props.navigation.getParam('contrato').data.mes+1) + "/" 
+            + this.props.navigation.getParam('contrato').data.ano + " às " + this.props.navigation.getParam('contrato').data.hora + ":"
+            + (this.props.navigation.getParam('contrato').data.min < 10 ? "0" : "") + this.props.navigation.getParam('contrato').data.min;
+        var buttons = <ButtonContainer>
+                            <Button text="Cancelar" onPress={() => this.cancelar()}/>
+                        </ButtonContainer>;
         return(
             <Container>
                 <Body>
@@ -120,18 +157,14 @@ getContratante = async (id) => {
                     <Text>R$: {this.state.servico.preco}</Text>
                     <Title>Data</Title>
                     <Data>
-                        <Text>{ this.props.navigation.getParam('contrato')['data'] }</Text>
+                        <Text>{data}</Text>
                         
                     </Data>
-                    <ButtonContainer>
-                        <Button text="Confirmar" />
-                        <Button text="Cancelar" />
-                        <Button text="Finalizar" />
-                    </ButtonContainer>
+
+                    {this.props.navigation.getParam('contrato').ativo ? buttons : <View></View>}
                 </Body>
             </Container>
         );
           }
 }
-
 }
