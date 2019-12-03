@@ -234,7 +234,7 @@ const update_service = router.put('/', (req, res, next) => {
     const ref = firebase.database().ref(refPath)
    
     ref.on("value", function(snapshot){
-        if(snapshot.val() == undefined){
+        if(snapshot.val() == undefined || snapshot.val() == null){
             res.status(406).json({message: "Não existe este serviço!"}).send();
         } else{
             ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
