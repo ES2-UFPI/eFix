@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import Button from '../../components/Button';
 import ProviderButton from '../../components/ProviderButton';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../services/API';
 import {
     Container,
@@ -16,6 +15,9 @@ import {
     ButtonContainer,
     Data
 } from './styles';
+
+import Modal from 'react-native-modal';
+import RatingScreen from '../TelaAvaliacao';
 
 export default class TelaContratoFuncionalidadesP extends Component {
     state = {
@@ -28,6 +30,7 @@ export default class TelaContratoFuncionalidadesP extends Component {
         contratante: [],
         data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`,
         errorMessage: null,
+        isModalVisible: false
     }
 
     static navigationOptions = {
@@ -103,6 +106,9 @@ getContratante = async (id) => {
         this.setState({ data: data });
     }
 
+    toggleModal(){
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+    };
 
     render() {
       {
@@ -128,10 +134,11 @@ getContratante = async (id) => {
                     <ButtonContainer>
                         <Button text="Confirmar" />
                         <Button text="Cancelar" />
-                        <Button text="finalizar" />
-                      
-                        
+                        <Button text="Finalizar" onPress={this.toggleModal()} />
                     </ButtonContainer>
+                    <Modal isVisible={this.state.isModalVisible}>
+                        <RatingScreen />
+                    </Modal>
                 </Body>
             </Container>
         );
