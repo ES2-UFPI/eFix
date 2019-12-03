@@ -133,4 +133,5 @@ getContratante = async (id) => {
         );
           }
 }
+
 }
