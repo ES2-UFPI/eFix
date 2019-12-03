@@ -16,9 +16,6 @@ import {
     Data
 } from './styles';
 
-import Modal from 'react-native-modal';
-import RatingScreen from '../TelaAvaliacao';
-
 export default class TelaContratoFuncionalidadesP extends Component {
     state = {
         prest_usuario: [],
