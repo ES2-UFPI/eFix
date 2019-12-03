@@ -15,6 +15,7 @@ export default class TelaAvaliacao extends Component {
         super(props);
         
         this.state = {
+            size_rating: 45,
             user_rating: null,
             text: ""
         };
@@ -24,18 +25,18 @@ export default class TelaAvaliacao extends Component {
         this.comentView = this.comentView.bind(this);
         this.ratingComponent = this.ratingComponent.bind(this);
     }
-    componentWillUpdate(){
-        console.log(this.state);
+    
+    sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
 
     setRating = (rating) => {
-        console.log("Rate: " + rating);
+        this.setState({ size_rating: 10 })
         this.setState({ user_rating: rating});
         this.forceUpdate();
     }
 
     makeUserAvaliation = () =>{
-        console.log("Montando review...");
         var user_avaliation = {
             id_contrato: this.props.id_contrato,
             avaliacao: {
@@ -47,17 +48,15 @@ export default class TelaAvaliacao extends Component {
     }
     sendRating = async() => {
         var user_avaliation = this.makeUserAvaliation();
-        console.log("Avaliation: " + user_avaliation.id_contrato);
-        console.log("Avaliation: " + user_avaliation.avaliacao.nota);
-        console.log("Avaliation: " + user_avaliation.avaliacao.comentario);
-
-        try {
-            const response = await API.addContractReview(user_avaliation);
-            console.log(response);
-        } catch (response) {
-            console.log(response);
+        
+        if(!(user_avaliation.avaliacao.nota == null)){
+            try {
+                const response = await API.addContractReview(user_avaliation);
+            } catch (response) {
+                console.log(response);
+            }
+            this.props.modal.toggleModal();
         }
-        this.props.modal.toggleModal();
     }
 
     ratingComponent = () => {
@@ -65,8 +64,8 @@ export default class TelaAvaliacao extends Component {
             <AirbnbRating
                     count={5}
                     reviews={["Terrível", "Ruim", "Regular", "OK", "Muito Bom!"]}
-                    defaultRating={5}
-                    size={45}
+                    defaultRating={1}
+                    size={this.state.size_rating}
                     onFinishRating={this.setRating}
             />
         );
@@ -88,7 +87,8 @@ export default class TelaAvaliacao extends Component {
     return(
          <Container>
              <View>
-                {this.state.user_rating == null ? this.ratingComponent() : this.comentView()}
+                 {this.ratingComponent()}
+                {this.state.user_rating == null ? <View></View> : this.comentView()}
              </View>
             
             <SubContainer>
