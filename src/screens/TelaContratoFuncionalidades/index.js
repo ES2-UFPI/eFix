@@ -162,10 +162,10 @@ getPrestador = async (id) => {
 
     finalizar() {
         var data = this.props.navigation.getParam('contrato').data.data;
-        var now = Date.now();
+        var now = new Date();
         console.log("data: " + data);
-        console.log("now: " + now);
-        if (data > now) {
+        console.log("now: " + (now.getTime() + 7200000));
+        if (data > now.getTime() + 7200000) {
             Alert.alert('Finalizar contratos apenas durante o horário marcado');
             return;
         }
@@ -222,6 +222,7 @@ getPrestador = async (id) => {
                        onBackdropPress={() => this.setState({ isModalVisible: false })}>
                         <RatingScreen id_contrato={this.props.navigation.getParam('contrato').id_contrato} modal={this}/>                     
                     </Modal>
+
                 </Body>
             </Container>
         );
