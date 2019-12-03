@@ -4,10 +4,12 @@ import {
     Text,
     Alert,
     DatePickerAndroid,
+    Modal,
 } from 'react-native';
 import Button from '../../components/Button';
 import ProviderButton from '../../components/ProviderButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import RatingScreen from '../TelaAvaliacao';
 import api from '../../services/API';
 import {
     Container,
@@ -27,6 +29,7 @@ export default class TelaContratoFuncionalidades extends Component {
         contrato: [],
         data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`,
         errorMessage: null,
+        isModalVisible: false,
     }
 
     static navigationOptions = {
@@ -148,6 +151,7 @@ getPrestador = async (id) => {
         try {
             const response = await api.closeContract(this.props.navigation.getParam('contrato').id_contrato);
             Alert.alert("Contrato encerrado.");
+            this.toggleModal();
             this.props.navigation.goBack();
         } catch(response) {
             console.log("erro: " + response.data);
@@ -183,6 +187,10 @@ getPrestador = async (id) => {
         );
     }
 
+    toggleModal = () => {
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+    };
+
     render() {
       {
         console.log(this.props.navigation.getParam('contrato'));
@@ -209,7 +217,11 @@ getPrestador = async (id) => {
                         
                     </Data>
                     {this.props.navigation.getParam('contrato').ativo ? buttons : <View></View>}
-                    
+
+                    <Modal isVisible={this.state.isModalVisible}
+                       onBackdropPress={() => this.setState({ isModalVisible: false })}>
+                        <RatingScreen id_contrato={this.props.navigation.getParam('contrato').id_contrato} modal={this}/>                     
+                    </Modal>
                 </Body>
             </Container>
         );
