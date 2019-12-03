@@ -22,11 +22,14 @@ export default class TelaPerfilPrestador extends Component{
             servicosAutorais: ["Nenhum serviço cadastrado."],
             servicosContratados:'',
             disponibilidade: 'Serviços Ativados no momento...',
+            disp: 0,
             horariosDisponibilizados:[],
         }
+        this.getDisponibilidade = this.getDisponibilidade.bind(this);
         this.trocarDisponibilidade = this.trocarDisponibilidade.bind(this);
         this.listarServicos = this.listarServicos.bind(this);
         this.listarServicos();
+        this.getDisponibilidade();
     }
 
     static navigationOptions = {
@@ -48,9 +51,26 @@ export default class TelaPerfilPrestador extends Component{
         console.log(this.props.navigation.getParam('usuario'));
     }
 
+    getDisponibilidade(){
+        var x = null;
+        try {
+            const response = await api.getProvider(this.props.navigation.getParam('usuario')['id_prestador']);
+            console.log("Tela: " + response.data);
+            x = response.data;
+
+        } catch(response) {
+            console.log("erro: " + response.data);
+        }
+        if(x.disponibilidade == true){
+            this.setState({disp: x.disponibilidade, disponibilidade: 'Serviços Ativados no momento...'});
+        }else{ 
+        this.setState({disp: x.disponibilidade, disponibilidade: 'Serviços Desativados no momento...'});
+        }
+    }
+
     trocarDisponibilidade(){
         let state = this.state;
-        if(state.disponibilidade == "Serviços Desativados no momento..."){
+        if(state.disp == false){
             this.setState({disponibilidade: 'Serviços Ativados no momento...'});
         }
         else{
