@@ -126,7 +126,7 @@ getContratante = async (id) => {
                     <ButtonContainer>
                         <Button text="Confirmar" />
                         <Button text="Cancelar" />
-                        <Button text="Finalizar" onPress={this.toggleModal()} />
+                        <Button text="Finalizar" />
                     </ButtonContainer>
                 </Body>
             </Container>
