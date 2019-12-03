@@ -23,4 +23,5 @@ it('Update Serviço', async (done) => {
   }
 
   expect(x.status).toBe(406);
+  done();
 });
