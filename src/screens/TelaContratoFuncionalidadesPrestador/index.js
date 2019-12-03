@@ -27,7 +27,6 @@ export default class TelaContratoFuncionalidadesP extends Component {
         contratante: [],
         data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`,
         errorMessage: null,
-        isModalVisible: false
     }
 
     static navigationOptions = {
@@ -103,10 +102,6 @@ getContratante = async (id) => {
         this.setState({ data: data });
     }
 
-    toggleModal(){
-        this.setState({ isModalVisible: !this.state.isModalVisible });
-    };
-
     render() {
       {
           
@@ -133,9 +128,6 @@ getContratante = async (id) => {
                         <Button text="Cancelar" />
                         <Button text="Finalizar" onPress={this.toggleModal()} />
                     </ButtonContainer>
-                    <Modal isVisible={this.state.isModalVisible}>
-                        <RatingScreen />
-                    </Modal>
                 </Body>
             </Container>
         );
