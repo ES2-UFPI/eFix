@@ -7,7 +7,7 @@ export const Container = styled.View`
 
 export const Body = styled.View`
     flex-direction: column;
-    padding: 0 10px 0 10px;
+    padding: 0 10px 10px 10px;
     border-radius: 10px;
     border-color: #ebf0f0;
     border-width: 1px;
@@ -24,7 +24,7 @@ export const Title = styled.Text`
 
 export const ButtonContainer = styled.View`
     align-items: center;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
     flex-direction: row;
     justify-content: space-around;
 `;

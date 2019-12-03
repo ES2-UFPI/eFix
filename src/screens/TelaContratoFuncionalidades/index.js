@@ -189,6 +189,10 @@ getPrestador = async (id) => {
         var data = this.props.navigation.getParam('contrato').data.dia + "/" + (this.props.navigation.getParam('contrato').data.mes+1) + "/" 
             + this.props.navigation.getParam('contrato').data.ano + " às " + this.props.navigation.getParam('contrato').data.hora + ":"
             + (this.props.navigation.getParam('contrato').data.min < 10 ? "0" : "") + this.props.navigation.getParam('contrato').data.min;
+        var buttons = <ButtonContainer>
+                        <Button text="Cancelar" onPress={() => this.cancelar()}/>
+                        <Button text="Finalizar" onPress={() => this.finalizar()}/>
+                    </ButtonContainer>;
         return(
             <Container>
                 <Body>
@@ -204,12 +208,8 @@ getPrestador = async (id) => {
                         <Text>{data}</Text>
                         
                     </Data>
-                    <ButtonContainer>
-                        <Button text="Cancelar" onPress={() => this.cancelar()}/>
-                        <Button text="Finalizar" onPress={() => this.finalizar()}/>
-
-                        
-                    </ButtonContainer>
+                    {this.props.navigation.getParam('contrato').ativo ? buttons : <View></View>}
+                    
                 </Body>
             </Container>
         );
