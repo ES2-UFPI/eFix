@@ -8,6 +8,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import ListagemServicoPrestador from './ListagemServicoPrestador.js';
+import api from '../services/API';
 
 export default class TelaPerfilPrestador extends Component{
 
@@ -29,7 +30,6 @@ export default class TelaPerfilPrestador extends Component{
         this.trocarDisponibilidade = this.trocarDisponibilidade.bind(this);
         this.listarServicos = this.listarServicos.bind(this);
         this.listarServicos();
-        this.getDisponibilidade();
     }
 
     static navigationOptions = {
@@ -51,15 +51,16 @@ export default class TelaPerfilPrestador extends Component{
         console.log(this.props.navigation.getParam('usuario'));
     }
 
-    getDisponibilidade(){
+    getDisponibilidade = async() =>{
         var x = null;
+        console.log('ID de prestador Primeira: ' + this.props.navigation.getParam('usuario')['id_prestador']);
         try {
             const response = await api.getProvider(this.props.navigation.getParam('usuario')['id_prestador']);
-            console.log("Tela: " + response.data);
             x = response.data;
+            console.log("Tela muito massa: " + x);
 
         } catch(response) {
-            console.log("erro: " + response.data);
+            console.log("DEU ERROOOOOOOOOOOOR: " + response.data);
         }
         if(x.disponibilidade == true){
             this.setState({disp: x.disponibilidade, disponibilidade: 'Serviços Ativados no momento...'});
@@ -71,10 +72,10 @@ export default class TelaPerfilPrestador extends Component{
     trocarDisponibilidade(){
         let state = this.state;
         if(state.disp == false){
-            this.setState({disponibilidade: 'Serviços Ativados no momento...'});
+            this.setState({disp: true, disponibilidade: 'Serviços Ativados no momento...'});
         }
         else{
-            this.setState({disponibilidade: 'Serviços Desativados no momento...'});
+            this.setState({disp: false, disponibilidade: 'Serviços Desativados no momento...'});
         }
     }
 
@@ -84,7 +85,7 @@ export default class TelaPerfilPrestador extends Component{
         state.servicosAutorais = [];
         state.servicosAutorais = <ListagemServicoPrestador filter='provider' value={this.props.navigation.getParam('usuario')['id_prestador']}/>;
         this.setState(state);
-
+        this.getDisponibilidade();
     }
 
     render(){
