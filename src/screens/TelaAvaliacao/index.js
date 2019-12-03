@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Text } from 'react-native';
 
 import {AirbnbRating } from 'react-native-ratings';
 
@@ -34,20 +34,22 @@ export default class TelaAvaliacao extends Component {
         this.forceUpdate();
     }
 
-    makeUserAvaliation = async() =>{
+    makeUserAvaliation = () =>{
         console.log("Montando review...");
         var user_avaliation = {
             id_contrato: this.props.id_contrato,
             avaliacao: {
-                nota: this.state.rating,
+                nota: this.state.user_rating,
                 comentario: this.state.text
             }
         }
         return user_avaliation;
     }
     sendRating = async() => {
-        var user_avaliation = await this.makeUserAvaliation();
-        console.log("Avaliation: " + user_avaliation);
+        var user_avaliation = this.makeUserAvaliation();
+        console.log("Avaliation: " + user_avaliation.id_contrato);
+        console.log("Avaliation: " + user_avaliation.avaliacao.nota);
+        console.log("Avaliation: " + user_avaliation.avaliacao.comentario);
 
         try {
             const response = await API.addContractReview(user_avaliation);
@@ -70,7 +72,7 @@ export default class TelaAvaliacao extends Component {
         );
     }
 
-    comentView = () => {
+    comentView() {
         return(
             <TextInput placeholder="Que tal deixar um comentário?"
                           underlineColorAndroid="transparent"
@@ -91,7 +93,7 @@ export default class TelaAvaliacao extends Component {
             
             <SubContainer>
                 <ButtonContainer>
-                    <Button text={this.state.user_rating == null ? "OK" : "Avaliar"} onPress={() => {this.sendRating()}}/>          
+                    <Button text={this.state.user_rating == null ? "OK" : "Avaliar"} onPress={() => {this.sendRating()}}/>        
                 </ButtonContainer>
             </SubContainer>
          </Container>
