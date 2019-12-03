@@ -144,10 +144,49 @@ getPrestador = async (id) => {
         );
     }
 
+    finalizarContrato = async () => {
+        try {
+            const response = await api.closeContract(this.props.navigation.getParam('contrato').id_contrato);
+            Alert.alert("Contrato encerrado.");
+            this.props.navigation.goBack();
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: response.data });
+            Alert.alert("Contrato não pode ser finalizado.");
+        }
+    }
+
+    finalizar() {
+        var data = this.props.navigation.getParam('contrato').data.data;
+        var now = Date.now();
+        console.log("data: " + data);
+        console.log("now: " + now);
+        if (data > now) {
+            Alert.alert('Finalizar contratos apenas durante o horário marcado');
+            return;
+        }
+        Alert.alert(
+            'Finalizar contrato',
+            'Ao finalizar o contrato você confirma que ele foi cumprido.',
+            [
+                {
+                    text: 'Finalizar',
+                    onPress: () => this.finalizarContrato()
+                },
+                {
+                    text: 'Voltar',
+                    onPress: () => console.log("Voltar"),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+
     render() {
       {
         console.log(this.props.navigation.getParam('contrato'));
-        var data = this.props.navigation.getParam('contrato').data.dia + "/" + this.props.navigation.getParam('contrato').data.mes + "/" 
+        var data = this.props.navigation.getParam('contrato').data.dia + "/" + (this.props.navigation.getParam('contrato').data.mes+1) + "/" 
             + this.props.navigation.getParam('contrato').data.ano + " às " + this.props.navigation.getParam('contrato').data.hora + ":"
             + (this.props.navigation.getParam('contrato').data.min < 10 ? "0" : "") + this.props.navigation.getParam('contrato').data.min;
         return(
@@ -167,7 +206,7 @@ getPrestador = async (id) => {
                     </Data>
                     <ButtonContainer>
                         <Button text="Cancelar" onPress={() => this.cancelar()}/>
-                        <Button text="Finalizar"/>
+                        <Button text="Finalizar" onPress={() => this.finalizar()}/>
 
                         
                     </ButtonContainer>

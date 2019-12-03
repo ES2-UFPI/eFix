@@ -90,7 +90,7 @@ export default class ItemContratoPrestador extends Component {
     }
     render() {
         console.log(this.props.contrato.id_contrato);
-        var data = this.props.contrato.data.dia + "/" + this.props.contrato.data.mes + "/" 
+        var data = this.props.contrato.data.dia + "/" + (this.props.contrato.data.mes+1) + "/" 
             + this.props.contrato.data.ano + " às " + this.props.contrato.data.hora + ":"
             + (this.props.contrato.data.min < 10 ? "0" : "") + this.props.contrato.data.min;
         return(

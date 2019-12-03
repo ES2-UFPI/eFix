@@ -137,7 +137,7 @@ getContratante = async (id) => {
     render() {
       {
           
-        var data = this.props.navigation.getParam('contrato').data.dia + "/" + this.props.navigation.getParam('contrato').data.mes + "/" 
+        var data = this.props.navigation.getParam('contrato').data.dia + "/" + (this.props.navigation.getParam('contrato').data.mes+1) + "/" 
             + this.props.navigation.getParam('contrato').data.ano + " às " + this.props.navigation.getParam('contrato').data.hora + ":"
             + (this.props.navigation.getParam('contrato').data.min < 10 ? "0" : "") + this.props.navigation.getParam('contrato').data.min;
         return(
@@ -159,7 +159,6 @@ getContratante = async (id) => {
                     </Data>
                     <ButtonContainer>
                         <Button text="Cancelar" onPress={() => this.cancelar()}/>
-                        <Button text="Finalizar" />
                       
                         
                     </ButtonContainer>
