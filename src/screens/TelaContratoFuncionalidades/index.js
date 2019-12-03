@@ -4,10 +4,12 @@ import {
     Text,
     Alert,
     DatePickerAndroid,
+    Modal,
 } from 'react-native';
 import Button from '../../components/Button';
 import ProviderButton from '../../components/ProviderButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import RatingScreen from '../TelaAvaliacao';
 import api from '../../services/API';
 import {
     Container,
@@ -27,6 +29,7 @@ export default class TelaContratoFuncionalidades extends Component {
         contrato: [],
         data: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`,
         errorMessage: null,
+        isModalVisible: false,
     }
 
     static navigationOptions = {
@@ -113,11 +116,91 @@ getPrestador = async (id) => {
         this.setState({ data: data });
     }
 
+    cancelarContrato = async () => {
+        try {
+            const response = await api.deleteContract(this.props.navigation.getParam('contrato').id_contrato);
+            Alert.alert("Contrato cancelado.");
+            this.props.navigation.goBack();
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: response.data });
+            Alert.alert("Contrato não pode ser cancelado.");
+        }
+    }
+
+    cancelar() {
+        Alert.alert(
+            'Cancelar contrato',
+            'Deseja cancelar o contrato? O prestador do serviço será notificado.',
+            [
+                {
+                    text: 'Sim',
+                    onPress: () => this.cancelarContrato()
+                },
+                {
+                    text: 'Não',
+                    onPress: () => console.log("Voltar"),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+
+    finalizarContrato = async () => {
+        try {
+            const response = await api.closeContract(this.props.navigation.getParam('contrato').id_contrato);
+            Alert.alert("Contrato encerrado.");
+            this.toggleModal();
+            this.props.navigation.goBack();
+        } catch(response) {
+            console.log("erro: " + response.data);
+            this.setState({ errorMessage: response.data });
+            Alert.alert("Contrato não pode ser finalizado.");
+        }
+    }
+
+    finalizar() {
+        var data = this.props.navigation.getParam('contrato').data.data;
+        var now = new Date();
+        console.log("data: " + data);
+        console.log("now: " + (now.getTime() + 7200000));
+        if (data > now.getTime() + 7200000) {
+            Alert.alert('Finalizar contratos apenas durante o horário marcado');
+            return;
+        }
+        Alert.alert(
+            'Finalizar contrato',
+            'Ao finalizar o contrato você confirma que ele foi cumprido.',
+            [
+                {
+                    text: 'Finalizar',
+                    onPress: () => this.finalizarContrato()
+                },
+                {
+                    text: 'Voltar',
+                    onPress: () => console.log("Voltar"),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+
+    toggleModal = () => {
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+    };
 
     render() {
       {
-          
-       
+        console.log(this.props.navigation.getParam('contrato'));
+        var data = this.props.navigation.getParam('contrato').data.dia + "/" + (this.props.navigation.getParam('contrato').data.mes+1) + "/" 
+            + this.props.navigation.getParam('contrato').data.ano + " às " + this.props.navigation.getParam('contrato').data.hora + ":"
+            + (this.props.navigation.getParam('contrato').data.min < 10 ? "0" : "") + this.props.navigation.getParam('contrato').data.min;
+        var buttons = <ButtonContainer>
+                        <Button text="Cancelar" onPress={() => this.cancelar()}/>
+                        <Button text="Finalizar" onPress={() => this.finalizar()}/>
+                    </ButtonContainer>;
         return(
             <Container>
                 <Body>
@@ -130,15 +213,16 @@ getPrestador = async (id) => {
                     <Text>R$: {this.state.servico.preco}</Text>
                     <Title>Data</Title>
                     <Data>
-                        <Text>{ this.props.navigation.getParam('contrato')['data'] }</Text>
+                        <Text>{data}</Text>
                         
                     </Data>
-                    <ButtonContainer>
-                        <Button text="Cancelar" />
-                        <Button text="finalizar"/>
+                    {this.props.navigation.getParam('contrato').ativo ? buttons : <View></View>}
 
-                        
-                    </ButtonContainer>
+                    <Modal isVisible={this.state.isModalVisible}
+                       onBackdropPress={() => this.setState({ isModalVisible: false })}>
+                        <RatingScreen id_contrato={this.props.navigation.getParam('contrato').id_contrato} modal={this}/>                     
+                    </Modal>
+
                 </Body>
             </Container>
         );

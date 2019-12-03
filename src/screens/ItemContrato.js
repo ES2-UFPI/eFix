@@ -63,7 +63,7 @@ export default class ItemContrato extends Component {
                 
                 return "Ativo";
             } else {
-                return "Inativo";
+                return "Encerrado";
             }
            
         } catch (error) {
@@ -77,6 +77,9 @@ export default class ItemContrato extends Component {
     }
     render() {
         console.log(this.props.contrato.id_contrato);
+        var data = this.props.contrato.data.dia + "/" + (this.props.contrato.data.mes+1) + "/" 
+            + this.props.contrato.data.ano + " às " + this.props.contrato.data.hora + ":"
+            + (this.props.contrato.data.min < 10 ? "0" : "") + this.props.contrato.data.min;
         return(
             <TouchableOpacity style={styles.container} onPress={this.props.onPress} >
                 <View style={styles.container_top}>
@@ -84,7 +87,7 @@ export default class ItemContrato extends Component {
                     </View>
                     <Text>Prestador: {this.state.prest_usuario.nome}</Text>
                     <Text>Status: {this.getAtivoOuNao()}</Text>
-                    <Text>Data: {this.props.contrato.data}</Text>
+                    <Text>Data: {data}</Text>
          
             </TouchableOpacity>
         );
