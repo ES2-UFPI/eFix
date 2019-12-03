@@ -132,7 +132,21 @@ const close_contract = router.put('/close/:id', (req,res, next) => {
             
             ref.once("value", function(snapshot){
                 const id_prestador = snapshot.child("id_prestador").val();
-                res.redirect(307, '../../prestador/incremento/' + id_prestador);
+
+                const refPath = "prestador/" + id_prestador;
+                const ref2 = firebase.database().ref(refPath);
+
+                ref2.once("value", function(snapshot){
+                    const qnt_servicos_prestados = snapshot.child("qnt_servicos_prestados").val() + 1;
+
+                    ref2.update({ qnt_servicos_prestados }, function(error){
+                        if (error) {
+                            res.send("Dados não poderam ser salvos " + error);
+                        } else 
+                            res.sendStatus(200);
+                    })
+                    ref2.off("value");
+                });
                 ref.off("value");
             });
         }
@@ -182,16 +196,54 @@ const read_provider_contracts = router.get('/prestador/:id', (req, res, next) =>
 });
 
 const add_review = router.post('/avaliacao', (req, res, next) => {
-    const { id_contrato } = req.body;
-    const avaliacao = crypto.randomBytes(32).toString('hex');
-    
+    const { id_contrato, avaliacao } = req.body;
+    const { nota, comentario } = avaliacao;
+    const id_avaliacao = crypto.randomBytes(32).toString('hex');
+    avaliacao.id_avaliacao = id_avaliacao;
     const ref = firebase.database().ref('contratos/' + id_contrato);
 
     ref.update({ avaliacao }, function(error){
         if(error){
             res.sendStatus(502);
-        } else
-            res.redirect(307, '../../prestador/avaliacao/' + avaliacao);
+        } else{
+            const id_prestador = null;
+            ref.on("value", function(snapshot){
+                id_prestador = snapshot.child("id_prestador").val();
+            });
+            ref.off("value");
+
+            var ref2 = firebase.database().ref('prestador/' + id_prestador);
+            
+            ref2.once("value", function(snapshot){
+                var nota_somada = snapshot.child("nota_somada").val();
+                const qnt_servicos_prestados = snapshot.child("qnt_servicos_prestados").val();
+                var nota_media = (nota_somada + avaliacao.nota)/ qnt_servicos_prestados;
+                nota_somada += avaliacao.nota;
+                
+                if(qnt_servicos_prestados == 0 || qnt_servicos_prestados == null)
+                    // nota media atualmente é igual a infinito, causando erro. Atualizando valor
+                    nota_media = avaliacao.nota;
+                
+                // normalizando para valores entre 0 e 5    
+                nota_media = nota_media/5;
+
+                ref2.update({ nota_media, nota_somada }, function(error){
+                    if (error) {
+                        res.send("Dados não poderam ser salvos " + error);
+                    } else{
+                        ref2.off("value");
+                        ref2 = firebase.database().ref('prestador/' + id_prestador + '/avaliacoes/' + id_avaliacao);
+                        ref2.update({ id_avaliacao, comentario, nota, id_contrato }, function(error){
+                            if(error){
+                                res.sendStatus(502);
+                            } else
+                                res.sendStatus(200);
+                        });
+                    }
+                });
+                ref2.off("value");
+            });
+        }
     })
     ref.off("value");
 });
