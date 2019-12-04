@@ -2,8 +2,40 @@
 Plataforma para contratação de serviços domésticos
 
 <h1>Changelog</h1>
+
+<h2>v0.3.0 - 04/12/2019</h2>
+<h3>New Features</h3>
+
+<h4>Consulta a contratos</h4>
+
+- #86 Listagem dos contratos do usuário
+
+- #88 Tela de consulta aos dados do contrato
+
+<h4>Alterar disponibilidade do prestador</h4>
+
+- #99 Funcionalidade de trocar disponibilidade do prestador
+ 
+<h4>Salvar horários disponíveis do prestador</h4>
+
+- #89 Cadastrar horários disponíveis do prestador
+
+<h4>Operações sobre contrato</h4>
+
+- #96 Operações de cancelar e finalizar contrato
+
+<h4>Avaliação de contratos</h4>
+
+- #97 Funcionalidade de avaliar contratos
+
+<h3>Melhoria</h3>
+
+<h4>Agendamento de serviço</h4>
+
+- #93 Funcionalidade de agendar contratos
+
 <h2>v0.2.0 - 11/11/2019</h2>
-<h2>New Features</h2>
+<h3>New Features</h3>
 
 <h4>Contratar Serviço</h4>
 
@@ -25,13 +57,13 @@ Plataforma para contratação de serviços domésticos
 
 - #63 Ordenação da lista de serviços em relação ao preço em ordem descrecente e crescente.
 
-<h2>Bug Fixes</h2>
+<h3>Bug Fixes</h3>
 
 <h4>Lista Serviços</h4>
 
 - #45 Corrigido o bug da atualização na lista de serviços em que a mesma não atualiza numa nova pesquisa.
 
-<h2>Melhoria</h2>
+<h3>Melhoria</h3>
 
 <h4>Categorias são puxadas do Firebase </h4>
 
@@ -44,7 +76,6 @@ Plataforma para contratação de serviços domésticos
 - #58 Tela de busca unidificada com a tela de filtragem.
 
 <h2>v0.1.0 - 21/10/2019</h2>
-
 <h3>New Features</h3>
 
 <h4>Cadastro</h4>
