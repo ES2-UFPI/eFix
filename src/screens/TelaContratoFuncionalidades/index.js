@@ -4,13 +4,13 @@ import {
     Text,
     Alert,
     DatePickerAndroid,
-    Modal,
 } from 'react-native';
 import Button from '../../components/Button';
 import ProviderButton from '../../components/ProviderButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RatingScreen from '../TelaAvaliacao';
 import api from '../../services/API';
+import Modal from 'react-native-modal';
 import {
     Container,
     Body,
@@ -147,12 +147,24 @@ getPrestador = async (id) => {
         );
     }
 
+    toggleModal() {
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+    };
+
     finalizarContrato = async () => {
         try {
             const response = await api.closeContract(this.props.navigation.getParam('contrato').id_contrato);
-            Alert.alert("Contrato encerrado.");
-            this.toggleModal();
-            this.props.navigation.goBack();
+            Alert.alert(
+                "Contrato encerrado.",
+                "Avalie o serviço para ajudar a comunidade catolica porra",
+                [
+                    {
+                        text: "Ok",
+                        onPress: () => this.toggleModal(),
+                    }
+                ],
+                { cancelable: false },
+            );
         } catch(response) {
             console.log("erro: " + response.data);
             this.setState({ errorMessage: response.data });
@@ -187,10 +199,6 @@ getPrestador = async (id) => {
         );
     }
 
-    toggleModal = () => {
-        this.setState({ isModalVisible: !this.state.isModalVisible });
-    };
-
     render() {
       {
         console.log(this.props.navigation.getParam('contrato'));
@@ -204,7 +212,11 @@ getPrestador = async (id) => {
         return(
             <Container>
                 <Body>
-                    
+                    <Modal isVisible={this.state.isModalVisible}
+                       onBackdropPress={() => this.setState({ isModalVisible: false })}>
+                        <RatingScreen id_contrato={this.props.navigation.getParam('contrato')} modal={this}/>
+                    </Modal>
+
                     <Title>Provedor</Title>
                     <Text>{this.state.prest_usuario.nome}</Text>
                     <Title>Serviço</Title>
@@ -214,15 +226,9 @@ getPrestador = async (id) => {
                     <Title>Data</Title>
                     <Data>
                         <Text>{data}</Text>
-                        
                     </Data>
+
                     {this.props.navigation.getParam('contrato').ativo ? buttons : <View></View>}
-
-                    <Modal isVisible={this.state.isModalVisible}
-                       onBackdropPress={() => this.setState({ isModalVisible: false })}>
-                        <RatingScreen id_contrato={this.props.navigation.getParam('contrato').id_contrato} modal={this}/>                     
-                    </Modal>
-
                 </Body>
             </Container>
         );
