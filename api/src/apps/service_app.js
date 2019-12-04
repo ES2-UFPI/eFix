@@ -24,13 +24,20 @@ const create_service = router.post('/', (req, res, next) => {
     const descricao = req.body.descricao;
     const duracao = req.body.duracao;
 
-    const refPath = "prestador/" + id_prestador;
+    const refPath = "servico/" + id_servico;
     var ref = firebase.database().ref(refPath)
-    ref.on("value", function(snapshot){
-       
-        if(snapshot.val() == undefined || snapshot.val() == null){
-            res.status(406).json({message: "Esse prestador nao existe!"}).send();
-        } else{
+    
+    const refPath2 = "prestador/" + id_prestador;
+    var ref2 = firebase.database().ref(refPath2)
+
+    ref2.on("value", function(snapshot){
+
+ if(snapshot.val() == undefined || snapshot.val() == null){
+        res.status(406).json({message: "Esse prestador nao existe!"}).send();
+    } 
+
+    })
+        
             ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao, duracao }, function(error) {
                 if (error) {
                     res.send("Dados não poderam ser salvos " + error);
@@ -42,12 +49,6 @@ const create_service = router.post('/', (req, res, next) => {
                 }
             });
             
-        }
-    },
-    function(errorObject){
-        console.log("Leitura falhou: " + errorObject.code);
-        res.send(errorObject.code);
-    });
     
 });
 
