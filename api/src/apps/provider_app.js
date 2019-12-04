@@ -88,7 +88,11 @@ const update = router.put('/', (req, res, next) => {
 
     const refPath = "prestador/" + id_prestador;
     const ref = firebase.database().ref(refPath);
-
+    ref.on("value", function(snapshot) {
+        if (snapshot.val() == null) {
+            res.status(406).send();
+        }
+    });
     ref.update({ id_prestador, bio, horarios, servicos, contratos,
                 nota, avaliacoes, qnt_servicos_prestados, disponibilidade 
                 }, function(error) {
