@@ -50,3 +50,22 @@ it('Create service with wrong id_prestador', async (done) => {
   expect(x.status).toBe(406);
   done();
 });
+
+it('Update provider with invalid id', async (done) => {
+  var json = {
+    id_prestador: "123456789",
+    bio: "Eu sou um teste."
+  }
+
+  var x = null;
+
+  try {
+    const response = await api.updateProvider(json);
+    x = response;
+  } catch (response) {
+    console.log("Error: " + x.status);
+  }
+
+  expect(x.status).toBe(406);
+  done();
+});

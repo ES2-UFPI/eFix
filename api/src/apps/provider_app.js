@@ -88,17 +88,23 @@ const update = router.put('/', (req, res, next) => {
 
     const refPath = "prestador/" + id_prestador;
     const ref = firebase.database().ref(refPath);
-
-    ref.update({ id_prestador, bio, horarios, servicos, contratos,
+    ref.on("value", function(snapshot) {
+        if (snapshot.val() == undefined || snapshot.val() == null) {
+            res.status(406).send();
+        } else {
+            ref.update({ id_prestador, bio, horarios, servicos, contratos,
                 nota, avaliacoes, qnt_servicos_prestados, disponibilidade 
-                }, function(error) {
-                    if (error) {
-                        res.send("Dados não poderam ser salvos " + error);
-                    } else {
-                        res.send("Dados salvos com sucesso " + 200);
-                    }
-        ref.off("value");
+            }, function(error) {
+                if (error) {
+                    res.send("Dados não poderam ser salvos " + error);
+                } else {
+                    res.send("Dados salvos com sucesso " + 200);
+                }
+                ref.off("value");
+            });
+        }
     });
+    
 });
 
 // deleta um prestador
