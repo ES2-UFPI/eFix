@@ -94,6 +94,16 @@ export default class TelaContrato extends Component {
             console.log("erro: " + response.data);
             this.setState({ errorMessage: 'Erro'})
         }
+
+        this.verifyDisponibilidade();
+    }
+
+    verifyDisponibilidade(){
+        console.log("DISPONIBILIDADE: " + this.state.prest_prestador.disponibilidade)
+        if(this.state.prest_prestador.disponibilidade == false){
+            Alert.alert("Desculpe pelo transtorno. Este serviço se encontra indisponível.");
+            this.props.navigation.goBack();
+        }
     }
 
     setDateAndroid = async () => {
