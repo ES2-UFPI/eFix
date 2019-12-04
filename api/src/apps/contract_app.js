@@ -15,18 +15,41 @@ const router = express.Router();
 // cria um novo contrato
 const create = router.post('/', (req, res, next) => {
     const id_contrato = crypto.randomBytes(32).toString('hex');
-    const { id_servico, id_prestador, id_usuario, data } = req.body;
+    var { id_servico, id_prestador, id_usuario, data } = req.body;
     const ativo = true;
+    
+    const dt = new Date();
+    dt.setTime(data);
+
+    data ={
+        data: dt.getTime(), 
+        dia: dt.getDate(),
+        mes: dt.getMonth(),
+        ano: dt.getFullYear(),
+        hora: dt.getHours()-3,
+        min: dt.getMinutes()
+    } 
+
+    console.log(data);
 
     const refPath = "contratos/" + id_contrato;
     
     const ref = firebase.database().ref(refPath);
 
-    ref.update({ id_servico, id_contrato, id_prestador, id_usuario, data, ativo }, function(error){
+    ref.update({ id_contrato, id_prestador, id_servico, id_usuario, data, ativo }, function(error){
         if(error){
             res.send("Dados não poderam ser salvos " + error);
-        } else
-            res.redirect(307, '../prestador/contrato/' + id_contrato);
+        } else{
+            var ref = firebase.database().ref('prestador/' + id_prestador);
+            ref.child("contratos").push(id_contrato);
+            ref.off();
+
+            ref = firebase.database().ref('usuario/' + id_usuario);
+            ref.child("contratos").push(id_contrato);
+            ref.off();
+            
+            res.status(201).json({ id_contrato: id_contrato }).send();
+        }
     });
     ref.off("value");
 });
@@ -109,7 +132,21 @@ const close_contract = router.put('/close/:id', (req,res, next) => {
             
             ref.once("value", function(snapshot){
                 const id_prestador = snapshot.child("id_prestador").val();
-                res.redirect(307, '../../prestador/incremento/' + id_prestador);
+
+                const refPath = "prestador/" + id_prestador;
+                const ref2 = firebase.database().ref(refPath);
+
+                ref2.once("value", function(snapshot){
+                    const qnt_servicos_prestados = snapshot.child("qnt_servicos_prestados").val() + 1;
+
+                    ref2.update({ qnt_servicos_prestados }, function(error){
+                        if (error) {
+                            res.send("Dados não poderam ser salvos " + error);
+                        } else 
+                            res.sendStatus(200);
+                    })
+                    ref2.off("value");
+                });
                 ref.off("value");
             });
         }
@@ -159,18 +196,88 @@ const read_provider_contracts = router.get('/prestador/:id', (req, res, next) =>
 });
 
 const add_review = router.post('/avaliacao', (req, res, next) => {
-    const { id_contrato } = req.body;
-    const avaliacao = crypto.randomBytes(32).toString('hex');
-    
-    const ref = firebase.database().ref('contratos/' + id_contrato);
+    const { id_contrato, id_prestador, avaliacao } = req.body;
+    const { nota, comentario } = avaliacao;
+    const id_avaliacao = crypto.randomBytes(32).toString('hex');
+    avaliacao.id_avaliacao = id_avaliacao;
 
+    const ref = firebase.database().ref('contratos/' + id_contrato);
+    
     ref.update({ avaliacao }, function(error){
         if(error){
             res.sendStatus(502);
-        } else
-            res.redirect(307, '../../prestador/avaliacao/' + avaliacao);
+        } else{
+            var ref2 = firebase.database().ref('prestador/' + id_prestador);
+            
+            ref2.once("value", function(snapshot){
+                var nota_somada = snapshot.child("nota_somada").val();
+                const qnt_servicos_prestados = snapshot.child("qnt_servicos_prestados").val();
+                var nota_media = (nota_somada + avaliacao.nota)/ qnt_servicos_prestados;
+                nota_somada += avaliacao.nota;
+                
+                if(qnt_servicos_prestados == 0 || qnt_servicos_prestados == null)
+                    // nota media atualmente é igual a infinito, causando erro. Atualizando valor
+                    nota_media = avaliacao.nota;
+                
+                // normalizando para valores entre 0 e 5    
+                nota_media = nota_media/5;
+
+                ref2.update({ nota_media, nota_somada }, function(error){
+                    if (error) {
+                        res.send("Dados não poderam ser salvos " + error);
+                    } else{
+                        ref2.off("value");
+                        ref2 = firebase.database().ref('prestador/' + id_prestador + '/avaliacoes/' + id_avaliacao);
+                        ref2.update({ id_avaliacao, comentario, nota, id_contrato }, function(error){
+                            if(error){
+                                res.sendStatus(502);
+                            } else
+                                res.sendStatus(200);
+                        });
+                    }
+                });
+                ref2.off("value");
+            });
+        }
     })
     ref.off("value");
+});
+
+const get_contracts_of_day = router.put('/prestador/data/:id_prestador', (req, res, next) => {
+    const { id_prestador } = req.params;
+    const { data } = req.body;
+    
+    var date1 = new Date();
+    date1.setTime(data);
+
+    const dia = date1.getDate();
+    const mes = date1.getMonth();
+    const ano = date1.getFullYear();
+
+    const ref1 = firebase.database().ref("contratos/").orderByChild("id_prestador").equalTo(id_prestador);
+
+    var contracts_after = [];
+    var contracts_before = [];
+
+    ref1.on("value", function(snapshot){
+        snapshot.forEach(function(childsnapshot){
+            var contract = childsnapshot.val();
+            if(contract.data.ano == ano && contract.data.mes == mes && contract.data.dia == dia){
+                if(contract.data.data < data){
+                    contracts_before.push(contract);
+                } else
+                    contracts_after.push(contract); 
+            }
+        });
+        res.status(200).json({
+            before: contracts_before,
+            after: contracts_after
+        }).send();
+        
+        ref1.off("value");
+    }, function(errorObject){
+        res.status(402).json({ error: errorObject }).send();
+    });
 });
 
 contract_app.use('/', create);
@@ -182,5 +289,6 @@ contract_app.use('/', close_contract);
 contract_app.use('/', read_user_contracts);
 contract_app.use('/', read_provider_contracts);
 contract_app.use('/', add_review);
+contract_app.use('/', get_contracts_of_day);
 
 module.exports = contract_app;

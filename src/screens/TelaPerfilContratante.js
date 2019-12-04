@@ -19,7 +19,7 @@ export default class TelaPerfilContratante extends Component {
             usuarios: [
                 {
                     id:'',
-                    imagem: 'http://media.agora.com.vc/thumbs/capas/image_1399.jpg',
+                    imagem: 'https://i.pinimg.com/originals/05/3d/9f/053d9f3c1a5306a28109aa7a85eed9e7.jpg',
                     nomeUsuario: 'Raimundo Nonato',
                     emailUsuario: 'raimundocabecao@yahoo.com.br',
                     enderecoUsuario: "Rua Tchurosbangos Tchudosbagos, 2193",
@@ -29,7 +29,7 @@ export default class TelaPerfilContratante extends Component {
                 },
                 {
                     id:'',
-                    imagem: 'http://media.agora.com.vc/thumbs/capas/image_1399.jpg',
+                    imagem: 'https://i.pinimg.com/originals/05/3d/9f/053d9f3c1a5306a28109aa7a85eed9e7.jpg',
                     nomeUsuario: 'Ted Sousa',
                     emailUsuario: 'ted@mail.com',
                     enderecoUsuario: "Rua Apinage, 1800",
@@ -99,7 +99,7 @@ export default class TelaPerfilContratante extends Component {
         );}
     
     componentDidMount(){
-        this.getUserprivileges("34d61fb7f20eb7e0538544b4b09bfb429b02ddc704a3b7f66ab75cb5ba438397");
+        this.getUserprivileges("2e6d9b3a01d160d77f46fd9e5798344f77be8de245da0b13eb537982d50f94a8");
     
         }
     render() {
@@ -120,9 +120,9 @@ export default class TelaPerfilContratante extends Component {
                         <Text style={{textAlign:'center', fontSize: 25, color: 'black'}}>{this.state.prestador.nome}</Text>
                         <Text style={{textAlign:'center'}}>{this.state.prestador.email}</Text>
                         <Text style={{textAlign:'center'}}>{this.state.prestador.endereco}</Text>
-                        <View style={{flexDirection:'row'}}>
+                        <View style={{flexDirection:'row', justifyContent:'center'}}>
                             <TouchableOpacity style={styles.buttons}
-                            onPress={() =>  { this.getUserprivileges("cbe876ac4f8d8db430e81d46c2510869bc30d24a231d7039bbf1e4137d53b333")
+                            onPress={() =>  { this.getUserprivileges("2e6d9b3a01d160d77f46fd9e5798344f77be8de245da0b13eb537982d50f94a8")
                                 if ( this.state.ehPrestador == true) {
                                 this.props.navigation.navigate('prestadorscreen', {usuario: this.state.prestador})}
                                 else{console.log("nao é prestador");
@@ -134,6 +134,9 @@ export default class TelaPerfilContratante extends Component {
                             <TouchableOpacity style={styles.buttons}>
                             <Text style={{color:'white'}}>Editar Perfil</Text>
                             </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttons} onPress = {() => this.props.navigation.navigate('ListagemContratosscreen')}>
+                          <Text style={{color:'white'}}>Visualizar Contratos</Text>
+                        </TouchableOpacity>
                         </View>
                     </View> 
                 </View>                
@@ -165,7 +168,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     buttons:{
-        margin: 10, 
+        margin: 2.5, 
         borderWidth: 1, 
         alignItems:'center', 
         borderRadius:20, 

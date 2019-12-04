@@ -22,17 +22,34 @@ const create_service = router.post('/', (req, res, next) => {
     const nome = req.body.nome;
     const preco = req.body.preco;
     const descricao = req.body.descricao;
+    const duracao = req.body.duracao;
 
     const refPath = "servico/" + id_servico;
-    const ref = firebase.database().ref(refPath)
+    var ref = firebase.database().ref(refPath)
+    
+    const refPath2 = "prestador/" + id_prestador;
+    var ref2 = firebase.database().ref(refPath2)
 
-    ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
-        if (error) {
-            res.send("Dados não poderam ser salvos " + error);
-        } else {
-            res.redirect(307, '../prestador/add/' + id_servico);
-        }
-    });
+    ref2.on("value", function(snapshot){
+
+ if(snapshot.val() == undefined || snapshot.val() == null){
+        res.status(406).json({message: "Esse prestador nao existe!"}).send();
+    } 
+
+    })
+        
+            ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao, duracao }, function(error) {
+                if (error) {
+                    res.send("Dados não poderam ser salvos " + error);
+                } else {
+                    ref = firebase.database().ref('prestador/' + id_prestador);
+                    ref.child("servicos").push(id_servico);
+        
+                    res.status(201).json({ id_servico: id_servico }).send();
+                }
+            });
+            
+    
 });
 
 // recupera servicos
@@ -226,17 +243,28 @@ const update_service = router.put('/', (req, res, next) => {
     const descricao = req.body.descricao;
     
     console.log("UPDATE " + id_servico + " recebida");
-
     const refPath = "servico/" + id_servico;
     const ref = firebase.database().ref(refPath)
-
-    ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
-        if (error) {
-            res.send("Dados não poderam ser atualizados " + error);
-        } else {
-            res.send("Dados atualizados com sucesso " + 200);
+   
+    ref.on("value", function(snapshot){
+        if(snapshot.val() == undefined || snapshot.val() == null){
+            res.status(406).json({message: "Não existe este serviço!"}).send();
+        } else{
+            ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao }, function(error) {
+                if (error) {
+                    res.send("Dados não poderam ser atualizados " + error);
+                } else {
+                    res.send("Dados atualizados com sucesso " + 200);
+                }
+            });
+            
         }
+    },
+    function(errorObject){
+        console.log("Leitura falhou: " + errorObject.code);
+        res.send(errorObject.code);
     });
+
 });
 
 // deleta um servico com o id recebido.
