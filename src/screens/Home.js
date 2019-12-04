@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import {View, Text, FlatList, StyleSheet } from 'react-native';
 import ItemServico from './ItemServico.js';
 import api from '../services/API';
-import SimpleButton from '../components/SimpleButton';
-import Modal from 'react-native-modal';
-import RatingScreen from './TelaAvaliacao';
-import Button from '../components/Button/index.js';
 
 export default class Home extends Component {
     state = {
@@ -35,9 +31,6 @@ export default class Home extends Component {
         }
       }
     
-    toggleModal= () =>{
-        this.setState({ isModalVisible: !this.state.isModalVisible });
-    };
     render(){
         const emptyList = <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
         <Text>Nenhum serviço recuperado.</Text></View>
@@ -63,11 +56,6 @@ export default class Home extends Component {
                         />
                     </View>
                 </View>
-                <Button onPress={this.toggleModal}>Avaliar</Button>
-                <Modal isVisible={this.state.isModalVisible}
-                       onBackdropPress={() => this.setState({ isModalVisible: false })}>
-                        <RatingScreen id_contrato={"2692dcd0b4e110615fe0cce675f93a2190fb0821be1b30f4ee5815694ffd1f54"} modal={this}/>                     
-                </Modal>
             </View>
         );   
     }

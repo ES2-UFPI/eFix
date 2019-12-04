@@ -26,7 +26,7 @@ const create = router.post('/', (req, res, next) => {
         dia: dt.getDate(),
         mes: dt.getMonth(),
         ano: dt.getFullYear(),
-        hora: dt.getHours(),
+        hora: dt.getHours()-3,
         min: dt.getMinutes()
     } 
 
@@ -196,22 +196,17 @@ const read_provider_contracts = router.get('/prestador/:id', (req, res, next) =>
 });
 
 const add_review = router.post('/avaliacao', (req, res, next) => {
-    const { id_contrato, avaliacao } = req.body;
+    const { id_contrato, id_prestador, avaliacao } = req.body;
     const { nota, comentario } = avaliacao;
     const id_avaliacao = crypto.randomBytes(32).toString('hex');
     avaliacao.id_avaliacao = id_avaliacao;
-    const ref = firebase.database().ref('contratos/' + id_contrato);
 
+    const ref = firebase.database().ref('contratos/' + id_contrato);
+    
     ref.update({ avaliacao }, function(error){
         if(error){
             res.sendStatus(502);
         } else{
-            const id_prestador = null;
-            ref.on("value", function(snapshot){
-                id_prestador = snapshot.child("id_prestador").val();
-            });
-            ref.off("value");
-
             var ref2 = firebase.database().ref('prestador/' + id_prestador);
             
             ref2.once("value", function(snapshot){
