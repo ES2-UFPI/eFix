@@ -26,17 +26,30 @@ const create_service = router.post('/', (req, res, next) => {
 
     const refPath = "servico/" + id_servico;
     var ref = firebase.database().ref(refPath)
+    
+    const refPath2 = "prestador/" + id_prestador;
+    var ref2 = firebase.database().ref(refPath2)
 
-    ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao, duracao }, function(error) {
-        if (error) {
-            res.send("Dados não poderam ser salvos " + error);
-        } else {
-            ref = firebase.database().ref('prestador/' + id_prestador);
-            ref.child("servicos").push(id_servico);
+    ref2.on("value", function(snapshot){
 
-            res.status(201).json({ id_servico: id_servico }).send();
-        }
-    });
+ if(snapshot.val() == undefined || snapshot.val() == null){
+        res.status(406).json({message: "Esse prestador nao existe!"}).send();
+    } 
+
+    })
+        
+            ref.update({ id_prestador, id_servico, categoria, nome, preco, descricao, duracao }, function(error) {
+                if (error) {
+                    res.send("Dados não poderam ser salvos " + error);
+                } else {
+                    ref = firebase.database().ref('prestador/' + id_prestador);
+                    ref.child("servicos").push(id_servico);
+        
+                    res.status(201).json({ id_servico: id_servico }).send();
+                }
+            });
+            
+    
 });
 
 // recupera servicos
