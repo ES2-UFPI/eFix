@@ -21,7 +21,8 @@ export default class ListagemServicos extends Component {
         value: null,
         value2: null, 
         value3: null,
-        ord: null
+        ord: null,
+        pai: this
     };
 
     componentDidMount() {

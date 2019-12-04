@@ -69,13 +69,19 @@ export default class TelaPerfilPrestador extends Component{
         }
     }
 
-    trocarDisponibilidade(){
+    trocarDisponibilidade = async() =>{
         let state = this.state;
         if(state.disp == false){
             this.setState({disp: true, disponibilidade: 'Serviços Ativados no momento...'});
         }
         else{
             this.setState({disp: false, disponibilidade: 'Serviços Desativados no momento...'});
+        }
+
+        try{
+            const response = await api.changeProviderDisponibitily(this.props.navigation.getParam('usuario')['id_prestador']);
+        }catch(response){
+
         }
     }
 
