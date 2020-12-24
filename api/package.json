@@ -14,7 +14,7 @@
     "body-parser": "^1.19.0",
     "cross-env": "^6.0.3",
     "crypto": "^1.0.1",
-    "date-and-time": "^0.11.0",
+    "date-and-time": "^0.14.2",
     "express": "^4.17.1",
     "firebase": "^7.1.0",
     "httpd": "0.0.2"
